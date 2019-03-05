@@ -1,0 +1,1 @@
+Spherical Compactness Factor = 0.70171.  Using centroid for sphere origin.  Centroid used was (0.5, -1.53319e-08, -5.0091e-10)  Radius was 0.98689

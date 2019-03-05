@@ -1,0 +1,3 @@
+Simulation executable "var.exe" exists.
+Simulation "var.exe" started.
+VisIt connected to simulation "var.exe".

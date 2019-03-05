@@ -1,0 +1,2 @@
+Pseudocolor:  ()
+viewer.exe: The file "bad_file.silo" does not exist.

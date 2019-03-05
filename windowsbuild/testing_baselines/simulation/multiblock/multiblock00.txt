@@ -1,0 +1,3 @@
+Simulation executable "multiblock.exe" exists.
+Simulation "multiblock.exe" started.
+VisIt connected to simulation "multiblock.exe".

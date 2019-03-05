@@ -1,0 +1,3 @@
+Simulation executable "aresamr.exe" exists.
+Simulation "aresamr.exe" started.
+VisIt connected to simulation "aresamr.exe".

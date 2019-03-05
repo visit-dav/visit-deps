@@ -1,0 +1,48 @@
+Steps for bulding 64-bit python 2.7.14 with SSL (openssl) with VS 15 (2017)
+Culled from: https://wiki.python.org/moin/VS2012
+
+Need Python 2.7.14, SVN, Active PERL, 7-zip.
+
+Untar Python.
+
+Open VS 15 x64 native tools command prompt
+cd to root python directory (Python-2.7.14)
+// Use the batch file to download the 'externals' (requires command-line SVN)
+// If this doesn't work can download the files individually via Tortoise-svn
+// gui, just need to read get_externals.bat to know which files
+// (Don't need tcl, tk for VisIt)
+PcBuild\get_externals.bat
+
+// build openssl
+cd externals\openssl-1.0.2k
+// configure openssl
+perl Configure --openssldir=%CD%\ enable-camellia disable-idea VC-WIN64A
+// build
+ms\do_win64a.bat
+nmake -f ms\ntdll.mak
+
+Open the solution file in PCBuild with VS 2017, accept conversion
+Change configuration to Release and x64
+Build
+
+*** For 2.7.14, I had to modify Modules\timemodule.c to replace 'timezone' with '_timezone', 'daylight' with '_daylight', and 'tzname' with '_tzname'.
+
+You can either remove tcl, tk, _tkinter and tix projects or simply ignore compile errors,
+they aren't needed for VisIt's use of python.
+
+copy kats_python_manual_install.py to the Python-2.7.11 directory
+
+Edit DST_DIR to location of your choice
+run the script with the python just compiled.
+(PCBuild-vc11\amd64\python.exe kats_python_manual_install.py)
+
+Once installed, for VisIt's use, will need to install the following site-packages via 'python setup.py install' in each of their respective folders:
+PIL
+pyparsing
+seedme
+requests
+
+TODO:
+Investigate if there is  a way to build openssl for 32-bit in same space as 64-bit. Otherwise must untar a clean python for each type of build.
+
+

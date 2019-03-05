@@ -1,0 +1,3 @@
+Simulation executable "unstructured.exe" exists.
+Simulation "unstructured.exe" started.
+VisIt connected to simulation "unstructured.exe".

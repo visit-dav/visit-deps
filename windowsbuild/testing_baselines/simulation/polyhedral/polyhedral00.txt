@@ -1,0 +1,3 @@
+Simulation executable "polyhedral.exe" exists.
+Simulation "polyhedral.exe" started.
+VisIt connected to simulation "polyhedral.exe".

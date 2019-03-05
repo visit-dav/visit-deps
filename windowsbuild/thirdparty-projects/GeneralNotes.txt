@@ -1,0 +1,53 @@
+Notes from my build of TPL with VS 2017.
+
+Jpeg 9b
+Open VS command prompt
+Copy jconfig.vc to jconfig.h
+set INCLUDE=%INCLUDE%;C:\Program Files (x86)\Microsfot SDKs\WIndows\v7.1A\Include
+nmake /f makefile.vc nodebug=1 jpeg.lib
+(I modify makefile.vx to build jpeg.lib instead of libjpeg.lib)
+
+zlib 1.2.11
+Use cmake build system
+
+szip 2.1.1
+Use cmake build system
+
+
+Python 2.7.14
+Use my notes. + 
+Lib\distutils\msvc9compiler.py file in python needed to be updated to correctly find and call vcvarsall for vs 2017 community (professional might need different changes) 
+
+PIL (Imaging 1.1.7)
+_imaging.c needed change: '_expand' to '__expand' to prevent name collision with Windows sdk.
+
+HDF5 1.8.19
+Need to define H5_BUILT_AS_DYNAMIC_LIB for all hdf5 dependent libs like
+CGNS
+SILO
+
+
+CGNS
+Modified cmakelists.txt to strip out static (no way to disable), and to add
+add_defintions(-DH5_BUILT_AS_DYNAMIC_LIB)
+
+GDAL 2.2.2
+modify nmake.opt, use nmake to build/install
+
+hdf 4.2.13
+use cmake build system
+
+Netcdf 4.5.0
+Use cmake build system
+before first configure, create and fill in
+HDF5_C_LIBRARY filepath to hdf5.lib
+HDF5_HL_LIBRARY file path to hdf5_hl.lib
+HDF5_INCLUDE_DIR path to hdf5 include
+HAVE_HDF5_H filepath to hdf5.h
+configure
+will prompt for ZLIB_INCLUDE_DIR and ZLIB_LIBRARY
+turn off all DAP and TEST vars.
+
+
+BoxLib (ccse-1.3.5)
+See instructions in this dir.

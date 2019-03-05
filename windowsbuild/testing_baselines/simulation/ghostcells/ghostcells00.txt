@@ -1,0 +1,3 @@
+Simulation executable "ghostcells.exe" exists.
+Simulation "ghostcells.exe" started.
+VisIt connected to simulation "ghostcells.exe".

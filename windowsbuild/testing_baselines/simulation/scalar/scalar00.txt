@@ -1,0 +1,3 @@
+Simulation executable "scalar.exe" exists.
+Simulation "scalar.exe" started.
+VisIt connected to simulation "scalar.exe".

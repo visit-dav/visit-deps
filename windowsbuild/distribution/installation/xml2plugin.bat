@@ -1,0 +1,23 @@
+@echo off
+
+
+echo Generating attributes...
+xml2atts -noprint %1 %2 %3 %4 %5
+
+echo Generating Plugin window...
+xml2window -noprint %1 %2 %3 %4 %5
+
+echo Generating Plugin information skeleton...
+xml2info -noprint %1 %2 %3 %4 %5
+
+echo Generating cmake file...
+xml2cmake -noprint %1 %2 %3 %4 %5
+
+echo Generating AVT framework...
+xml2avt -noprint %1 %2 %3 %4 %5
+
+echo Generating Python bindings...
+xml2python -noprint %1 %2 %3 %4 %5
+
+echo Generating Java bindings...
+xml2java -noprint %1 %2 %3 %4 %5

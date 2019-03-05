@@ -1,0 +1,3 @@
+Simulation executable "amr.exe" exists.
+Simulation "amr.exe" started.
+VisIt connected to simulation "amr.exe".

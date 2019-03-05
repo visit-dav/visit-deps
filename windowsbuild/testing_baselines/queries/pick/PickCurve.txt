@@ -1,0 +1,32 @@
+
+A:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.020202, 0.0575823>
+
+
+B:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.020202, 0.0575823>
+
+
+C:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.0808081, 0.216082>
+
+
+D:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.666667, 0.646465>
+
+
+E:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.282828, 0.59007>
+
+
+F:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.858586, 0.353211>
+
+
+G:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.676768, 0.636373>
+
+
+H:  VISIT_TOP_DIR/data\curve_test_data\curve.visit  timestep 72
+Point: <0.232323, 0.518834>
+

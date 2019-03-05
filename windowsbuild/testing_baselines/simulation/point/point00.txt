@@ -1,0 +1,3 @@
+Simulation executable "point.exe" exists.
+Simulation "point.exe" started.
+VisIt connected to simulation "point.exe".

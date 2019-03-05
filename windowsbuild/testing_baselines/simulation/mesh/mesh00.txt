@@ -1,0 +1,3 @@
+Simulation executable "mesh.exe" exists.
+Simulation "mesh.exe" started.
+VisIt connected to simulation "mesh.exe".

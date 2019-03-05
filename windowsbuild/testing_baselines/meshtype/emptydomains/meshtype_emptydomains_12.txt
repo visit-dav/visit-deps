@@ -1,0 +1,8 @@
+
+B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\emptydomains.silo
+mesh domain 2 
+Point: <4, 0, 2>
+Node:  100
+Incident Zones:  69  36  70  37  
+density:  <nodal> = 10
+
