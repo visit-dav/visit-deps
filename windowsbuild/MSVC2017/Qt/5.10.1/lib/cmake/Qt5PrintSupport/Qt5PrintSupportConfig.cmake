@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::PrintSupport)
 
     set(_Qt5PrintSupport_OWN_INCLUDE_DIRS "${_qt5PrintSupport_install_prefix}/include/" "${_qt5PrintSupport_install_prefix}/include/QtPrintSupport")
-    set(Qt5PrintSupport_PRIVATE_INCLUDE_DIRS
-        "${_qt5PrintSupport_install_prefix}/include/QtPrintSupport/5.10.1"
-        "${_qt5PrintSupport_install_prefix}/include/QtPrintSupport/5.10.1/QtPrintSupport"
-    )
+    set(Qt5PrintSupport_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5PrintSupport_OWN_INCLUDE_DIRS})
         _qt5_PrintSupport_check_file_exists(${_dir})

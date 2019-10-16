@@ -25,6 +25,7 @@ if (NOT TARGET Qt5::UiPlugin)
 
     set(_Qt5UiPlugin_OWN_INCLUDE_DIRS "${_qt5UiPlugin_install_prefix}/include/" "${_qt5UiPlugin_install_prefix}/include/QtUiPlugin")
     set(Qt5UiPlugin_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5UiPlugin_OWN_INCLUDE_DIRS})
         _qt5_UiPlugin_check_file_exists(${_dir})

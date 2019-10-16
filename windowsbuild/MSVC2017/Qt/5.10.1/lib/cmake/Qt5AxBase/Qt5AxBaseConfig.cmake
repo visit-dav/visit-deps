@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::AxBase)
 
     set(_Qt5AxBase_OWN_INCLUDE_DIRS "${_qt5AxBase_install_prefix}/include/" "${_qt5AxBase_install_prefix}/include/ActiveQt")
-    set(Qt5AxBase_PRIVATE_INCLUDE_DIRS
-        "${_qt5AxBase_install_prefix}/include/ActiveQt/5.10.1"
-        "${_qt5AxBase_install_prefix}/include/ActiveQt/5.10.1/ActiveQt"
-    )
+    set(Qt5AxBase_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5AxBase_OWN_INCLUDE_DIRS})
         _qt5_AxBase_check_file_exists(${_dir})

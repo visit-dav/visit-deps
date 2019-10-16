@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::UiTools)
 
     set(_Qt5UiTools_OWN_INCLUDE_DIRS "${_qt5UiTools_install_prefix}/include/" "${_qt5UiTools_install_prefix}/include/QtUiTools")
-    set(Qt5UiTools_PRIVATE_INCLUDE_DIRS
-        "${_qt5UiTools_install_prefix}/include/QtUiTools/5.10.1"
-        "${_qt5UiTools_install_prefix}/include/QtUiTools/5.10.1/QtUiTools"
-    )
+    set(Qt5UiTools_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5UiTools_OWN_INCLUDE_DIRS})
         _qt5_UiTools_check_file_exists(${_dir})
