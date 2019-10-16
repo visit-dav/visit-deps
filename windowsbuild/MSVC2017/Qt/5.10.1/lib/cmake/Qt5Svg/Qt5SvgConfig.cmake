@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Svg)
 
     set(_Qt5Svg_OWN_INCLUDE_DIRS "${_qt5Svg_install_prefix}/include/" "${_qt5Svg_install_prefix}/include/QtSvg")
-    set(Qt5Svg_PRIVATE_INCLUDE_DIRS
-        "${_qt5Svg_install_prefix}/include/QtSvg/5.10.1"
-        "${_qt5Svg_install_prefix}/include/QtSvg/5.10.1/QtSvg"
-    )
+    set(Qt5Svg_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Svg_OWN_INCLUDE_DIRS})
         _qt5_Svg_check_file_exists(${_dir})

@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Network)
 
     set(_Qt5Network_OWN_INCLUDE_DIRS "${_qt5Network_install_prefix}/include/" "${_qt5Network_install_prefix}/include/QtNetwork")
-    set(Qt5Network_PRIVATE_INCLUDE_DIRS
-        "${_qt5Network_install_prefix}/include/QtNetwork/5.10.1"
-        "${_qt5Network_install_prefix}/include/QtNetwork/5.10.1/QtNetwork"
-    )
+    set(Qt5Network_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Network_OWN_INCLUDE_DIRS})
         _qt5_Network_check_file_exists(${_dir})

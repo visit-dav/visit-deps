@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::QuickWidgets)
 
     set(_Qt5QuickWidgets_OWN_INCLUDE_DIRS "${_qt5QuickWidgets_install_prefix}/include/" "${_qt5QuickWidgets_install_prefix}/include/QtQuickWidgets")
-    set(Qt5QuickWidgets_PRIVATE_INCLUDE_DIRS
-        "${_qt5QuickWidgets_install_prefix}/include/QtQuickWidgets/5.10.1"
-        "${_qt5QuickWidgets_install_prefix}/include/QtQuickWidgets/5.10.1/QtQuickWidgets"
-    )
+    set(Qt5QuickWidgets_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5QuickWidgets_OWN_INCLUDE_DIRS})
         _qt5_QuickWidgets_check_file_exists(${_dir})

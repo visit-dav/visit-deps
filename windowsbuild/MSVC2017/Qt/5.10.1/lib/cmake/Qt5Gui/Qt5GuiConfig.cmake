@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Gui)
 
     set(_Qt5Gui_OWN_INCLUDE_DIRS "${_qt5Gui_install_prefix}/include/" "${_qt5Gui_install_prefix}/include/QtGui")
-    set(Qt5Gui_PRIVATE_INCLUDE_DIRS
-        "${_qt5Gui_install_prefix}/include/QtGui/5.10.1"
-        "${_qt5Gui_install_prefix}/include/QtGui/5.10.1/QtGui"
-    )
+    set(Qt5Gui_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Gui_OWN_INCLUDE_DIRS})
         _qt5_Gui_check_file_exists(${_dir})

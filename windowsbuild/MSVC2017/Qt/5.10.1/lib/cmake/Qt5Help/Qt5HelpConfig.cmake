@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Help)
 
     set(_Qt5Help_OWN_INCLUDE_DIRS "${_qt5Help_install_prefix}/include/" "${_qt5Help_install_prefix}/include/QtHelp")
-    set(Qt5Help_PRIVATE_INCLUDE_DIRS
-        "${_qt5Help_install_prefix}/include/QtHelp/5.10.1"
-        "${_qt5Help_install_prefix}/include/QtHelp/5.10.1/QtHelp"
-    )
+    set(Qt5Help_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Help_OWN_INCLUDE_DIRS})
         _qt5_Help_check_file_exists(${_dir})

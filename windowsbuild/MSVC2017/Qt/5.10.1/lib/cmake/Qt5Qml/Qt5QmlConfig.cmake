@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Qml)
 
     set(_Qt5Qml_OWN_INCLUDE_DIRS "${_qt5Qml_install_prefix}/include/" "${_qt5Qml_install_prefix}/include/QtQml")
-    set(Qt5Qml_PRIVATE_INCLUDE_DIRS
-        "${_qt5Qml_install_prefix}/include/QtQml/5.10.1"
-        "${_qt5Qml_install_prefix}/include/QtQml/5.10.1/QtQml"
-    )
+    set(Qt5Qml_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Qml_OWN_INCLUDE_DIRS})
         _qt5_Qml_check_file_exists(${_dir})

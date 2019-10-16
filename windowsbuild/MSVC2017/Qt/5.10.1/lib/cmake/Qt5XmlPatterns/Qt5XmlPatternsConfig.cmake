@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::XmlPatterns)
 
     set(_Qt5XmlPatterns_OWN_INCLUDE_DIRS "${_qt5XmlPatterns_install_prefix}/include/" "${_qt5XmlPatterns_install_prefix}/include/QtXmlPatterns")
-    set(Qt5XmlPatterns_PRIVATE_INCLUDE_DIRS
-        "${_qt5XmlPatterns_install_prefix}/include/QtXmlPatterns/5.10.1"
-        "${_qt5XmlPatterns_install_prefix}/include/QtXmlPatterns/5.10.1/QtXmlPatterns"
-    )
+    set(Qt5XmlPatterns_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5XmlPatterns_OWN_INCLUDE_DIRS})
         _qt5_XmlPatterns_check_file_exists(${_dir})

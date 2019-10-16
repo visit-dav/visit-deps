@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::WinExtras)
 
     set(_Qt5WinExtras_OWN_INCLUDE_DIRS "${_qt5WinExtras_install_prefix}/include/" "${_qt5WinExtras_install_prefix}/include/QtWinExtras")
-    set(Qt5WinExtras_PRIVATE_INCLUDE_DIRS
-        "${_qt5WinExtras_install_prefix}/include/QtWinExtras/5.10.1"
-        "${_qt5WinExtras_install_prefix}/include/QtWinExtras/5.10.1/QtWinExtras"
-    )
+    set(Qt5WinExtras_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5WinExtras_OWN_INCLUDE_DIRS})
         _qt5_WinExtras_check_file_exists(${_dir})
