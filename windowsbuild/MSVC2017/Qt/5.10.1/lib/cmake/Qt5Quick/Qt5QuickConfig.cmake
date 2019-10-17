@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Quick)
 
     set(_Qt5Quick_OWN_INCLUDE_DIRS "${_qt5Quick_install_prefix}/include/" "${_qt5Quick_install_prefix}/include/QtQuick")
-    set(Qt5Quick_PRIVATE_INCLUDE_DIRS
-        "${_qt5Quick_install_prefix}/include/QtQuick/5.10.1"
-        "${_qt5Quick_install_prefix}/include/QtQuick/5.10.1/QtQuick"
-    )
+    set(Qt5Quick_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Quick_OWN_INCLUDE_DIRS})
         _qt5_Quick_check_file_exists(${_dir})

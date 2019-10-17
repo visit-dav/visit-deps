@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Designer)
 
     set(_Qt5Designer_OWN_INCLUDE_DIRS "${_qt5Designer_install_prefix}/include/" "${_qt5Designer_install_prefix}/include/QtDesigner")
-    set(Qt5Designer_PRIVATE_INCLUDE_DIRS
-        "${_qt5Designer_install_prefix}/include/QtDesigner/5.10.1"
-        "${_qt5Designer_install_prefix}/include/QtDesigner/5.10.1/QtDesigner"
-    )
+    set(Qt5Designer_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Designer_OWN_INCLUDE_DIRS})
         _qt5_Designer_check_file_exists(${_dir})

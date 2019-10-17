@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Sql)
 
     set(_Qt5Sql_OWN_INCLUDE_DIRS "${_qt5Sql_install_prefix}/include/" "${_qt5Sql_install_prefix}/include/QtSql")
-    set(Qt5Sql_PRIVATE_INCLUDE_DIRS
-        "${_qt5Sql_install_prefix}/include/QtSql/5.10.1"
-        "${_qt5Sql_install_prefix}/include/QtSql/5.10.1/QtSql"
-    )
+    set(Qt5Sql_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Sql_OWN_INCLUDE_DIRS})
         _qt5_Sql_check_file_exists(${_dir})

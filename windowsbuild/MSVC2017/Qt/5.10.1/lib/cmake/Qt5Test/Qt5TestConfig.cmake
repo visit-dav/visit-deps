@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Test)
 
     set(_Qt5Test_OWN_INCLUDE_DIRS "${_qt5Test_install_prefix}/include/" "${_qt5Test_install_prefix}/include/QtTest")
-    set(Qt5Test_PRIVATE_INCLUDE_DIRS
-        "${_qt5Test_install_prefix}/include/QtTest/5.10.1"
-        "${_qt5Test_install_prefix}/include/QtTest/5.10.1/QtTest"
-    )
+    set(Qt5Test_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Test_OWN_INCLUDE_DIRS})
         _qt5_Test_check_file_exists(${_dir})

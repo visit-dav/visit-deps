@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::Widgets)
 
     set(_Qt5Widgets_OWN_INCLUDE_DIRS "${_qt5Widgets_install_prefix}/include/" "${_qt5Widgets_install_prefix}/include/QtWidgets")
-    set(Qt5Widgets_PRIVATE_INCLUDE_DIRS
-        "${_qt5Widgets_install_prefix}/include/QtWidgets/5.10.1"
-        "${_qt5Widgets_install_prefix}/include/QtWidgets/5.10.1/QtWidgets"
-    )
+    set(Qt5Widgets_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Widgets_OWN_INCLUDE_DIRS})
         _qt5_Widgets_check_file_exists(${_dir})

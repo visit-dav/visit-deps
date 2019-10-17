@@ -48,10 +48,8 @@ endmacro()
 if (NOT TARGET Qt5::OpenGL)
 
     set(_Qt5OpenGL_OWN_INCLUDE_DIRS "${_qt5OpenGL_install_prefix}/include/" "${_qt5OpenGL_install_prefix}/include/QtOpenGL")
-    set(Qt5OpenGL_PRIVATE_INCLUDE_DIRS
-        "${_qt5OpenGL_install_prefix}/include/QtOpenGL/5.10.1"
-        "${_qt5OpenGL_install_prefix}/include/QtOpenGL/5.10.1/QtOpenGL"
-    )
+    set(Qt5OpenGL_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5OpenGL_OWN_INCLUDE_DIRS})
         _qt5_OpenGL_check_file_exists(${_dir})

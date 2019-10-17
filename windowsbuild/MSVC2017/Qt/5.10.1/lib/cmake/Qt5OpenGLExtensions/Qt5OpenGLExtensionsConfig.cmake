@@ -49,6 +49,7 @@ if (NOT TARGET Qt5::OpenGLExtensions)
 
     set(_Qt5OpenGLExtensions_OWN_INCLUDE_DIRS "${_qt5OpenGLExtensions_install_prefix}/include/" "${_qt5OpenGLExtensions_install_prefix}/include/QtOpenGLExtensions")
     set(Qt5OpenGLExtensions_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5OpenGLExtensions_OWN_INCLUDE_DIRS})
         _qt5_OpenGLExtensions_check_file_exists(${_dir})

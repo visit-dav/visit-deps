@@ -49,6 +49,7 @@ if (NOT TARGET Qt5::Concurrent)
 
     set(_Qt5Concurrent_OWN_INCLUDE_DIRS "${_qt5Concurrent_install_prefix}/include/" "${_qt5Concurrent_install_prefix}/include/QtConcurrent")
     set(Qt5Concurrent_PRIVATE_INCLUDE_DIRS "")
+    include("${CMAKE_CURRENT_LIST_DIR}/ExtraSourceIncludes.cmake" OPTIONAL)
 
     foreach(_dir ${_Qt5Concurrent_OWN_INCLUDE_DIRS})
         _qt5_Concurrent_check_file_exists(${_dir})
