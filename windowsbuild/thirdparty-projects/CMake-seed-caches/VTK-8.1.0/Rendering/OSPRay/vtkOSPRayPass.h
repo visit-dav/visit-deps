@@ -75,7 +75,7 @@ public:
    */
   virtual void RenderInternal(const vtkRenderState *s);
 
-  virtual vtkViewNodeFactory *GetViewNodeFactory();
+  virtual vtkViewNodeFactory* GetViewNodeFactory();
 
  protected:
   /**

@@ -64,7 +64,6 @@ protected:
 
   vtkDataSetSurfaceFilter *GeometryExtractor;
 
-
 private:
   vtkOSPRayPolyDataMapperNode(const vtkOSPRayPolyDataMapperNode&) = delete;
   void operator=(const vtkOSPRayPolyDataMapperNode&) = delete;
