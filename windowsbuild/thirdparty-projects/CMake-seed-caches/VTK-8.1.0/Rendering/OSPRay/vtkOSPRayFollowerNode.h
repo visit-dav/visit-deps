@@ -47,4 +47,3 @@ private:
   void operator=(const vtkOSPRayFollowerNode&) = delete;
 };
 #endif
-

@@ -49,4 +49,3 @@ vtkMTimeType vtkOSPRayFollowerNode::GetMTime()
 
   return mtime;
 }
-

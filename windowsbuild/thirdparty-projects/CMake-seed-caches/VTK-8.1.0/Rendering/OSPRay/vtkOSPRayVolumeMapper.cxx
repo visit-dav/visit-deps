@@ -72,10 +72,8 @@ void vtkOSPRayVolumeMapper::Render(vtkRenderer *ren, vtkVolume *vol)
   {
     this->Init();
   }
-
   vtkOSPRayRendererNode::SetSamplesPerPixel(vtkOSPRayRendererNode::GetSamplesPerPixel(ren), this->InternalRenderer);
   vtkOSPRayRendererNode::SetAmbientSamples(vtkOSPRayRendererNode::GetAmbientSamples(ren), this->InternalRenderer);
- 
   this->InternalRenderer->SetRenderWindow(ren->GetRenderWindow());
   this->InternalRenderer->SetActiveCamera(ren->GetActiveCamera());
   this->InternalRenderer->SetBackground(ren->GetBackground());

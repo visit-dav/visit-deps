@@ -37,10 +37,13 @@ set_source_files_properties(
 vtk_module_library(vtkRenderingOSPRay ${Module_SRCS})
 
 target_link_libraries(${vtk-module} LINK_PUBLIC ${OSPRAY_LIBRARIES})
+# patch to solve linking issue noticed on macOS
+target_link_libraries(${vtk-module} LINK_PUBLIC vtkFiltersGeometry)
+
 
 # OSPRay_Core uses MMTime which is in it's own special library.
 if(WIN32)
-  target_link_libraries(${vtk-module} LINK_PRIVATE Winmm vtkFiltersGeometry)
+  target_link_libraries(${vtk-module} LINK_PRIVATE Winmm)
 endif()
 
 include(vtkOpenGL)

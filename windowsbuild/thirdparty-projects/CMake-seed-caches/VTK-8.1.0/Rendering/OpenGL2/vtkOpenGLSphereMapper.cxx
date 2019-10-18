@@ -15,6 +15,7 @@
 
 #include "vtkOpenGLHelper.h"
 
+#include "vtkDataArrayAccessor.h"
 #include "vtkFloatArray.h"
 #include "vtkMath.h"
 #include "vtkMatrix4x4.h"
@@ -211,43 +212,39 @@ void vtkOpenGLSphereMapper::PrintSelf(ostream& os, vtkIndent indent)
   os << indent << "Radius: " << this->Radius << "\n";
 }
 
-// internal function called by CreateVBO
-void vtkOpenGLSphereMapper::CreateVBO(
-  float * points, vtkIdType numPts,
-  unsigned char *colors, int colorComponents,
-  vtkIdType nc,
-  float *sizes, vtkIdType ns, vtkRenderer *ren)
+// internal function called by BuildBufferObjects
+template <typename PtsArray, typename SizesArray>
+void vtkOpenGLSphereMapper_PrepareVBO(
+  PtsArray *points, unsigned char *colors, int colorComponents,
+  vtkIdType nc, SizesArray *sizesA, vtkIdType ns,
+  vtkFloatArray *verts, vtkFloatArray *offsets, vtkUnsignedCharArray *ucolors)
 {
-  vtkFloatArray *verts = vtkFloatArray::New();
-  verts->SetNumberOfComponents(3);
-  verts->SetNumberOfTuples(numPts*3);
+  vtkIdType numPts = points->GetNumberOfTuples();
+
   float *vPtr = static_cast<float *>(verts->GetVoidPointer(0));
-
-  vtkFloatArray *offsets = vtkFloatArray::New();
-  offsets->SetNumberOfComponents(2);
-  offsets->SetNumberOfTuples(numPts*3);
   float *oPtr = static_cast<float *>(offsets->GetVoidPointer(0));
-
-  vtkUnsignedCharArray *ucolors = vtkUnsignedCharArray::New();
-  ucolors->SetNumberOfComponents(4);
-  ucolors->SetNumberOfTuples(numPts*3);
   unsigned char *cPtr = static_cast<unsigned char *>(ucolors->GetVoidPointer(0));
 
-  float *pointPtr;
-  unsigned char *colorPtr;
+  vtkDataArrayAccessor<PtsArray> pointPtr(points);
+  vtkDataArrayAccessor<SizesArray> sizes(sizesA);
+
+  float radius = sizes.Get(0, 0);
+  
+  unsigned char *colorPtr = colors;
 
   float cos30 = cos(vtkMath::RadiansFromDegrees(30.0));
 
   for (vtkIdType i = 0; i < numPts; ++i)
   {
-    pointPtr = points + i*3;
-    colorPtr = (nc == numPts ? colors + i*colorComponents : colors);
-    float radius = (ns == numPts ? sizes[i] : sizes[0]);
+    if (nc == numPts)
+        colorPtr = colors + i*colorComponents;
+    if (ns == numPts)
+        radius = sizes.Get(i, 0);
 
     // Vertices
-    *(vPtr++) = pointPtr[0];
-    *(vPtr++) = pointPtr[1];
-    *(vPtr++) = pointPtr[2];
+    *(vPtr++) = pointPtr.Get(i, 0);
+    *(vPtr++) = pointPtr.Get(i, 1);
+    *(vPtr++) = pointPtr.Get(i, 2);
     *(cPtr++) = colorPtr[0];
     *(cPtr++) = colorPtr[1];
     *(cPtr++) = colorPtr[2];
@@ -255,9 +252,9 @@ void vtkOpenGLSphereMapper::CreateVBO(
     *(oPtr++) = -2.0f*radius*cos30;
     *(oPtr++) = -radius;
 
-    *(vPtr++) = pointPtr[0];
-    *(vPtr++) = pointPtr[1];
-    *(vPtr++) = pointPtr[2];
+    *(vPtr++) = pointPtr.Get(i, 0);
+    *(vPtr++) = pointPtr.Get(i, 1);
+    *(vPtr++) = pointPtr.Get(i, 2);
     *(cPtr++) = colorPtr[0];
     *(cPtr++) = colorPtr[1];
     *(cPtr++) = colorPtr[2];
@@ -265,9 +262,9 @@ void vtkOpenGLSphereMapper::CreateVBO(
     *(oPtr++) = 2.0f*radius*cos30;
     *(oPtr++) = -radius;
 
-    *(vPtr++) = pointPtr[0];
-    *(vPtr++) = pointPtr[1];
-    *(vPtr++) = pointPtr[2];
+    *(vPtr++) = pointPtr.Get(i, 0);
+    *(vPtr++) = pointPtr.Get(i, 1);
+    *(vPtr++) = pointPtr.Get(i, 2);
     *(cPtr++) = colorPtr[0];
     *(cPtr++) = colorPtr[1];
     *(cPtr++) = colorPtr[2];
@@ -275,14 +272,6 @@ void vtkOpenGLSphereMapper::CreateVBO(
     *(oPtr++) = 0.0f;
     *(oPtr++) = 2.0f*radius;
   }
-
-  this->VBOs->CacheDataArray("vertexMC", verts, ren, VTK_FLOAT);
-  verts->Delete();
-  this->VBOs->CacheDataArray("offsetMC", offsets, ren, VTK_FLOAT);
-  offsets->Delete();
-  this->VBOs->CacheDataArray("scalarColor", ucolors, ren, VTK_UNSIGNED_CHAR);
-  ucolors->Delete();
-  VBOs->BuildAllVBOs(ren);
 }
 
 //-------------------------------------------------------------------------
@@ -320,7 +309,9 @@ void vtkOpenGLSphereMapper::BuildBufferObjects(
   // then the scalars do not have to be regenerted.
   this->MapScalars(1.0);
 
-  vtkIdType numPts = poly->GetPoints()->GetNumberOfPoints();
+  vtkPoints *pts = poly->GetPoints();
+
+  vtkIdType numPts = pts->GetNumberOfPoints();
   unsigned char *c;
   int cc;
   vtkIdType nc;
@@ -333,42 +324,62 @@ void vtkOpenGLSphereMapper::BuildBufferObjects(
   else
   {
     double *ac = act->GetProperty()->GetColor();
-    double  op = act->GetProperty()->GetOpacity();
+    double opac = act->GetProperty()->GetOpacity();
     c = new unsigned char[4];
     c[0] = (unsigned char) (ac[0] *255.0);
     c[1] = (unsigned char) (ac[1] *255.0);
     c[2] = (unsigned char) (ac[2] *255.0);
-    c[3] = (unsigned char) (op    *255.0);
+    c[3] = (unsigned char) (opac  *255.0);
     nc = 1;
     cc = 4;
   }
 
-  float *scales;
+  vtkDataArray *scales = NULL;
   vtkIdType ns = poly->GetPoints()->GetNumberOfPoints();
   if (this->ScaleArray != nullptr &&
       poly->GetPointData()->HasArray(this->ScaleArray))
   {
-    scales = static_cast<float*>(poly->GetPointData()->GetArray(this->ScaleArray)->GetVoidPointer(0));
+    scales = poly->GetPointData()->GetArray(this->ScaleArray);
     ns = numPts;
   }
   else
   {
-    scales = &this->Radius;
+    scales = vtkFloatArray::New();
+    scales->SetNumberOfTuples(1);
+    scales->SetTuple1(0, this->Radius);
     ns = 1;
   }
 
-  // Iterate through all of the different types in the polydata, building OpenGLs
-  // and IBOs as appropriate for each type.
-  this->CreateVBO(
-    static_cast<float *>(poly->GetPoints()->GetVoidPointer(0)),
-    numPts,
-    c, cc, nc,
-    scales, ns,
-    ren);
+  vtkFloatArray *verts = vtkFloatArray::New();
+  verts->SetNumberOfComponents(3);
+  verts->SetNumberOfTuples(numPts*3);
+
+  vtkFloatArray *offsets = vtkFloatArray::New();
+  offsets->SetNumberOfComponents(2);
+  offsets->SetNumberOfTuples(numPts*3);
+
+  vtkUnsignedCharArray *ucolors = vtkUnsignedCharArray::New();
+  ucolors->SetNumberOfComponents(4);
+  ucolors->SetNumberOfTuples(numPts*3);
+
+  vtkOpenGLSphereMapper_PrepareVBO(pts->GetData(), c, cc, nc, scales, ns,
+                                   verts, offsets, ucolors);
+
+  this->VBOs->CacheDataArray("vertexMC", verts, ren, VTK_FLOAT);
+  verts->Delete();
+  this->VBOs->CacheDataArray("offsetMC", offsets, ren, VTK_FLOAT);
+  offsets->Delete();
+  this->VBOs->CacheDataArray("scalarColor", ucolors, ren, VTK_UNSIGNED_CHAR);
+  ucolors->Delete();
+  this->VBOs->BuildAllVBOs(ren);
 
   if (!this->Colors)
   {
     delete [] c;
+  }
+  if (ns != numPts)
+  {
+    scales->Delete();
   }
 
   // create the IBO
