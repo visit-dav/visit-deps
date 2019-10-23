@@ -746,7 +746,7 @@ vtkOSPRayPolyDataMapperNode::vtkOSPRayPolyDataMapperNode()
 vtkOSPRayPolyDataMapperNode::~vtkOSPRayPolyDataMapperNode()
 {
   delete (vtkosp::MyGeom*)this->OSPMeshes;
-  if (this->GeometryExtractor)
+  if ( this->GeometryExtractor )
   {
     this->GeometryExtractor->Delete();
   }
@@ -1328,7 +1328,7 @@ void vtkOSPRayPolyDataMapperNode::Render(bool prepass)
       {
         poly = (vtkPolyData*)(mapper->GetInput());
       }
-      else 
+      else
       {
         if (! this->GeometryExtractor)
         {

@@ -107,7 +107,7 @@
 #include "vtkVersionMacros.h" // removed by VTK_LEGACY_REMOVE
 
 /* C++ compiler used.  */
-#define VTK_CXX_COMPILER "C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx86/x64/cl.exe"
+#define VTK_CXX_COMPILER "C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe"
 
 /* Compatibility settings.  */
 /* #undef VTK_LEGACY_REMOVE */

@@ -274,10 +274,7 @@ void vtkOSPRayPass::RenderInternal(const vtkRenderState *s)
   }
 }
 
-
 vtkViewNodeFactory* vtkOSPRayPass::GetViewNodeFactory()
 {
   return this->Internal->Factory;
 }
-
-
