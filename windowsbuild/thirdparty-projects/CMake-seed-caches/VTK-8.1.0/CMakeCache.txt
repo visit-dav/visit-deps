@@ -29,15 +29,15 @@ Module_vtklibxml2:BOOL=true
 Module_vtkGUISupportQtOpenGL:BOOL=true
 Module_vtkRenderingOSPRay:BOOL=true
 VTK_WRAP_PYTHON:BOOL=true
-PYTHON_EXECUTABLE:FILEPATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/python.exe
-PYTHON_INCLUDE_DIR:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/include
-PYTHON_LIBRARY:FILEPATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/libs/python27.lib
-OSPRAY_INSTALL_DIR:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/ospray/1.6.1
-embree_DIR:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/embree/3.4.0
-TBB_ROOT:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss
+PYTHON_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/python.exe
+PYTHON_INCLUDE_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/include
+PYTHON_LIBRARY:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/python/2.7.14/libs/python27.lib
+OSPRAY_INSTALL_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/ospray/1.6.1
+embree_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/embree/3.4.0
+TBB_ROOT:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss
 VTK_QT_VERSION:STRING=5
-QT_QMAKE_EXECUTABLE:FILEPATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/qmake.exe
-CMAKE_PREFIX_PATH:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/cmake
-CMAKE_INSTALL_PREFIX:PATH=D:/VisItForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0
+QT_QMAKE_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/qmake.exe
+CMAKE_PREFIX_PATH:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/cmake
+CMAKE_INSTALL_PREFIX:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0
 
 

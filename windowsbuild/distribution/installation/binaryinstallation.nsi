@@ -7,34 +7,34 @@
 #
 # Notes:  Copied from binaryinstallation-MSVC8.Net.nsi on August 28, 2009.
 #
-# Programmer: Kathleen Bonnell 
+# Programmer: Kathleen Bonnell
 # Date:       August 28, 2009.
 #
 # Modifications:
-#   Modified to use a defined var (COMPILER) to choose which dlls to install 
+#   Modified to use a defined var (COMPILER) to choose which dlls to install
 #   (MSVC8 or MSVC7).
-# 
+#
 #   Kathleen Bonnell, Thu April  1 19:10:57 MST 2010
 #   Modified to work with install target of new cmake build system.
-#   Expects VisItVersion, COMPILER, VISIT_SOURCE_DIR and INSTALL_PREFIX to be 
-#   defined on command line. (makensis.exe /DCOMILER= ... etc). 
+#   Expects VisItVersion, COMPILER, VISIT_SOURCE_DIR and INSTALL_PREFIX to be
+#   defined on command line. (makensis.exe /DCOMILER= ... etc).
 #
-#   Added RequestExecutionLevel so that admin privileges not needed when 
+#   Added RequestExecutionLevel so that admin privileges not needed when
 #   installing on Vista and Windows 7.
-# 
+#
 #   Kathleen Bonnell, Thu Jun 17 20:31:45 MST 2010
 #   Change registry keys to HKLM for all-user install (admin required) or HKCU
 #   for single-user install.  Makes windows versions > XP happier.
 #
 #   Kathleen Bonnell, Thu Jul 22 20:00:00 MST 2010
 #   Wrap installer and uninstaller in UAC code, requests elevation to admin if
-#   user wants to install for all users. Write AppCompat flags to registry if 
+#   user wants to install for all users. Write AppCompat flags to registry if
 #   installing on Vista.
 #
-#   Kathleen Bonnell, Thu Sep 2 15:47:22 PDT 2010 
+#   Kathleen Bonnell, Thu Sep 2 15:47:22 PDT 2010
 #   Add support for 64 bit installs.
 #
-#   Kathleen Bonnell, Fri Nov 5 16:13:02 PDT 2010 
+#   Kathleen Bonnell, Fri Nov 5 16:13:02 PDT 2010
 #   Add Section PythonFilterModules so that PythonFilters will be installed.
 #
 #   Kathleen Bonnell, Thu Dec 2 10:53:55 MST 2010
@@ -44,21 +44,21 @@
 #   Eric Brugger, Wed Dec 22 10:14:38 PST 2010
 #   I corrected a typo in the firewall message.
 #
-#   Kathleen Bonnell, Fri Jan 14 11:30:53 MST 2011 
+#   Kathleen Bonnell, Fri Jan 14 11:30:53 MST 2011
 #   Corrected a typo in setting of VISITPLUGININSTPUB and VISITPLUGINSTPRI.
 #
-#   Kathleen Bonnell, Tue Jan 18 22:58:02 MST 2011 
+#   Kathleen Bonnell, Tue Jan 18 22:58:02 MST 2011
 #   Use data from data dir if it is available, otherwise use data found in
 #   path determined by environment variable VISIT_DATA_DIR, otherwise error.
 #
-#   Kathleen Bonnell, Mon Feb 7 16:30:41 MST 2011 
+#   Kathleen Bonnell, Mon Feb 7 16:30:41 MST 2011
 #   Added LibSim.
 #
 #   Kathleen Bonnell, Wed Apr 20 10:52:15 MST 2011
 #   Added .pyd extension files (visit_writer, visitmodule, etc).
 #
 #   Kathleen Bonnell, Tue Apr 26 09:16:04 MST 2011
-#   Added ability to associate curve (.curve, .ultra, .ult, .u) files. 
+#   Added ability to associate curve (.curve, .ultra, .ult, .u) files.
 #
 #   Kathleen Bonnell, Wed May 25 08:20:44 MST 2011
 #   Modifications to get command-line options working correctly. Changed how
@@ -73,13 +73,13 @@
 #   Kathleen Biagas, Sun Aug 28 23:47:06 MST 2011
 #   Do a delete/remove dir component-wise only on installed components based
 #   on visit_install.log.  Revert to recursive RMDIR if this file not present,
-#   but prompt user to agree. 
+#   but prompt user to agree.
 #
 #   Kathleen Biagas, Wed Aug 31 10:45:11 MST 2011
 #   Delete shortcuts one-by-one, instead of recursive delete on directory.
 #
 #   Kathleen Biagas, Thu Sep 22 18:14:52 MST 2011
-#   Fix replacement of 'bdivp' in host profiles. 
+#   Fix replacement of 'bdivp' in host profiles.
 #
 #   Kathleen Biagas, Thu Sep 15 12:35:55 PDT 2011
 #   Added logic to exclude parallel files when necessary, and to install
@@ -102,7 +102,7 @@
 #   I added the host profile for rzthriller.
 #
 #   Kathleen Biagas, Thu Jun 21 15:27:12 MST 2012
-#   If plugin-development support is installed, but Parallel components are 
+#   If plugin-development support is installed, but Parallel components are
 #   not, then turn off VISIT_PARALLEL in PluginVsInstall.cmake
 #
 #   Brad Whitlock, Tue Sep 24 12:11:23 PDT 2013
@@ -119,16 +119,22 @@
 #   as hostAlias.
 #
 #   Kathleen Biagas, Friday March 20 17:34 MST 2015
-#   Fix Java preferences registry key to include full path to vist. 
+#   Fix Java preferences registry key to include full path to vist.
 #
 #   Kathleen Biagas, Wednesday July 1st, 2015
 #   Change 'bdivp' to 'wbronze'.
 #
 #   Kathleen Biagas, Tuesday June 14, 2016
-#   Remove support for compilers older than MSVC 2012. 
+#   Remove support for compilers older than MSVC 2012.
 #
 #   Kathleen Biagas, Tuesday March 20, 2018
-#   Remove support for compilers older than MSVC 2017. 
+#   Remove support for compilers older than MSVC 2017.
+#
+#   Kathleen Biagas, Friday January 20, 2020
+#   Shorten default install path for single-users to simply the profile dir.
+#   Added test for OpenGL version, Mesa3D's opengl32.dll used as drop-in
+#   replacement if system OpenGL not sufficient.
+#   Put firewall message on Finish page, along with a Mesa warning if needed.
 #
 ###############################################################################
 
@@ -147,7 +153,7 @@
 !define PRODUCT_UNINST_ROOT_KEY "SHCTX"
 
 !define PRODUCT_INST "${PRODUCT_PUBLISHER}\${PRODUCT_NAME} ${PRODUCT_VERSION}"
-!define V_INSTDIR_USER  "$LocalAppData\Programs"
+!define V_INSTDIR_USER  "$Profile"
 
 !define V_INSTDIR_ADMIN "$ProgramFiles64"
 !define VISITINSTDIR "$INSTDIR\${PRODUCT_INST}"
@@ -215,13 +221,16 @@ page custom ChooseFileAssociations
 
 ; Instfiles page
 !insertmacro MUI_PAGE_INSTFILES
+!define MUI_FINISHPAGE_TEXT ""
+!define MUI_PAGE_CUSTOMFUNCTION_PRE FinishPagePre
+!define MUI_PAGE_CUSTOMFUNCTION_SHOW FinishPageShow
 !insertmacro MUI_PAGE_FINISH
 
 ; Uninstaller pages
 
 ; Language files
 !insertmacro MUI_LANGUAGE "English"
-
+XPStyle off
 
 ; MUI end ------
 
@@ -250,6 +259,7 @@ Var MPIExec
 Var NCPUs
 Var ParCompSet
 Var IsInnerInstance
+Var RequiresMesaAsGL
 
 
 ###############################################################################
@@ -267,7 +277,7 @@ Section /o ParallelComponents SEC_PAR
       ClearErrors
       Push $9
       StrCpy $9 "$ProgramFiles64"
- 
+
       ; Check for newer mpi (8 and above)
       ${If} ${FileExists} "C:\Program Files\Microsoft MPI\Redist\MSMpiSetup.exe"
           File "/oname=$PLUGINSDIR\MSMpiSetup.exe" "C:\Program Files\Microsoft MPI\Redist\MSMpiSetup.exe"
@@ -277,7 +287,7 @@ Section /o ParallelComponents SEC_PAR
           File "/oname=$PLUGINSDIR\ms_mpi.msi" ".\MSMPI_R2\mpi_x64.msi"
           ${ShellExecEx} $2 'runas' 'msiexec' '/qn /i "$PLUGINSDIR\ms_mpi.msi"' '' 'SW_NORMAL' 3
       ${EndIf}
- 
+
       ${If} ${FileExists} "$9\Microsoft MPI\Bin\mpiexec.exe"
           StrCpy $MPIExec "$9\Microsoft MPI\Bin\mpiexec.exe"
       ${ElseIf} ${FileExists} "$9\Microsoft HPC Pack 2008 R2\Bin\mpiexec.exe"
@@ -316,11 +326,11 @@ Section DataFiles SEC_DATA
   #!insertmacro CompileTimeIfFileExists "$%VISIT_DATA_DIR%" haveVisItDataDir
 
 #!ifdef haveVisItDistData
-  #DetailPrint "using visit dist data " 
+  #DetailPrint "using visit dist data "
   File "${INSTALL_PREFIX}\data\*"
 #!else
 #  !ifdef haveVisItDataDir
-#    DetailPrint "using visit data dir " 
+#    DetailPrint "using visit data dir "
 #    File "$%VISIT_DATA_DIR%\*.silo"
 #    File "$%VISIT_DATA_DIR%\wave.visit"
 #    File "$%VISIT_DATA_DIR%\PDB\db*.pdb"
@@ -360,7 +370,7 @@ Section /o "Plugin development" SEC_DEV
   ; propagate the changes so a reboot won't be necessary
   SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
   ${IfNot} ${SectionIsSelected} ${SEC_PAR}
-       !insertmacro _ReplaceInFile "${VISITINSTDIR}\include\PluginVsInstall.cmake" "SET(VISIT_PARALLEL               ON)" "SET(VISIT_PARALLEL               OFF)" 
+       !insertmacro _ReplaceInFile "${VISITINSTDIR}\include\PluginVsInstall.cmake" "SET(VISIT_PARALLEL               ON)" "SET(VISIT_PARALLEL               OFF)"
   ${EndIf}
 SectionEnd
 
@@ -483,10 +493,10 @@ Function ParseCommandLine
   ${GetOptions} $R0 "-AssociatePython" $R1
   ${If} ${Errors}
       StrCpy $AssociatePythonSet false
-      StrCpy $AssociatePython 0 
+      StrCpy $AssociatePython 0
   ${Else}
       DetailPrint "Command line option -AssociatePython used"
-      StrCpy $AssociatePython 1 
+      StrCpy $AssociatePython 1
       StrCpy $AssociatePythonSet true
   ${EndIf}
 
@@ -494,10 +504,10 @@ Function ParseCommandLine
   ${GetOptions} $R0 "-AssociateCurves" $R1
   ${If} ${Errors}
       StrCpy $AssociateCurvesSet false
-      StrCpy $AssociateCurves 0 
+      StrCpy $AssociateCurves 0
   ${Else}
       DetailPrint "Command line option -AssociateCurves used"
-      StrCpy $AssociateCurves 1 
+      StrCpy $AssociateCurves 1
       StrCpy $AssociateCurvesSet true
   ${EndIf}
 
@@ -519,7 +529,7 @@ Function ParseCommandLine
 
   ; These options were created for another project that includes VisIt's
   ; installer inside theirs, they don't want to show a second Welcome
-  ; and License page 
+  ; and License page
 
   ; skip the license page when not in SILENT mode
   ${GetOptions} $R0 "-ACCEPT" $R1
@@ -541,7 +551,7 @@ Function ParseCommandLine
 
   ClearErrors
   ;EnumRegKey $0 SHCTX "Software\Python\PythonCore\2.5\InstallPath" 0
-  ;${If} ${Errors} 
+  ;${If} ${Errors}
   ;    Strcpy $CreatePythonRegKeys "yes"
   ;    ClearErrors
   ;${Else}
@@ -564,7 +574,7 @@ Function ElevatePrivilege
                 MessageBox mb_iconExclamation "Unable to elevate"
                 Abort
             ${EndIf}
-            Quit ;We now have a new process, the install will continue 
+            Quit ;We now have a new process, the install will continue
                  ;there, we have nothing left to do here
         ${EndIf}
     ${EndIf}
@@ -573,7 +583,7 @@ FunctionEnd
 Function InstallUsersChanged
     ${If} $InstallUsers == "all"
         SetShellVarContext all
-        ${IfNot} ${Silent} 
+        ${IfNot} ${Silent}
           ${If} $UserInstallSet == false
           ${OrIf} $INSTDIR == ""
               StrCpy $INSTDIR "${V_INSTDIR_ADMIN}"
@@ -581,7 +591,7 @@ Function InstallUsersChanged
         ${EndIf}
     ${Else}
         SetShellVarContext current
-        ${IfNot} ${Silent} 
+        ${IfNot} ${Silent}
           ${If} $UserInstallSet == false
           ${OrIf} $INSTDIR == ""
               StrCpy $INSTDIR "${V_INSTDIR_USER}"
@@ -603,7 +613,7 @@ Function .onInit
 
     ${If} $IsInnerInstance == true
     ${AndIfNot} $UserPrivilege == "Admin"
-        SetErrorLevel 0x666666 ;special return value for outer instance so it 
+        SetErrorLevel 0x666666 ;special return value for outer instance so it
                                ; knows we did not have admin rights
         Quit
     ${EndIf}
@@ -642,7 +652,7 @@ FunctionEnd
 
 Function DisableBack
     ${If} $UserInstallSet == true
-        ; still need to call the leave function so that write permissions 
+        ; still need to call the leave function so that write permissions
         ; are tested.
         call DirectoryLeave
         Abort
@@ -696,7 +706,7 @@ Function DirectoryLeave
               Strcpy $1 "error"
           ${EndIf}
       ${EndIf}
-  
+
       ${If} $1 == "error"
           MessageBox MB_OK 'Cannot write to "${VISITINSTDIR}", please choose a different directory'
           Pop $1
@@ -737,11 +747,11 @@ Function ChooseUsers
     ${NSD_Check} $0
 
     ${NSD_CreateRadioButton} 22u 54u 40% 12u "All Users"
-    Pop $2 
+    Pop $2
     nsDialogs::SetUserData $2 "all"
     ${NSD_OnClick} $2 UsersClicked
     Push $2 ; store allusers radio hwnd on stack
-    nsDialogs::show 
+    nsDialogs::show
     Pop $2
 FunctionEnd
 
@@ -753,7 +763,7 @@ Function UsersClicked
     SendMessage $0 ${BCM_SETSHIELD} 0 $1
 FunctionEnd
 
-Function ChooseUsersLeave 
+Function ChooseUsersLeave
     ${If} $InstallUsersSet == false
         ; get info from the ChooseUsers dialog
         pop $0  ;get hwnd
@@ -788,20 +798,20 @@ Function ChooseNetworkConfig
        nsDialogs::Create 1018
        Pop $0
        ${If} $0 == error
-           Abort 
+           Abort
        ${EndIf}
 
 
        ${NSD_CreateListBox} 15u 0u 85% 99% $R4
        Pop $NetConfigLB
-      
+
        ${NSD_LB_AddString} $NetConfigLB "None"
        ; parse all network options from networks.dat
        FileOpen $DatFile "$PLUGINSDIR\networks.dat" r
        FileRead $DatFile $Line
        StrCpy $Tags ""
        ClearErrors
-       ${DoUntil} ${Errors} 
+       ${DoUntil} ${Errors}
            !insertmacro StrSplice "$Desc" "$Line" "1" ":"
             Pop $Tag
             ${StrTrimNewLines} $Tag $Tag
@@ -845,7 +855,7 @@ Function ChooseParallelBank
         Abort
     ${EndIf}
 
-    ${NSD_CreateLabel} 5u 5u 90% 34u "If you use a batch system that requires you to use a bank when submitting parallel jobs, enter the name of the bank now." 
+    ${NSD_CreateLabel} 5u 5u 90% 34u "If you use a batch system that requires you to use a bank when submitting parallel jobs, enter the name of the bank now."
     Pop $0
 
     ${NSD_CreateText} 46u 46u 40% 12u "wbronze"
@@ -883,7 +893,7 @@ Function ChooseDefaultDatabasePlugin
 
         ${NSD_LB_AddString} $DefaultDatabaseLB "None"
 
-    ; find all selected db's 
+    ; find all selected db's
 
     StrCpy $9 ${SEC_DP_0}
     StrCpy $8 ${NumDBPlugins}
@@ -913,11 +923,11 @@ Function OnStackSpam
 FunctionEnd
 
 #
-# Allow the user to choose whether python script files will be associated 
+# Allow the user to choose whether python script files will be associated
 # with VisIt.
 #
 Function ChooseFileAssociations
-  ${If} $AssociatePythonSet == false 
+  ${If} $AssociatePythonSet == false
   ${OrIf} $AssociateCurvesSet == false
     !insertmacro MUI_HEADER_TEXT "Associate File types with VisIt" \
       "Associating file types with VisIt allows you to double click the file which will start VisIt and open the file"
@@ -971,9 +981,9 @@ Function CheckForMPI
           StrCpy $MPIExec "$9\Microsoft MPI\Bin\mpiexec.exe"
        ${Else}
           StrCpy $MPIExec ""
-          StrCpy $InstallMPI 0 
+          StrCpy $InstallMPI 0
           ${If} $UserPrivilege == "Admin"
-            StrCpy $InstallMPI 1 
+            StrCpy $InstallMPI 1
             Call CheckForMPILeave
           ${Else}
             !insertmacro MUI_HEADER_TEXT "MSMPI R2 installation" "Installation of files necessary to VisIt's parallel engine"
@@ -1017,10 +1027,30 @@ Function InstallMPIClicked
     Pop $InstallMPI
     Pop $0
 FunctionEnd
- 
+
 Function CheckForMPILeave
     ${If} $InstallMPI == 0
       !insertmacro UnSelectSection "${SEC_PAR}"
+    ${EndIf}
+FunctionEnd
+
+Function FinishPagePre
+   ${IfNot} ${SILENT}
+       Push "${VISITINSTDIR}\\visit_install.log"
+       Call DumpLog
+   ${EndIf}
+FunctionEnd
+
+Function FinishPageShow
+    # firewall message
+    ${NSD_CreateLabel} 120u 50u 60% 40% "Depending on the settings for Windows Firewall, communication between local VisIt processes and remote VisIt processes may be blocked. If you are not an admin, you may need assistance adding VisIt's processes to the firewall's exception list."
+    Pop $0
+    SetCtlColors $0 0x000000 transparent
+
+    ${If} $RequiresMesaAsGL == true
+        ${NSD_CreateLabel} 120u 110u 60% 40% "!!! VisIt detected that the OpenGL version on this system is insufficient, so Mesa3D is being substituted for the system OpenGL. Rendering performance may be negatively impacted. We recommended that you update the graphics card and/or drivers if possible (uninstall and reinstall VisIt in that case). !!!"
+        Pop $0
+        SetCtlColors $0 0xFF0000 transparent
     ${EndIf}
 FunctionEnd
 
@@ -1031,7 +1061,7 @@ FunctionEnd
 #
 ###############################################################################
 
-Section -PlotPlugins 
+Section -PlotPlugins
   SetOutPath "${VISITINSTDIR}\plots"
   ${If} ${SectionIsSelected} ${SEC_PAR}
       File "${INSTALL_PREFIX}\plots\*.dll"
@@ -1040,7 +1070,7 @@ Section -PlotPlugins
   ${EndIf}
 SectionEnd
 
-Section -OperatorPlugins 
+Section -OperatorPlugins
   SetOutPath "${VISITINSTDIR}\operators"
   ${If} ${SectionIsSelected} ${SEC_PAR}
       File "${INSTALL_PREFIX}\operators\*.dll"
@@ -1074,9 +1104,9 @@ Section -ExecutableComponents
   File "${INSTALL_PREFIX}\qt.conf"
 
   # Silex file
-  File /nonfatal "${INSTALL_PREFIX}\silex.exe" 
+  File /nonfatal "${INSTALL_PREFIX}\silex.exe"
   # browser file
-  File /nonfatal "${INSTALL_PREFIX}\browser.exe" 
+  File /nonfatal "${INSTALL_PREFIX}\browser.exe"
 
   # Icon files
   File "${VISIT_DIST_DIR}\resources\*.ico"
@@ -1117,7 +1147,7 @@ Section -AllHosts
       ${Else}
           CopyFiles $0\*.xml $1
       ${EndIf}
-   
+
       CopyFiles "$0\config"    "${VISITINSTDIR}"
       CopyFiles "$0\guiconfig" "${VISITINSTDIR}"
       CopyFiles "$0\visitrc"   "${VISITINSTDIR}"
@@ -1149,18 +1179,37 @@ Section -PlatformsDLL
   File /nonfatal /r "${INSTALL_PREFIX}\platforms"
 SectionEnd
 
+Section -TestOpenGLVersion
+    # Run a small program to test if the OpenGL Version is sufficent on the
+    # system being installed. If not, Mesa3D's openg32.dll will be put in
+    # VisIt's root dir, and a RegKey flag will be set notifying VisIt to set
+    # MESA_GL_VERSION_OVERRIDE=3.3 in the environment for VisIt processes.
+    File "/oname=$PLUGINSDIR\vtkTestOpenGLVersion.exe" "${INSTALL_PREFIX}\vtkTestOpenGLVersion.exe"
+    ExecWait '"$PLUGINSDIR\vtkTestOpenGlVersion.exe"' $0
+    ${If} $0 == 1
+        SetOutPath "${VISITINSTDIR}"
+        FILE "/oname=opengl32.dll" "${INSTALL_PREFIX}\mesagl\opengl32.dll"
+        StrCpy $RequiresMesaAsGL true
+    ${Else}
+        StrCpy $RequiresMesaAsGL false
+    ${Endif}
+SectionEnd
+
 Section -AddVisItRegKeys
 #
 # This section installs the VISIT<version> key, which tells visit.exe where
-# to find the rest of the VisIt components. Note that we put keys in 
+# to find the rest of the VisIt components. Note that we put keys in
 # HKEY_LOCAL_MACHINE or in HKEY_CURRENT_USER.
 #
   SetRegView 64
 
-  ; our regular registry entries 
+  ; our regular registry entries
   WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "" ""
   WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "VISITHOME" "${VISITINSTDIR}"
-  
+
+  ${If} $RequiresMesaAsGL == true
+      WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "VISITNEEDSMESA" "true"
+  ${EndIf}
 
   ${IfNot} $DefaultDatabase == "None"
     Strcpy $0 "-assume_format $DefaultDatabase"
@@ -1168,7 +1217,7 @@ Section -AddVisItRegKeys
                       "VISITARGS" \
                       $0
   ${EndIf}
- 
+
   # Store a flag in the registry to aid in Uninstall
   WriteRegStr HKLM "Software\Classes\VISIT${PRODUCT_VERSION}" "InstalledAllUsers" "$InstallUsers"
 
@@ -1240,7 +1289,7 @@ Section -CreateLinks
 
   # Optionally add a link for xmledit.
   ${If} ${SectionIsSelected} ${SEC_DEV}
-      CreateDirectory "$R0\Plugin development" 
+      CreateDirectory "$R0\Plugin development"
       CreateShortCut "$R0\Plugin development\XML Edit.lnk"  \
           "${VISITINSTDIR}\xmledit.exe"  \
           ""  \
@@ -1298,8 +1347,8 @@ Section -AddFileAssociations
   WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 1024x768 PNG frames\command" "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 1024x768 -sessionfile "%1"'
   WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Edit\command" "" 'notepad.exe "%1"'
   WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -sessionfile "%1"'
- 
-  # Python files 
+
+  # Python files
   # save the value for uninstall
   WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedPythonWithVisIt" "$AssociatePython"
   ${If} $AssociatePython == 1
@@ -1311,10 +1360,10 @@ Section -AddFileAssociations
     WriteRegStr SHCTX "Software\Classes\visitPythonFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -cli -s "%1"'
   ${EndIf}
 
-  # Curve files 
+  # Curve files
   # save the value for uninstall
   WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedCurvesWithVisIt" "$AssociateCurves"
-  ${If} $AssociateCurves == 1 
+  ${If} $AssociateCurves == 1
     # Associate python files with VisIt.
     WriteRegStr SHCTX "Software\Classes\.curve" "" "visitCurveFile"
     WriteRegStr SHCTX "Software\Classes\.ultra" "" "visitCurveFile"
@@ -1363,20 +1412,9 @@ Section -AddJavaInstallPath
    VIkit::GetInstallPathFormattedForJava
    Pop $R0
    # Write the reformatted string as a Java preference.
-   
+
    Strcpy $R0 "$R0///LLNL///VisIt ${PRODUCT_VERSION}"
    WriteRegStr SHCTX "SOFTWARE\JavaSoft\Prefs\llnl\visit" "/V/I/S/I/T/H/O/M/E" $R0
-SectionEnd
-
-Section -FirewallMessage
-   ; doesn't work in silent mode, so don't try it :)
-   ${IfNot} ${SILENT}
-       Push "${VISITINSTDIR}\\visit_install.log"
-       Call DumpLog   
-   ${EndIf}
-
-    MessageBox MB_ICONINFORMATION|MB_OK "Depending on the settings for Windows Firewall, communication between local VisIt processes and remote VisIt processes may be blocked. If you are not an admin, you may need assistance adding VisIt's processes to the firewall's exception list." /SD IDOK
-
 SectionEnd
 
 Section -AdditionalIcons
@@ -1441,7 +1479,7 @@ FunctionEnd
 
 
 Section Uninstall
-    # Read in saved value to know whether VisIt was installed for AllUsers or 
+    # Read in saved value to know whether VisIt was installed for AllUsers or
     # current user.
     ReadRegStr $0    HKLM "Software\Classes\VISIT${PRODUCT_VERSION}" "InstalledAllUsers"
     ${If} $0 == "all"
@@ -1474,11 +1512,11 @@ Section Uninstall
     Delete "$R9\Plugin development\Documentation\Operator plugins.lnk"
     Delete "$R9\Plugin development\Documentation\Building plugins.lnk"
     Delete "$R9\Plugin development\Documentation\VTK classes.lnk"
-    Delete "$R9\Plugin development\Documentation\Qt classes.lnk" 
-    Delete "$R9\Plugin development\Documentation\Python library.lnk" 
+    Delete "$R9\Plugin development\Documentation\Qt classes.lnk"
+    Delete "$R9\Plugin development\Documentation\Python library.lnk"
     Delete "$R9\Plugin development\Documentation\VisIt and HDF5.lnk"
     RmDir "$R9\Plugin development\Documentation"
-    RmDir "$R9\Plugin development" 
+    RmDir "$R9\Plugin development"
     RMDir "$R9"
 
     # Remove all of the VisIt software components
@@ -1502,19 +1540,19 @@ Section Uninstall
            ${Else}
                ${UnStrStrAdv} $R2 $R1 "Extract: " ">" ">" "0" "0" "0"
                ${If} $R2 != ""
-                   ${UnStrStrAdv} $R3 $R2 "..." ">" "<" "0" "0" "0" 
+                   ${UnStrStrAdv} $R3 $R2 "..." ">" "<" "0" "0" "0"
                    ${If} $R3 != ""
                        StrCpy $parsedline $R3
                    ${Else}
                        StrCpy $parsedline $R2
                    ${EndIF}
-               ${Else}     
+               ${Else}
                    StrCpy $parsedline ""
                ${EndIF}
                ${If} $parsedline != ""
                    Delete "$delpath\$parsedline"
                ${EndIf}
-           ${EndIf} 
+           ${EndIf}
            FileRead $R0 $line2
        ${Loop}
        FileClose $R0
@@ -1529,7 +1567,7 @@ Section Uninstall
            Pop $delpath
            ${If} $delpath != "${VISITINSTDIR}"
                RmDir "$delpath"
-           ${EndIf} 
+           ${EndIf}
            ClearErrors
        ${Next}
        delete "$INSTDIR\uninstall_visit.exe"
@@ -1539,10 +1577,10 @@ Section Uninstall
        ${If} ${FileExists} "$R9\LLNL"
            RmDir /REBOOTOK  "$R9\LLNL"
        ${EndIf}
-    ${Else}        
+    ${Else}
         MessageBox MB_OKCANCEL|MB_ICONSTOP "VisIt's uninstaller will be removing the entire directory at $INSTDIR, if this is NOT okay, press CANCEL." /SD IDOK IDOK +1 IDCANCEL +1
         RMDir /r $INSTDIR
-    ${EndIf} 
+    ${EndIf}
 
     # Delete the Silo file type from the registry.
     DeleteRegKey SHCTX "Software\Classes\.silo"
@@ -1554,11 +1592,11 @@ Section Uninstall
     # Delete the VisIt file type from the registry.
     DeleteRegKey SHCTX "Software\Classes\.visit"
     DeleteRegKey SHCTX "Software\Classes\visitFile"
-    ${If} $1 == 1 
+    ${If} $1 == 1
       DeleteRegKey SHCTX "Software\Classes\visitPythonFile"
       DeleteRegKey /ifempty SHCTX "Software\Classes\.py"
     ${EndIf}
-    ${If} $2 == 1 
+    ${If} $2 == 1
       DeleteRegKey SHCTX "Software\Classes\visitCurveFile"
       DeleteRegKey /ifempty SHCTX "Software\Classes\.curve"
       DeleteRegKey /ifempty SHCTX "Software\Classes\.ultra"
