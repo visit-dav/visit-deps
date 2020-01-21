@@ -63,8 +63,8 @@ set_target_properties(conduit_python PROPERTIES
 add_library(conduit_relay SHARED IMPORTED)
 
 set_target_properties(conduit_relay PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "${HDF5_INCLUDE_DIR}include"
-  INTERFACE_LINK_LIBRARIES "conduit;conduit_blueprint;hdf5;hdf5_cpp;hdf5_hl"
+  INTERFACE_INCLUDE_DIRECTORIES "${HDF5_INCLUDE_DIR}"
+  INTERFACE_LINK_LIBRARIES "conduit;conduit_blueprint;hdf5"
 )
 
 # Create imported target conduit_relay_python
@@ -103,7 +103,7 @@ add_library(conduit_relay_mpi_io SHARED IMPORTED)
 set_target_properties(conduit_relay_mpi_io PROPERTIES
   INTERFACE_COMPILE_OPTIONS "-DCONDUIT_RELAY_IO_MPI_ENABLED"
   INTERFACE_INCLUDE_DIRECTORIES "C:/Program Files (x86)/Microsoft SDKs/MPI/Include;${HDF5_INCLUDE_DIR}"
-  INTERFACE_LINK_LIBRARIES "conduit;C:/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64/msmpi.lib;hdf5;hdf5_cpp;hdf5_hl"
+  INTERFACE_LINK_LIBRARIES "conduit;C:/Program Files (x86)/Microsoft SDKs/MPI/Lib/x64/msmpi.lib;hdf5"
   INTERFACE_SYSTEM_INCLUDE_DIRECTORIES "C:/Program Files (x86)/Microsoft SDKs/MPI/Include"
 )
 
