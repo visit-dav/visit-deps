@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html dir="ltr" class="client-js ve-available" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>MesaLlvmpipe - Qt Wiki</title>
+<script async="" src="MesaLlvmpipe%20-%20Qt%20Wiki_files/analytics.js"></script><script>document.documentElement.className = document.documentElement.className.replace( /(^|\s)client-nojs(\s|$)/, "$1client-js$2" );</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgCanonicalNamespace":"","wgCanonicalSpecialPageName":false,"wgNamespaceNumber":0,"wgPageName":"MesaLlvmpipe","wgTitle":"MesaLlvmpipe","wgCurRevisionId":33647,"wgRevisionId":33647,"wgArticleId":9345,"wgIsArticle":true,"wgIsRedirect":false,"wgAction":"view","wgUserName":null,"wgUserGroups":["*"],"wgCategories":[],"wgBreakFrames":false,"wgPageContentLanguage":"en","wgPageContentModel":"wikitext","wgSeparatorTransformTable":["",""],"wgDigitTransformTable":["",""],"wgDefaultDateFormat":"dmy","wgMonthNames":["","January","February","March","April","May","June","July","August","September","October","November","December"],"wgMonthNamesShort":["","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"wgRelevantPageName":"MesaLlvmpipe","wgRelevantArticleId":9345,"wgRequestId":"b1d72b2fb0315d75175d00e1","wgIsProbablyEditable":false,"wgRestrictionEdit":[],"wgRestrictionMove":[],"wgWikiEditorEnabledModules":{"toolbar":true,"dialogs":true,"preview":true,"publish":true},"wgVisualEditor":{"pageLanguageCode":"en","pageLanguageDir":"ltr","usePageImages":false,"usePageDescriptions":false},"wgVisualEditorToolbarScrollOffset":0});mw.loader.implement("user.options",function($,jQuery,require,module){mw.user.options.set({"variant":"en"});});mw.loader.implement("user.tokens",function ( $, jQuery, require, module ) {
+mw.user.tokens.set({"editToken":"+\\","patrolToken":"+\\","watchToken":"+\\","csrfToken":"+\\"});/*@nomin*/;
+
+});mw.loader.load(["mediawiki.page.startup","ext.visualEditor.desktopArticleTarget.init","skins.vector.js"]);});</script>
+<link rel="stylesheet" href="MesaLlvmpipe%20-%20Qt%20Wiki_files/load_002.css">
+<style>
+.postedit-container{margin:0 auto;position:fixed;top:0;height:0;left:50%;z-index:1000;font-size:13px}.postedit-container:hover{cursor:pointer}.postedit{position:relative;top:0.6em;left:-50%;padding:.6em 3.6em .6em 1.1em;line-height:1.5625em;color:#626465;background-color:#f4f4f4;border:1px solid #dcd9d9;text-shadow:0 0.0625em 0 rgba(255,255,255,0.5);border-radius:5px;box-shadow:0 2px 5px 0 #ccc;-webkit-transition:all 0.25s ease-in-out;-moz-transition:all 0.25s ease-in-out;-ms-transition:all 0.25s ease-in-out;-o-transition:all 0.25s ease-in-out;transition:all 0.25s ease-in-out}.skin-monobook .postedit{top:6em !important}.postedit-faded{opacity:0}.postedit-icon{padding-left:41px;  line-height:25px;background-repeat:no-repeat;background-position:8px 50%}.postedit-icon-checkmark{background-image:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAB9ElEQVR4AZWRA3AYURQArxrVHtW2bdu2bdu2zdi2bdu2bWxs7zeehZaw4f70kbs+zI3e/nWK+RWx3aOFlrL56Sy5SxrruG69hlv6OyK+mz+8KDSXdXembj0ispT7tjs4ZTIbpYBvxGSGKzZTeFrb7W/meN002swFs0U8ttpHTkF2BvCqWQrW35929bTsKm5Zb+SEwWwcY8wAngB9m7Z+d+rIPZ/npdy12M5p47n8dXsCYAf0qPy06eGMdktuDu9Qf+JmKl3SWM91qzVcN9tAbEYkwMaq0tyb1m/To5kP170el/BK8/qa6sJr70ydf+T/Uu5ab+Oo/lS0AkUBpIFWlZ9WPhxpse/PHO7YbOOczjL0vZV2lNxPPtG73dYXM+xvm2znrOl83tidoqCwMBgYXsPFB0on5S6pr+eK5TKuW67lgvaKvF8mL1dtfTL32FHxRdyx3cQpg7m4x9sCXKkTIzA4LDH44zWdzaUf71hv5rTG4uyzcusybxSX7aThbMQ8XgCYAp3rzTTQOiIh9PNlzY3FSuZxrzjme1Y7uGS6kjsWO4jPjM4FVjRZsvD4kO9XtTZzQn82NyzWc0B7AmZh6gA/hOYSGhfw9YbOVnarj+S7800AL2BIsxUAbWNToj7bhBuQmZcOsFdoKUC74rGheCwXmqAIQTc9jQcrADIAAAAASUVORK5CYII=);background-image:url(/resources/src/mediawiki.action/images/green-checkmark.png?d94f1)!ie;background-position:left}.postedit-close{position:absolute;padding:0 .8em;right:0;top:0;font-size:1.25em;font-weight:bold;line-height:2.3em;color:black;text-shadow:0 0.0625em 0 white;text-decoration:none;opacity:0.2;filter:alpha(opacity=20)}.postedit-close:hover{color:black;text-decoration:none;opacity:0.4;filter:alpha(opacity=40)}
+.mw-collapsible-toggle{float:right;-moz-user-select:none;-webkit-user-select:none;-ms-user-select:none;user-select:none}  .mw-content-ltr .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr .mw-collapsible-toggle{float:right} .mw-content-rtl .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl .mw-collapsible-toggle{float:left}.mw-customtoggle,.mw-collapsible-toggle{cursor:pointer} caption .mw-collapsible-toggle,.mw-content-ltr caption .mw-collapsible-toggle,.mw-content-rtl caption .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr caption .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl caption .mw-collapsible-toggle{float:none} li .mw-collapsible-toggle,.mw-content-ltr li .mw-collapsible-toggle,.mw-content-rtl li .mw-collapsible-toggle,.mw-content-rtl .mw-content-ltr li .mw-collapsible-toggle,.mw-content-ltr .mw-content-rtl li .mw-collapsible-toggle{float:none} .mw-collapsible-toggle-li{list-style:none}
+.suggestions{overflow:hidden;position:absolute;top:0;left:0;width:0;border:none;z-index:1099;padding:0;margin:-1px 0 0 0}.suggestions-special{position:relative;background-color:white;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0;margin-top:-2px;display:none;padding:0.25em 0.25em;line-height:1.25em}.suggestions-results{background-color:white;cursor:pointer;border:solid 1px #aaaaaa;padding:0;margin:0}.suggestions-result{color:black;margin:0;line-height:1.5em;padding:0.01em 0.25em;text-align:left; overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}.suggestions-result-current{background-color:#4C59A6;color:white}.suggestions-special .special-label{color:gray;text-align:left}.suggestions-special .special-query{color:black;font-style:italic;text-align:left}.suggestions-special .special-hover{background-color:silver}.suggestions-result-current .special-label,.suggestions-result-current .special-query{color:white}.highlight{font-weight:bold}
+#toc{float:right} .toclimit-2 .toclevel-1 ul,.toclimit-3 .toclevel-2 ul,.toclimit-4 .toclevel-3 ul,.toclimit-5 .toclevel-4 ul,.toclimit-6 .toclevel-5 ul,.toclimit-7 .toclevel-6 ul{display:none}</style><style>
+.ve-activated #toc,.ve-activated #siteNotice,.ve-activated .mw-indicators, .ve-active #bodyContent > :not( #siteSub ):not( #contentSub ):not( .ve-ui-mwTocWidget ),.ve-activated #t-print,.ve-activated #t-permalink,.ve-activated #p-coll-print_export,.ve-activated #t-cite,.ve-deactivating .ve-ui-surface{display:none} .ve-activating .ve-ui-surface{height:0;overflow:hidden}.ve-activated #bodyContent,.ve-activated #firstHeading{opacity:0.6;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none} .ve-activated #content{position:relative}.ve-init-mw-desktopArticleTarget-loading-overlay{position:absolute;left:0;right:0;z-index:1;margin-top:-0.5em}.ve-init-mw-desktopArticleTarget-progress{height:1em;overflow:hidden;margin:0 25%}.ve-init-mw-desktopArticleTarget-progress-bar{height:1em;width:0} .mw-editsection{white-space:nowrap; unicode-bidi:-moz-isolate;unicode-bidi:-webkit-isolate;unicode-bidi:isolate}.mw-editsection-divider{color:#555} .ve-init-mw-desktopArticleTarget-progress{height:0.75em;border:1px solid #347bff;background:#fff;border-radius:2px;box-shadow:0 0.1em 0 0 rgba(0,0,0,0.15) }.ve-init-mw-desktopArticleTarget-progress-bar{height:0.75em;background:#347bff}
+.suggestions a.mw-searchSuggest-link,.suggestions a.mw-searchSuggest-link:hover,.suggestions a.mw-searchSuggest-link:active,.suggestions a.mw-searchSuggest-link:focus{color:black;text-decoration:none}.suggestions-result-current a.mw-searchSuggest-link,.suggestions-result-current a.mw-searchSuggest-link:hover,.suggestions-result-current a.mw-searchSuggest-link:active,.suggestions-result-current a.mw-searchSuggest-link:focus{color:white}.suggestions a.mw-searchSuggest-link .special-query{ overflow:hidden;-o-text-overflow:ellipsis; text-overflow:ellipsis;white-space:nowrap}</style><meta name="ResourceLoaderDynamicStyles" content="">
+<link rel="stylesheet" href="MesaLlvmpipe%20-%20Qt%20Wiki_files/load.css">
+<script async="" src="MesaLlvmpipe%20-%20Qt%20Wiki_files/load_002.php"></script>
+<meta name="generator" content="MediaWiki 1.27.1">
+<link rel="shortcut icon" href="https://wiki.qt.io/favicon.ico?t=2016041300">
+<link rel="search" type="application/opensearchdescription+xml" href="https://wiki.qt.io/opensearch_desc.php" title="Qt Wiki (en)">
+<link rel="EditURI" type="application/rsd+xml" href="https://wiki.qt.io/api.php?action=rsd">
+<link rel="alternate" type="application/atom+xml" title="Qt Wiki Atom feed" href="https://wiki.qt.io/index.php?title=Special:RecentChanges&amp;feed=atom">
+<script src="MesaLlvmpipe%20-%20Qt%20Wiki_files/load.php"></script></head>
+<body class="mediawiki ltr sitedir-ltr ns-0 ns-subject page-MesaLlvmpipe rootpage-MesaLlvmpipe skin-vector action-view">
+		<div id="mw-page-base" class="noprint"></div>
+		<div id="mw-head-base" class="noprint"></div>
+		<div id="content" class="mw-body" role="main">
+			<a id="top"></a>
+
+						<div class="mw-indicators">
+</div>
+			<h1 id="firstHeading" class="firstHeading" lang="en">MesaLlvmpipe</h1>
+									<div id="bodyContent" class="mw-body-content">
+									<div id="siteSub">From Qt Wiki</div>
+								<div id="contentSub"></div>
+												<div id="jump-to-nav" class="mw-jump">
+					Jump to:					<a href="#mw-head">navigation</a>, 					<a href="#p-search">search</a>
+				</div>
+				<div id="mw-content-text" dir="ltr" class="mw-content-ltr" lang="en"><p>How to build Mesa for software rendering with llvmpipe on Windows with Visual Studio 2017
+</p><p>These are the official instructions for building opengl32sw.dll 
+which is shipped with the binary Qt packages and are also available at <a rel="nofollow" class="external free" href="http://download.qt.io/development_releases/prebuilt/llvmpipe/windows/">http://download.qt.io/development_releases/prebuilt/llvmpipe/windows/</a>
+</p><p>Based on <a rel="nofollow" class="external free" href="http://qt-project.org/wiki/Cross-compiling-Mesa-for-Windows">http://qt-project.org/wiki/Cross-compiling-Mesa-for-Windows</a> but without any special requirements for cross-compiling or tools and with some additional patches.
+</p><p>Note that the pre-compiled binaries provided on that wiki page 
+are not able to run many Quick applications due to problems in the LLVM 
+optimization passes. Hence we make our own build. This also gives us the
+ ability to debug and fix/enhance things, if needed.
+</p><p>Prerequisites:
+</p>
+<ul><li> Visual Studio 2017. You only need components from within 
+Desktop Development with C++ category. Beside default selected 
+components MFC, ATL and a Windows SDK is required. Latest Windows 10 SDK
+ is highly recommended. You may opt-out in this exact order of CMake 
+Tools and Windows 10 SDK in Visual Studio installer and manually install
+ standalone version of Windows 10 SDK instead as it is sometimes newer. 
+If you want to use standalone Windows 10 SDK make sure you install 
+Windows SDK for Desktop C++ x86 and amd64 apps components.</li>
+<li> Python 2.7 (from python.org, Python 3 is not supported by Scons, 
+also not the ActiveState one, due to issues with installing libxml2 on 
+the latter (update: not sure if this issue is still valid, the AS one 
+may work now too, but not tested))</li>
+<li> <a rel="nofollow" class="external text" href="https://github.com/mhammond/pywin32/releases">pywin32 for Python</a>
+ (required by Mesa Scons and Visual Studio native build). The installer 
+will work just fine despite a bug. Mesa will build successfully despite 
+it, but for the sake of true success you have to open a Command Prompt 
+as admin window, browse to the folder holding pywin32 installer using CD
+ command and run it from there.</li>
+<li> Update setuptools bundled with Python (not required but is recommended):</li></ul>
+<pre>pip install -U setuptools
+</pre>
+<ul><li> install wheel for python (required for Python 2.7.15, optional for Python 2.7.14 - install it only if setuptools is obsolete.)</li></ul>
+<pre>pip install -U wheel
+</pre>
+<ul><li> scons 3.0.1 (the regular Windows installer from scons.org is fine). Can also be installed via Pypi using <b>pip install -U scons</b>
+ if setuptools is updated or wheel is installed. If both setuptools is 
+obsolete and wheel is not installed you should use the windows 
+installer. <b>pip install --egg scons</b> which is the only Pypi method 
+to install Scons in this case is messy and most likely you won't be able
+ to update Scons in the future.</li>
+<li> The Mako templating engine: <b>pip install -U mako</b></li>
+<li> libxml2 for Python (only if building Mesa with Scons and a 
+crosscompiler like GCC on a Msys2/Mingw/Cygwin environment, not 
+recommended, scenario not covered in this wiki, it is known that 32-bit 
+mesa resulted through this build method won't work, any application 
+using it will crash see <a rel="nofollow" class="external free" href="https://github.com/Alexpux/MINGW-packages/issues/2089">https://github.com/Alexpux/MINGW-packages/issues/2089</a>). Get the wheel file libxml2_python-2.9.3-cp27-none-ARCH.whl from <a rel="nofollow" class="external free" href="http://www.lfd.uci.edu/~gohlke/pythonlibs">http://www.lfd.uci.edu/~gohlke/pythonlibs</a> and run pip install &lt;file&gt;</li>
+<li> cmake (Windows installer from the cmake website)</li>
+<li> flex and bison</li>
+<li> m4 (only if cross-compiling, not recommended).</li></ul>
+<p>Note that Bison 2.7 seems to crash. Use 3.0 or the old 2.4.1 instead (available from gnuwin32).
+The mesa scons script expects winflexbison from here:
+<a rel="nofollow" class="external free" href="https://sourceforge.net/projects/winflexbison/">https://sourceforge.net/projects/winflexbison/</a>
+rather then the one from Msys2. You might get Msys2 flavor working by 
+renaming the executables adding win_ at the begging of their names 
+(untested). M4 is available at Msys2 sourceforge repository (Msys2 
+tools, there is also a Mingw tools section, but we don't need anything 
+from there).
+Make sure all tools are available in the PATH.
+</p><p>All the steps below assume you are in a Visual Studio command 
+prompt (32 or 64 bit, depending on the target DLL you want, but note 
+that some of the configuration shown below may need adjustments 
+accordingly).
+</p><p>Step 1: Get and build LLVM.
+</p><p>Since Mesa 17.2.2 LLVM 5.0 is supported.
+</p>
+<pre>wget http://llvm.org/releases/5.0.0/llvm-5.0.0.src.tar.xz
+</pre>
+<p>May need 7zip or a win32 build of xz-utils to decompress it: <a rel="nofollow" class="external free" href="http://tukaani.org/xz/">http://tukaani.org/xz/</a>
+</p><p>Configure it:
+</p>
+<pre>cmake -G "Visual Studio 14 Win64" -DLLVM_USE_CRT_RELEASE=MT -DLLVM_USE_CRT_DEBUG=MTd -DCMAKE_INSTALL_PREFIX=c:/work/mesa/llvm/bin .
+</pre>
+<p>This means the static libraries and other tools will be installed to c:\work\mesa\llvm\bin
+Leave out Win64 from the generator name when making 32-bit builds and having the x86 developer command prompt open.
+</p><p>Build it:
+</p>
+<pre>msbuild /p:Configuration=Release INSTALL.vcxproj
+</pre>
+<p>Step 2: Get and build Mesa 17.2.2 (or newer)
+</p>
+<pre>wget ftp://ftp.freedesktop.org/pub/mesa/mesa-17.2.2.tar.xz
+</pre>
+<p>Build it:
+</p>
+<pre>set LLVM=c:/work/mesa/llvm/bin
+scons build=release platform=windows machine=x86_64 libgl-gdi
+</pre>
+<p>Change to build=debug to get a debug build, but note that both LLVM and Mesa must be built in the same configuration.
+Change to machine=x86 to generate 32-bit builds.
+</p><p>The result is an opengl32.dll in 
+build\windows-x86[_64][-debug]\gallium\targets\libgl-gdi. This provides a
+ WGL and desktop OpenGL 3.0 implementation and is a drop-in replacement 
+for the system's own opengl32.dll. There are two ways to use it: Copy it
+ to a Qt executable's directory (since that is searched first when 
+looking for DLLs) and launch the app.  - OR - The modern way: ship it as
+ opengl32sw.dll and set QT_OPENGL=software (or 
+setAttribute(AA_UseSoftwareOpenGL in main()) to force it (this needs a 
+-opengl dynamic build of Qt of course).
+</p><p>Identification:
+</p><p>17.1.x and older
+</p>
+<pre>GL_VENDOR: VMware, Inc.
+GL_RENDERER: Gallium 0.4 on llvmpipe (LLVM 3.6, 128 bits)
+GL_VERSION: 3.0 Mesa 11.2.2
+</pre>
+<p>17.2.x and newer
+</p>
+<pre>GL_VENDOR: VMware, Inc.
+GL_RENDERER: llvmpipe (LLVM 5.0, 256 bits)
+GL_VERSION: 3.0 Mesa 17.2.2
+</pre>
+<p>Additional notes:
+</p>
+<ul><li> Using opengl32sw.dll will trigger using a non-threaded render 
+loop in Qt Quick, similarly to ANGLE. This is intentional. However, apps
+ may want to set QSG_RENDER_LOOP=basic to prevent animations from 
+running too fast! The default on Windows is "windows", which is not 
+ideal for a non-throttled software rasterizer.</li>
+<li> The output is not really vsynced so native and naive OpenGL apps 
+will run at random speed (although it is throttled to some extent). For 
+Quick apps this is less of an issue, at least when the 'basic' render 
+loop is in use.</li>
+<li> Run with QT_LOGGING_RULES=qt.qpa.gl=true and QSG_INFO=1 to verify what is going on.</li></ul>
+
+<!-- 
+NewPP limit report
+Cached time: 20200108162805
+Cache expiry: 86400
+Dynamic content: false
+CPU time usage: 0.012 seconds
+Real time usage: 0.017 seconds
+Preprocessor visited node count: 28/1000000
+Preprocessor generated node count: 184/1000000
+Post‐expand include size: 0/2097152 bytes
+Template argument size: 0/2097152 bytes
+Highest expansion depth: 2/40
+Expensive parser function count: 0/100
+-->
+
+<!-- 
+Transclusion expansion time report (%,ms,calls,template)
+100.00%    0.000      1 - -total
+-->
+
+<!-- Saved in parser cache with key heroku_app_db:pcache:idhash:9345-0!*!*!*!*!*!* and timestamp 20200108162805 and revision id 33647
+ -->
+</div>					<div class="printfooter">
+						Retrieved from "<a dir="ltr" href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;oldid=33647">https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;oldid=33647</a>"					</div>
+				<div id="catlinks" class="catlinks catlinks-allhidden" data-mw="interface"></div>				<div class="visualClear"></div>
+							</div>
+		</div>
+		<div id="mw-navigation">
+			<h2>Navigation menu</h2>
+
+			<div id="mw-head">
+									<div id="p-personal" role="navigation" class="" aria-labelledby="p-personal-label">
+						<h3 id="p-personal-label">Personal tools</h3>
+						<ul>
+							<li id="pt-login"><a href="https://wiki.qt.io/index.php?title=Special:QtLogin&amp;returnto=MesaLlvmpipe" title="You are encouraged to log in; however, it is not mandatory [Alt+Shift+o]" accesskey="o">Sign in</a></li>						</ul>
+					</div>
+									<div id="left-navigation">
+										<div id="p-namespaces" role="navigation" class="vectorTabs" aria-labelledby="p-namespaces-label">
+						<h3 id="p-namespaces-label">Namespaces</h3>
+						<ul>
+															<li id="ca-nstab-main" class="selected"><span><a href="https://wiki.qt.io/MesaLlvmpipe" title="View the content page [Alt+Shift+c]" accesskey="c">Page</a></span></li>
+															<li id="ca-talk" class="new"><span><a href="https://wiki.qt.io/index.php?title=Talk:MesaLlvmpipe&amp;action=edit&amp;redlink=1" title="Discussion about the content page [Alt+Shift+t]" accesskey="t" rel="discussion">Discussion</a></span></li>
+													</ul>
+					</div>
+										<div id="p-variants" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-variants-label">
+												<h3 id="p-variants-label" tabindex="0">
+							<span>Variants</span><a href="#" tabindex="-1"></a>
+						</h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+									</div>
+				<div id="right-navigation">
+										<div id="p-views" role="navigation" class="vectorTabs" aria-labelledby="p-views-label">
+						<h3 id="p-views-label">Views</h3>
+						<ul>
+															<li id="ca-view" class="selected"><span><a href="https://wiki.qt.io/MesaLlvmpipe">Read</a></span></li>
+															<li id="ca-viewsource"><span><a href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;action=edit" title="This page is protected.
+You can view its source [Alt+Shift+e]" accesskey="e">View source</a></span></li>
+															<li id="ca-history" class="collapsible"><span><a href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;action=history" title="Past revisions of this page [Alt+Shift+h]" accesskey="h">View history</a></span></li>
+													</ul>
+					</div>
+										<div id="p-cactions" role="navigation" class="vectorMenu emptyPortlet" aria-labelledby="p-cactions-label" style="">
+						<h3 id="p-cactions-label" tabindex="0"><span>More</span><a href="#" tabindex="-1"></a></h3>
+
+						<div class="menu">
+							<ul>
+															</ul>
+						</div>
+					</div>
+										<div id="p-search" role="search">
+						<h3>
+							<label for="searchInput">Search</label>
+						</h3>
+
+						<form action="/index.php" id="searchform">
+							<div id="simpleSearch">
+							<input type="search" name="search" placeholder="Search" title="Search Qt Wiki [Alt+Shift+f]" accesskey="f" id="searchInput" tabindex="1" autocomplete="off"><input type="hidden" value="Special:Search" name="title"><input type="submit" name="go" value="Go" title="Go to a page with this exact name if it exists" id="searchButton" class="searchButton">							</div>
+						</form>
+					</div>
+									</div>
+			</div>
+			<div id="mw-panel">
+				<div id="p-logo" role="banner"><a class="mw-wiki-logo" href="https://wiki.qt.io/Main" title="Visit the main page"></a></div>
+						<div class="portal" role="navigation" id="p-navigation" aria-labelledby="p-navigation-label">
+			<h3 id="p-navigation-label">Navigation</h3>
+
+			<div class="body">
+									<ul>
+						<li id="n-mainpage-description"><a href="https://wiki.qt.io/Main" title="Visit the main page [Alt+Shift+z]" accesskey="z">Main page</a></li><li id="n-recentchanges"><a href="https://wiki.qt.io/Special:RecentChanges" title="A list of recent changes in the wiki [Alt+Shift+r]" accesskey="r">Recent changes</a></li><li id="n-randompage"><a href="https://wiki.qt.io/Special:Random" title="Load a random page [Alt+Shift+x]" accesskey="x">Random page</a></li><li id="n-help"><a href="https://www.mediawiki.org/wiki/Special:MyLanguage/Help:Contents" title="The place to find out">Help</a></li>					</ul>
+							</div>
+		</div>
+			<div class="portal" role="navigation" id="p-tb" aria-labelledby="p-tb-label">
+			<h3 id="p-tb-label">Tools</h3>
+
+			<div class="body">
+									<ul>
+						<li id="t-whatlinkshere"><a href="https://wiki.qt.io/Special:WhatLinksHere/MesaLlvmpipe" title="A list of all wiki pages that link here [Alt+Shift+j]" accesskey="j">What links here</a></li><li id="t-recentchangeslinked"><a href="https://wiki.qt.io/Special:RecentChangesLinked/MesaLlvmpipe" title="Recent changes in pages linked from this page [Alt+Shift+k]" accesskey="k">Related changes</a></li><li id="t-specialpages"><a href="https://wiki.qt.io/Special:SpecialPages" title="A list of all special pages [Alt+Shift+q]" accesskey="q">Special pages</a></li><li id="t-print"><a href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;printable=yes" rel="alternate" title="Printable version of this page [Alt+Shift+p]" accesskey="p">Printable version</a></li><li id="t-permalink"><a href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;oldid=33647" title="Permanent link to this revision of the page">Permanent link</a></li><li id="t-info"><a href="https://wiki.qt.io/index.php?title=MesaLlvmpipe&amp;action=info" title="More information about this page">Page information</a></li>					</ul>
+							</div>
+		</div>
+				</div>
+		</div>
+		<div id="footer" role="contentinfo">
+							<ul id="footer-info">
+											<li id="footer-info-lastmod"> This page was last modified on 6 May 2018, at 13:36.</li>
+									</ul>
+							<ul id="footer-places">
+											<li id="footer-places-privacy"><a href="https://wiki.qt.io/Qt_Wiki:Privacy_policy" title="Qt Wiki:Privacy policy">Privacy policy</a></li>
+											<li id="footer-places-about"><a href="https://wiki.qt.io/Qt_Wiki:About" title="Qt Wiki:About">About Qt Wiki</a></li>
+											<li id="footer-places-disclaimer"><a href="https://wiki.qt.io/Qt_Wiki:General_disclaimer" title="Qt Wiki:General disclaimer">Disclaimers</a></li>
+									</ul>
+										<ul id="footer-icons" class="noprint">
+											<li id="footer-poweredbyico">
+							<a href="https://www.mediawiki.org/"><img src="MesaLlvmpipe%20-%20Qt%20Wiki_files/poweredby_mediawiki_88x31.png" alt="Powered by MediaWiki" srcset="/resources/assets/poweredby_mediawiki_132x47.png 1.5x, /resources/assets/poweredby_mediawiki_176x62.png 2x" width="88" height="31"></a>						</li>
+									</ul>
+						<div style="clear:both"></div>
+
+            <a href="https://www.qt.io/qtws19/home" target="_blank">
+                <img src="MesaLlvmpipe%20-%20Qt%20Wiki_files/QtWS19_CfP_wikibanner_min.png" style="max-width: 100%">
+            </a>
+		</div>
+		<script>(window.RLQ=window.RLQ||[]).push(function(){mw.loader.state({"user":"ready","user.groups":"ready"});mw.loader.load(["mediawiki.action.view.postEdit","site","mediawiki.user","mediawiki.hidpi","mediawiki.page.ready","mediawiki.searchSuggest","ext.visualEditor.targetLoader"]);});</script><script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-54043535-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<script>(window.RLQ=window.RLQ||[]).push(function(){mw.config.set({"wgBackendResponseTime":111});});</script>
+	
+
+<a accesskey="v" href="https://wiki.qt.io/MesaLlvmpipe?veaction=edit" style="display: none;"></a><div style="display: none; font-size: 13px;" class="suggestions"><div class="suggestions-results"></div><div class="suggestions-special"></div></div></body></html>

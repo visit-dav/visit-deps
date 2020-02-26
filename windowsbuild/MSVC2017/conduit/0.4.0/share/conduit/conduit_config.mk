@@ -58,10 +58,10 @@
 ############################################################################
 
 
-CONDUIT_DIR = C:\\A_Visit\\GIT2\\visit-deps\\windowsbuild\\MSVC2017\\conduit\\0.4.0
+CONDUIT_DIR = C:\\A_Visit\\3.1RC\\visit-deps\\windowsbuild\\MSVC2017\\conduit\\0.4.0
 
 CONDUIT_SILO_DIR  = 
-CONDUIT_HDF5_DIR  = C:/A_Visit/GIT2/visit-deps/windowsbuild/MSVC2017/hdf5/1.8.19
+CONDUIT_HDF5_DIR  = C:/A_Visit/3.1RC/visit-deps/windowsbuild/MSVC2017/hdf5/1.8.19
 CONDUIT_ZLIB_DIR  = 
 CONDUIT_ADIOS_DIR = 
 
