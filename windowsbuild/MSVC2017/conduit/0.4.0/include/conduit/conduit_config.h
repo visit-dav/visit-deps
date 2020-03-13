@@ -65,7 +65,7 @@
 #define CONDUIT_PLATFORM_UNIX
 #endif
 
-#define CONDUIT_INSTALL_PREFIX "C:\\A_Visit\\3.1RC\\visit-deps\\windowsbuild\\MSVC2017\\conduit\\0.4.0"
+#define CONDUIT_INSTALL_PREFIX "visit-deps\\windowsbuild\\MSVC2017\\conduit\\0.4.0"
 
 #define CONDUIT_VERSION "0.4.0"
 

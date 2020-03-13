@@ -123,12 +123,12 @@
 //-----------------------------------------------------------------------------
 /// Create a hdf5 file for read and write using conduit's selected hdf5 plists.
 //-----------------------------------------------------------------------------
-hid_t hdf5_create_file(const std::string &file_path);
+hid_t CONDUIT_RELAY_API hdf5_create_file(const std::string &file_path);
 
 //-----------------------------------------------------------------------------
 /// Close hdf5 file handle
 //-----------------------------------------------------------------------------
-void hdf5_close_file(hid_t hdf5_id);
+void CONDUIT_RELAY_API hdf5_close_file(hid_t hdf5_id);
 
 //-----------------------------------------------------------------------------
 /// Save node data to a given path.
@@ -219,8 +219,8 @@ void CONDUIT_RELAY_API hdf5_write(const Node &node,
 //-----------------------------------------------------------------------------
 /// Open a hdf5 file for reading, using conduit's selected hdf5 plists.
 //-----------------------------------------------------------------------------
-hid_t hdf5_open_file_for_read(const std::string &file_path);
-hid_t hdf5_open_file_for_read_write(const std::string &file_path);
+hid_t CONDUIT_RELAY_API hdf5_open_file_for_read(const std::string &file_path);
+hid_t CONDUIT_RELAY_API hdf5_open_file_for_read_write(const std::string &file_path);
 
 //-----------------------------------------------------------------------------
 /// Read hdf5 data from given path into the output node 
