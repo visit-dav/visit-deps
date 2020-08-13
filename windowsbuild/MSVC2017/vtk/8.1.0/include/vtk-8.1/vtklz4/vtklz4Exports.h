@@ -39,4 +39,4 @@
 #  endif
 #endif
 
-#endif
+#endif /* VTKLZ4_EXPORT_H */
