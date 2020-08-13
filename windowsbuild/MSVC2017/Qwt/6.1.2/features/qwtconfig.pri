@@ -24,8 +24,8 @@ unix {
 }
 
 win32 {
-    QWT_INSTALL_PREFIX    = d:/a_visit/2.13RC/windowsbuild/msvc2017/Qwt-qt-5.10/$$QWT_VERSION
-    # QWT_INSTALL_PREFIX = C:/Qwt-$$QWT_VERSION-qt-$$QT_VERSION
+    #QWT_INSTALL_PREFIX    = C:/Qwt-$$QWT_VERSION
+    QWT_INSTALL_PREFIX = visit-deps/windowsbuild/MSVC2017/Qwt/$$QWT_VERSION
 }
 
 QWT_INSTALL_DOCS      = $${QWT_INSTALL_PREFIX}/doc
