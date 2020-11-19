@@ -36,8 +36,8 @@ OSPRAY_INSTALL_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC201
 embree_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/embree/3.4.0
 TBB_ROOT:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss
 VTK_QT_VERSION:STRING=5
-QT_QMAKE_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/qmake.exe
-CMAKE_PREFIX_PATH:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.10.1/lib/cmake
+QT_QMAKE_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.14.2/lib/qmake.exe
+CMAKE_PREFIX_PATH:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/Qt/5.14.2/lib/cmake
 CMAKE_INSTALL_PREFIX:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0
 
 
