@@ -1,11 +1,11 @@
 BUILD_SHARED_LIBS:BOOL=ON
 BUILD_TESTING:BOOL=OFF
-CMAKE_INSTALL_PREFIX:PATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/Xdmf/2.1.1
+CMAKE_INSTALL_PREFIX:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/Xdmf/2.1.1
 HDF5_ENABLE_HSIZET:BOOL=ON
-HDF5_INCLUDE_PATH:PATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/hdf5/1.8.19/include
-HDF5_LIBRARY:FILEPATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/hdf5/1.8.19/lib/hdf5.lib
-LIBXML2_INCLUDE_PATH:PATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/vtk/8.1.0/include/vtk-8.1/vtklibxml2
-LIBXML2_LIBRARY:FILEPATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/vtk/8.1.0/lib/vtklibxml2-8.1.lib
+HDF5_INCLUDE_PATH:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/hdf5/1.8.19/include
+HDF5_LIBRARY:FILEPATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/hdf5/1.8.19/lib/hdf5.lib
+LIBXML2_INCLUDE_PATH:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0/include/vtk-8.1/vtklibxml2
+LIBXML2_LIBRARY:FILEPATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0/lib/vtklibxml2-8.1.lib
 
 XDMF_BUILD_EXAMPLES:BOOL=OFF
 XDMF_BUILD_MPI:BOOL=OFF
@@ -16,5 +16,5 @@ XDMF_SYSTEM_HDF5_IS_PARALLEL:BOOL=OFF
 XDMF_SYSTEM_LIBXML2:BOOL=ON
 XDMF_SYSTEM_ZLIB:BOOL=ON
 XDMF_WRAP_PYTHON:BOOL=OFF
-ZLIB_INCLUDE_DIR:PATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/zlib/1.2.11/include
-ZLIB_LIBRARY:FILEPATH=D:/A_VisIt/VTK-6.3-port/windowsbuild/MSVC2017/zlib/1.2.11/lib/zlib.lib
+ZLIB_INCLUDE_DIR:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/zlib/1.2.11/include
+ZLIB_LIBRARY:FILEPATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/zlib/1.2.11/lib/zlib.lib
