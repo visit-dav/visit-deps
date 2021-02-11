@@ -1,2 +1,3 @@
+export_XYZ.xyz
 wg_XYZ.1.xyz
 wg_XYZ.2.xyz
