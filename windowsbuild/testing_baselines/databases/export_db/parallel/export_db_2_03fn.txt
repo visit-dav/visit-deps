@@ -1,2 +1,3 @@
+export_STL.stl
 wg_STL.1.stl
 wg_STL.2.stl
