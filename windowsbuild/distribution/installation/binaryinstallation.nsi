@@ -136,12 +136,20 @@
 #   replacement if system OpenGL not sufficient.
 #   Put firewall message on Finish page, along with a Mesa warning if needed.
 #
+#   Kathleen Biagas, Thu Feb 18, 2021
+#   Create the Uninstaller first, codesign it if requested by CODESIGN_HASH
+#   being defined, and add it to the installer via File command.  Required
+#   special logic to call this installer script with the magic flag for
+#   creating the uninstaller: "CREATING_UNINSTALLER".
+#   Also fixed uninstaller logic to simply remove the folder, as previous logic
+#   could leave .pyc files remaining the in the installation folder.
+#
 ###############################################################################
 
 !addPluginDir ".\VIkit"
 !addPluginDir ".\NSISPlugins"
 !addIncludeDir ".\NSISPlugins"
-#!searchparse /noerrors '${MPI_VERSION}' '8' MSMPI8
+
 
 !define PRODUCT_NAME "VisIt"
 !define PRODUCT_VERSION ${VisItVersion}
@@ -159,116 +167,131 @@
 !define VISITINSTDIR "$INSTDIR\${PRODUCT_INST}"
 !define V_UNINSTALLER "${VISITINSTDIR}\uninstall_visit.exe"
 
-SetCompressor /SOLID /FINAL lzma
-
 RequestExecutionLevel user
-
-!include "MUI2.nsh"
-!include "LogicLib.nsh"
-!include "nsDialogs.nsh"
-!include "FileFunc.nsh"
-!include "VisItMisc.nsh"
-!include "X64.nsh"
-!include "StrFunc.nsh"
-!include "StrSplice.nsh"
-!include "ReplaceInFile.nsh"
-
-!ifndef BCM_SETSHIELD
-!define BCM_SETSHIELD 0x0000160c
-!endif
-
-!define VISIT_DIST_DIR "${VISIT_WINDOWS_DIR}\distribution"
-
-; MUI Settings
-!define MUI_ABORTWARNING
-!define MUI_ICON   "${VISIT_DIST_DIR}\resources\visit.ico"
-!define MUI_UNICON "${VISIT_DIST_DIR}\resources\visit.ico"
-
-
 Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
-OutFile "${INSTALL_PREFIX}\visit${PRODUCT_VERSION}_x64.exe"
-ShowInstDetails show
-ShowUnInstDetails show
+
+!ifdef CREATING_UNINSTALLER
+  OutFile "$%TEMP%\tempinstaller.exe"
+  SetCompress OFF
+  ShowUnInstDetails show
+  !include "LogicLib.nsh"
+  !include "MUI2.nsh"
+  !include "StrFunc.nsh"
+  !include "X64.nsh"
+  !include "nsDialogs.nsh"
+  !include "FileFunc.nsh"
+  !include "VisItMisc.nsh"
+  !include "StrSplice.nsh"
+  !include "ReplaceInFile.nsh"
+!else
+  !define VISIT_DIST_DIR "${VISIT_WINDOWS_DIR}\distribution"
+  SetCompressor /SOLID /FINAL lzma
+  !system '$\"${NSISDIR}\makensis$\" /DCREATING_UNINSTALLER /DVisItVersion=${VisItVersion} /DVISIT_DIST_DIR=${VISIT_DIST_DIR} "${__FILE__}"' = 0
+  !system "$%TEMP%\tempinstaller.exe" = 2
+
+  ; This should be conditional, based on a var passed in from cmake
+  !ifdef CODESIGN_HASH
+    !system "signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 ${CODESIGN_HASH} $%TEMP%\uninstall_visit.exe" = 0
+  !endif
+  OutFile "${INSTALL_PREFIX}\visit${PRODUCT_VERSION}_x64.exe"
+  
+
+  !include "LogicLib.nsh"
+  !include "MUI2.nsh"
+  !include "StrFunc.nsh"
+  !include "X64.nsh"
+  !include "nsDialogs.nsh"
+  !include "FileFunc.nsh"
+  !include "VisItMisc.nsh"
+  !include "StrSplice.nsh"
+  !include "ReplaceInFile.nsh"
+
+  !ifndef BCM_SETSHIELD
+    !define BCM_SETSHIELD 0x0000160c
+  !endif
+
+
+  ; MUI Settings
+  !define MUI_ABORTWARNING
+  !define MUI_ICON   "${VISIT_DIST_DIR}\resources\visit.ico"
+
+  ShowInstDetails show
 
 
 ;;;;;;;;;;;;;;; INSTALLER ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-${StrStr}
-${StrTrimNewLines}
-; Welcome page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE "WelcomePre"
-!insertmacro MUI_PAGE_WELCOME
-; License page
-!define MUI_PAGE_CUSTOMFUNCTION_PRE "LicensePre"
-!insertmacro MUI_PAGE_LICENSE "${VISIT_SOURCE_DIR}\..\LICENSE"
+  ${StrStr}
+  ${StrTrimNewLines}
+  ; Welcome page
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE "WelcomePre"
+  !insertmacro MUI_PAGE_WELCOME
+  ; License page
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE "LicensePre"
+  !insertmacro MUI_PAGE_LICENSE "${VISIT_SOURCE_DIR}\..\LICENSE"
 
-page custom ChooseUsers ChooseUsersLeave
+  page custom ChooseUsers ChooseUsersLeave
 
-; Directory page
+  ; Directory page
+  !define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBack"
+  !define MUI_PAGE_CUSTOMFUNCTION_LEAVE "DirectoryLeave"
+  !define MUI_DIRECTORYPAGE_TEXT_TOP "VisIt will be installed to the following folder with \${PRODUCT_INST} appended to the path.$\r$\n To install to a different base folder, click Browse and select another folder.$\r$\nClick Next to continue."
+  !insertmacro MUI_PAGE_DIRECTORY
 
-!define MUI_PAGE_CUSTOMFUNCTION_PRE "DisableBack"
-!define MUI_PAGE_CUSTOMFUNCTION_LEAVE "DirectoryLeave"
-!define MUI_DIRECTORYPAGE_TEXT_TOP "VisIt will be installed to the following folder with \${PRODUCT_INST} appended to the path.$\r$\n To install to a different base folder, click Browse and select another folder.$\r$\nClick Next to continue."
-!insertmacro MUI_PAGE_DIRECTORY
+  !insertmacro MUI_PAGE_COMPONENTS
 
-!insertmacro MUI_PAGE_COMPONENTS
+  ; Custom
+  page custom CheckForMPI CheckForMPILeave
+  page custom ChooseDefaultDatabasePlugin ChooseDefaultDatabasePluginLeave
+  page custom ChooseNetworkConfig ChooseNetworkConfigLeave
+  page custom ChooseParallelBank ChooseParallelBankLeave
+  page custom ChooseFileAssociations
 
-; Custom
-page custom CheckForMPI CheckForMPILeave
-page custom ChooseDefaultDatabasePlugin ChooseDefaultDatabasePluginLeave
-page custom ChooseNetworkConfig ChooseNetworkConfigLeave
-page custom ChooseParallelBank ChooseParallelBankLeave
-page custom ChooseFileAssociations
+  ; Instfiles page
+  !insertmacro MUI_PAGE_INSTFILES
+  !define MUI_FINISHPAGE_TEXT ""
+  !define MUI_PAGE_CUSTOMFUNCTION_SHOW FinishPageShow
+  !insertmacro MUI_PAGE_FINISH
 
-; Instfiles page
-!insertmacro MUI_PAGE_INSTFILES
-!define MUI_FINISHPAGE_TEXT ""
-!define MUI_PAGE_CUSTOMFUNCTION_PRE FinishPagePre
-!define MUI_PAGE_CUSTOMFUNCTION_SHOW FinishPageShow
-!insertmacro MUI_PAGE_FINISH
+  ; Language files
+  !insertmacro MUI_LANGUAGE "English"
+  XPStyle off
 
-; Uninstaller pages
-
-; Language files
-!insertmacro MUI_LANGUAGE "English"
-XPStyle off
-
-; MUI end ------
+  ; MUI end ------
 
 
-Var UserInstallSet
+  Var UserInstallSet
 
-Var DefaultDatabase
-Var DefaultDatabaseSet
+  Var DefaultDatabase
+  Var DefaultDatabaseSet
 
-Var InstallUsers
-Var InstallUsersSet
-Var UserPrivilege
+  Var InstallUsers
+  Var InstallUsersSet
+  Var UserPrivilege
 
-Var AssociatePython
-Var AssociatePythonSet
-Var AssociateCurves
-Var AssociateCurvesSet
-Var NetConfig
-Var UserConfigSet
-Var UserParBank
-Var UserParBankSet
-Var AcceptLicense
-Var SkipWelcome
-Var InstallMPI
-Var MPIExec
-Var NCPUs
-Var ParCompSet
-Var IsInnerInstance
-Var RequiresMesaAsGL
+  Var AssociatePython
+  Var AssociatePythonSet
+  Var AssociateCurves
+  Var AssociateCurvesSet
+  Var NetConfig
+  Var UserConfigSet
+  Var UserParBank
+  Var UserParBankSet
+  Var AcceptLicense
+  Var SkipWelcome
+  Var InstallMPI
+  Var MPIExec
+  Var NCPUs
+  Var ParCompSet
+  Var IsInnerInstance
+  Var RequiresMesaAsGL
 
 
-###############################################################################
-#
-# Sections with IDS   (for those that can be optional)
-#
-###############################################################################
+  #############################################################################
+  #
+  # Sections with IDS   (for those that can be optional)
+  #
+  #############################################################################
 
-Section /o ParallelComponents SEC_PAR
+  Section /o ParallelComponents SEC_PAR
     ; make sure that the wrapper for the MSMPI R2 redist gets compiled
     ; this line happens during compilation of this script, it is included here
     ; rather than the top of the file, for clarity as this is where the wrapper
@@ -277,7 +300,6 @@ Section /o ParallelComponents SEC_PAR
       ClearErrors
       Push $9
       StrCpy $9 "$ProgramFiles64"
-
       ; Check for newer mpi (8 and above)
       ${If} ${FileExists} "C:\Program Files\Microsoft MPI\Redist\MSMpiSetup.exe"
           File "/oname=$PLUGINSDIR\MSMpiSetup.exe" "C:\Program Files\Microsoft MPI\Redist\MSMpiSetup.exe"
@@ -287,7 +309,6 @@ Section /o ParallelComponents SEC_PAR
           File "/oname=$PLUGINSDIR\ms_mpi.msi" ".\MSMPI_R2\mpi_x64.msi"
           ${ShellExecEx} $2 'runas' 'msiexec' '/qn /i "$PLUGINSDIR\ms_mpi.msi"' '' 'SW_NORMAL' 3
       ${EndIf}
-
       ${If} ${FileExists} "$9\Microsoft MPI\Bin\mpiexec.exe"
           StrCpy $MPIExec "$9\Microsoft MPI\Bin\mpiexec.exe"
       ${ElseIf} ${FileExists} "$9\Microsoft HPC Pack 2008 R2\Bin\mpiexec.exe"
@@ -315,158 +336,153 @@ Section /o ParallelComponents SEC_PAR
             !insertmacro _ReplaceInFile "${VISITINSTDIR}\hosts\host_$3.xml" "tempNumProcs" "$NCPUs"
         ${EndIf}
     ${EndIf}
-SectionEnd
+  SectionEnd
 
-!system "${BIN_DIR}\CreateDBSections.exe"
-!include "${BIN_DIR}\DBSections.txt"
+  !system "${BIN_DIR}\CreateDBSections.exe"
+  !include "${BIN_DIR}\DBSections.txt"
+  Section DataFiles SEC_DATA
+    SetOutPath "${VISITINSTDIR}\data"
+    #!insertmacro CompileTimeIfFileExists "${INSTALL_PREFIX}\data\globe.silo" haveVisItDistData
+    #!insertmacro CompileTimeIfFileExists "$%VISIT_DATA_DIR%" haveVisItDataDir
+    #!ifdef haveVisItDistData
+      #DetailPrint "using visit dist data "
+      File "${INSTALL_PREFIX}\data\*"
+    #!else
+    #  !ifdef haveVisItDataDir
+    #    DetailPrint "using visit data dir "
+    #    File "$%VISIT_DATA_DIR%\*.silo"
+    #    File "$%VISIT_DATA_DIR%\wave.visit"
+    #    File "$%VISIT_DATA_DIR%\PDB\db*.pdb"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.hdr"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.img"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.visit"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\FVCOM\*.nc"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\crotamine.pdb"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1NTS.pdb"
+    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1UZ9.pdb"
+    #  !else
+    #    File "${VISIT_DIST_DIR}\visit_dist_data\*.silo"
+    #    File "${VISIT_DIST_DIR}\visit_dist_data\*.pdb"
+    #  !endif
+    #!endif
+    SetOutPath "${VISITINSTDIR}"
+  SectionEnd
 
-Section DataFiles SEC_DATA
-  SetOutPath "${VISITINSTDIR}\data"
-  #!insertmacro CompileTimeIfFileExists "${INSTALL_PREFIX}\data\globe.silo" haveVisItDistData
-  #!insertmacro CompileTimeIfFileExists "$%VISIT_DATA_DIR%" haveVisItDataDir
+  Section HelpFiles SEC_HELP
+    SetOutPath "${VISITINSTDIR}"
+    File /r "${INSTALL_PREFIX}\help"
+  SectionEnd
 
-#!ifdef haveVisItDistData
-  #DetailPrint "using visit dist data "
-  File "${INSTALL_PREFIX}\data\*"
-#!else
-#  !ifdef haveVisItDataDir
-#    DetailPrint "using visit data dir "
-#    File "$%VISIT_DATA_DIR%\*.silo"
-#    File "$%VISIT_DATA_DIR%\wave.visit"
-#    File "$%VISIT_DATA_DIR%\PDB\db*.pdb"
-#    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.hdr"
-#    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.img"
-#    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.visit"
-#    File /nonfatal "$%VISIT_DATA_DIR%\FVCOM\*.nc"
-#    File /nonfatal "$%VISIT_DATA_DIR%\molecules\crotamine.pdb"
-#    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1NTS.pdb"
-#    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1UZ9.pdb"
-#  !else
-#    File "${VISIT_DIST_DIR}\visit_dist_data\*.silo"
-#    File "${VISIT_DIST_DIR}\visit_dist_data\*.pdb"
-#  !endif
-#!endif
-  SetOutPath "${VISITINSTDIR}"
-SectionEnd
-
-Section HelpFiles SEC_HELP
-  SetOutPath "${VISITINSTDIR}"
-  File /r "${INSTALL_PREFIX}\help"
-SectionEnd
-
-Section /o "Plugin development" SEC_DEV
-  SetOutPath "${VISITINSTDIR}"
-  File /r "${INSTALL_PREFIX}\lib"
-  File /r "${INSTALL_PREFIX}\include"
-  ${If} $InstallUsers == "all"
-    WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITARCHHOME "%VISITLOC%"
-    WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
-    WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPUB "%VISITLOC%"
-  ${Else}
-    WriteRegStr HKCU "Environment" VISITARCHHOME "%VISITLOC%"
-    WriteRegStr HKCU "Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
-    WriteRegStr HKCU "Environment" VISITPLUGININSTPUB "%VISITLOC%"
-  ${EndIf}
-  ; propagate the changes so a reboot won't be necessary
-  SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-  ${IfNot} ${SectionIsSelected} ${SEC_PAR}
+  Section /o "Plugin development" SEC_DEV
+    SetOutPath "${VISITINSTDIR}"
+    File /r "${INSTALL_PREFIX}\lib"
+    File /r "${INSTALL_PREFIX}\include"
+    ${If} $InstallUsers == "all"
+      WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITARCHHOME "%VISITLOC%"
+      WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
+      WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPUB "%VISITLOC%"
+    ${Else}
+      WriteRegStr HKCU "Environment" VISITARCHHOME "%VISITLOC%"
+      WriteRegStr HKCU "Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
+      WriteRegStr HKCU "Environment" VISITPLUGININSTPUB "%VISITLOC%"
+    ${EndIf}
+    ; propagate the changes so a reboot won't be necessary
+    SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+    ${IfNot} ${SectionIsSelected} ${SEC_PAR}
        !insertmacro _ReplaceInFile "${VISITINSTDIR}\include\PluginVsInstall.cmake" "SET(VISIT_PARALLEL               ON)" "SET(VISIT_PARALLEL               OFF)"
-  ${EndIf}
-SectionEnd
+    ${EndIf}
+  SectionEnd
 
-Section /o "LibSIM" SEC_LIBSIM
-  SetOutPath "${VISITINSTDIR}"
-  File /nonfatal /r "${INSTALL_PREFIX}\libsim"
-SectionEnd
+  Section /o "LibSIM" SEC_LIBSIM
+    SetOutPath "${VISITINSTDIR}"
+    File /nonfatal /r "${INSTALL_PREFIX}\libsim"
+  SectionEnd
 
-!insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PAR} "Parallel components. Currently requires mpiexec."
+  !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_PAR} "Parallel components. Currently requires mpiexec."
 
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DP} "Removing un-needed database plugins may help improve startup performance of some components, but you will need to re-run the installer to get them back."
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DP} "Removing un-needed database plugins may help improve startup performance of some components, but you will need to re-run the installer to get them back."
 
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DATA} "Sample data files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_HELP} "VisIt's help files"
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV} "Plugin development components. Note that you must have Microsoft Visual Studio 2017 to develop plugins compatible with this binary VisIt distribution."
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DATA} "Sample data files"
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_HELP} "VisIt's help files"
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV} "Plugin development components. Note that you must have Microsoft Visual Studio 2017 to develop plugins compatible with this binary VisIt distribution."
 
-  !insertmacro MUI_DESCRIPTION_TEXT ${SEC_LIBSIM} "VisIt's libsim files"
-!insertmacro MUI_FUNCTION_DESCRIPTION_END
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_LIBSIM} "VisIt's libsim files"
+  !insertmacro MUI_FUNCTION_DESCRIPTION_END
 
+  #############################################################################
+  #
+  # Functions
+  #
+  #############################################################################
 
+  Function ParseCommandLine
+    ;Read command line options
+    ${GetParameters} $R0
 
-
-###############################################################################
-#
-# Functions
-#
-###############################################################################
-
-Function ParseCommandLine
-  ;Read command line options
-  ${GetParameters} $R0
-
-  ${GetOptions} $R0 "-INNERINSTANCE" $R1
-  ${If} ${Errors}
+    ${GetOptions} $R0 "-INNERINSTANCE" $R1
+    ${If} ${Errors}
       StrCpy $IsInnerInstance false
-  ${Else}
+    ${Else}
       StrCpy $IsInnerInstance true
-  ${EndIf}
+    ${EndIf}
 
-  ; Help with this installer
-  ;${GetOptions} $R0 "/help" $R1
-  ;${IfNot} ${Errors}
-  ; Need to figure out how to display usage information.
-  ;${EndIf}
+    ; Help with this installer
+    ;${GetOptions} $R0 "/help" $R1
+    ;${IfNot} ${Errors}
+    ; Need to figure out how to display usage information.
+    ;${EndIf}
 
-  ; installation directory
-  StrCpy $UserInstallSet false
-  ${GetOptions} $R0 "/D" $R1
-  ${IfNot} ${Errors}
+    ; installation directory
+    StrCpy $UserInstallSet false
+    ${GetOptions} $R0 "/D" $R1
+    ${IfNot} ${Errors}
       DetailPrint "Command line option /D used with value: $R1"
       StrCpy $UserInstallSet true
       StrCpy $INSTDIR $R1
-  ${EndIf}
+    ${EndIf}
 
-  ; site-config file
-  ${GetOptions} $R0 "-SITE" $R1
-  ${If} ${Errors}
+    ; site-config file
+    ${GetOptions} $R0 "-SITE" $R1
+    ${If} ${Errors}
       StrCpy $UserConfigSet false
       StrCpy $NetConfig "None"
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -SITE used with value: $R1"
       StrCpy $NetConfig $R1
       ${If} $NetConfig == "llnl_open"
           StrCpy $NetConfig "llnl"
       ${EndIf}
       StrCpy $UserConfigSet true
-  ${EndIf}
+    ${EndIf}
 
-  ; ParallelBank
-  ${GetOptions} $R0 "-PB" $R1
-  ${If} ${Errors}
+    ; ParallelBank
+    ${GetOptions} $R0 "-PB" $R1
+    ${If} ${Errors}
       StrCpy $UserParBankSet false
       StrCpy $UserParBank ""
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -PB used with value: $R1"
       StrCpy $UserParBank $R1
       StrCpy $UserParBankSet true
-  ${EndIf}
+    ${EndIf}
 
-  ; default DatabasePlugin
-  ${GetOptions} $R0 "-DB" $R1
-  ${If} ${Errors}
+    ; default DatabasePlugin
+    ${GetOptions} $R0 "-DB" $R1
+    ${If} ${Errors}
       StrCpy $DefaultDatabaseSet false
       Strcpy $DefaultDatabase "None"
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -DB used with value: $R1"
       StrCpy $DefaultDatabaseSet true
       Strcpy $DefaultDatabase $R1
-  ${EndIf}
+    ${EndIf}
 
-  ; current users
+    ; current users
 
-  ; all users
-  ${GetOptions} $R0 "-ALLUSERS" $R1
-  ${If} ${Errors}
+    ; all users
+    ${GetOptions} $R0 "-ALLUSERS" $R1
+    ${If} ${Errors}
       ${GetOptions} $R0 "-CURRENTUSER" $R1
       ${If} ${Errors}
           StrCpy $InstallUsers "current"
@@ -476,90 +492,83 @@ Function ParseCommandLine
           StrCpy $InstallUsers "current"
           StrCpy $InstallUsersSet "true"
       ${EndIf}
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -ALLUSERS used"
       StrCpy $InstallUsers "all"
       StrCpy $InstallUsersSet "true"
-  ${EndIf}
+    ${EndIf}
 
-  ; plugin development libs
-  ${GetOptions} $R0 "-DEV" $R1
-  ${IfNot} ${Errors}
+    ; plugin development libs
+    ${GetOptions} $R0 "-DEV" $R1
+    ${IfNot} ${Errors}
       DetailPrint "Command line option -DEV used"
       SectionSetFlags ${SEC_DEV} 1
-  ${EndIf}
+    ${EndIf}
 
-  ; associate .py files with VisIt
-  ${GetOptions} $R0 "-AssociatePython" $R1
-  ${If} ${Errors}
+    ; associate .py files with VisIt
+    ${GetOptions} $R0 "-AssociatePython" $R1
+    ${If} ${Errors}
       StrCpy $AssociatePythonSet false
       StrCpy $AssociatePython 0
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -AssociatePython used"
       StrCpy $AssociatePython 1
       StrCpy $AssociatePythonSet true
-  ${EndIf}
+    ${EndIf}
 
-  ; associate .curve,.ultra,.ult,.u files with VisIt
-  ${GetOptions} $R0 "-AssociateCurves" $R1
-  ${If} ${Errors}
+    ; associate .curve,.ultra,.ult,.u files with VisIt
+    ${GetOptions} $R0 "-AssociateCurves" $R1
+    ${If} ${Errors}
       StrCpy $AssociateCurvesSet false
       StrCpy $AssociateCurves 0
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -AssociateCurves used"
       StrCpy $AssociateCurves 1
       StrCpy $AssociateCurvesSet true
-  ${EndIf}
+    ${EndIf}
 
-  ; add lib sim
-  ${GetOptions} $R0 "-LIBSIM" $R1
-  ${IfNot} ${Errors}
+    ; add lib sim
+    ${GetOptions} $R0 "-LIBSIM" $R1
+    ${IfNot} ${Errors}
       DetailPrint "Command line option -LIBSIM used"
       SectionSetFlags ${SEC_LIBSIM} 1
-  ${EndIf}
+    ${EndIf}
 
-  ; do not add parallel components
-  StrCpy $ParCompSet "false"
-  ${GetOptions} $R0 "-NOPAR" $R1
-  ${IfNot} ${Errors}
+    ; do not add parallel components
+    StrCpy $ParCompSet "false"
+    ${GetOptions} $R0 "-NOPAR" $R1
+    ${IfNot} ${Errors}
       DetailPrint "Command line option -NOPAR used"
       StrCpy $ParCompSet "true"
       SectionSetFlags ${SEC_PAR} 0
-  ${EndIf}
+    ${EndIf}
 
-  ; These options were created for another project that includes VisIt's
-  ; installer inside theirs, they don't want to show a second Welcome
-  ; and License page
+    ; These options were created for another project that includes VisIt's
+    ; installer inside theirs, they don't want to show a second Welcome
+    ; and License page
 
-  ; skip the license page when not in SILENT mode
-  ${GetOptions} $R0 "-ACCEPT" $R1
-  ${If} ${Errors}
+    ; skip the license page when not in SILENT mode
+    ${GetOptions} $R0 "-ACCEPT" $R1
+    ${If} ${Errors}
       StrCpy $AcceptLicense false
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -ACCEPT used"
       StrCpy $AcceptLicense true
-  ${EndIf}
+    ${EndIf}
 
-  ; skip the welcome page when not in SILENT mode
-  ${GetOptions} $R0 "-SKIP" $R1
-  ${If} ${Errors}
+    ; skip the welcome page when not in SILENT mode
+    ${GetOptions} $R0 "-SKIP" $R1
+    ${If} ${Errors}
       StrCpy $SkipWelcome false
-  ${Else}
+    ${Else}
       DetailPrint "Command line option -SKIP used"
       StrCpy $SkipWelcome true
-  ${EndIf}
+    ${EndIf}
 
-  ClearErrors
-  ;EnumRegKey $0 SHCTX "Software\Python\PythonCore\2.5\InstallPath" 0
-  ;${If} ${Errors}
-  ;    Strcpy $CreatePythonRegKeys "yes"
-  ;    ClearErrors
-  ;${Else}
-  ;    Strcpy $CreatePythonRegKeys "no"
-  ;${EndIf}
-FunctionEnd
+    ClearErrors
+  FunctionEnd
 
-Function ElevatePrivilege
+  Function ElevatePrivilege
     ${If} $InstallUsers == "all"
         ${IfNot} $UserPrivilege == "Admin"
             GetDlgItem $9 $HWNDParent 1
@@ -578,9 +587,9 @@ Function ElevatePrivilege
                  ;there, we have nothing left to do here
         ${EndIf}
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-Function InstallUsersChanged
+  Function InstallUsersChanged
     ${If} $InstallUsers == "all"
         SetShellVarContext all
         ${IfNot} ${Silent}
@@ -598,9 +607,16 @@ Function InstallUsersChanged
           ${EndIf}
         ${EndIf}
     ${EndIf}
-FunctionEnd
+  FunctionEnd
+!endif ;if CREATING_UNINSTALLER else
 
 Function .onInit
+
+!ifdef CREATING_UNINSTALLER
+    WriteUninstaller "$%TEMP%\uninstall_visit.exe"
+    Quit
+!else
+
     ${IfNot} ${RunningX64}
         MessageBox MB_OK "This setup is for installing on 64bit systems only."
         Abort
@@ -648,9 +664,11 @@ Function .onInit
             !insertmacro UnSelectSection "${SEC_PAR}"
       ${EndIf}
     ${EndIf}
+!endif
 FunctionEnd
 
-Function DisableBack
+!ifndef CREATING_UNINSTALLER
+  Function DisableBack
     ${If} $UserInstallSet == true
         ; still need to call the leave function so that write permissions
         ; are tested.
@@ -661,31 +679,29 @@ Function DisableBack
         GetDlgItem $0 $HWNDParent 3
         EnableWindow $0 0
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-Function RemoveNextBtnShield
+  Function RemoveNextBtnShield
     GetDlgItem $0 $hwndParent 1
     SendMessage $0 ${BCM_SETSHIELD} 0 0
-FunctionEnd
+  FunctionEnd
 
+  Function WelcomePre
+    ${If} $SkipWelcome == true
+      Abort
+    ${EndIf}
+  FunctionEnd
 
-Function WelcomePre
-  ${If} $SkipWelcome == true
-    Abort
-  ${EndIf}
-FunctionEnd
+  Function LicensePre
+    ${If} $AcceptLicense == true
+    ${OrIf} $AcceptLicense == "yes"
+      Abort
+    ${EndIf}
+  FunctionEnd
 
-Function LicensePre
-  ${If} $AcceptLicense == true
-  ${OrIf} $AcceptLicense == "yes"
-    Abort
-  ${EndIf}
-FunctionEnd
-
-
-# This is called when user exits the Installation path page (directory page)
-# We want to test if the user has access privileges to write to the directory
-Function DirectoryLeave
+  # This is called when user exits the Installation path page (directory page)
+  # We want to test if the user has access privileges to write to the directory
+  Function DirectoryLeave
       Push $0
       Push $1
       ClearErrors
@@ -719,13 +735,12 @@ Function DirectoryLeave
           Pop $1
           Pop $0
       ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-
-#
-# This function is called when we show the Choose users screen.
-#
-Function ChooseUsers
+  #
+  # This function is called when we show the Choose users screen.
+  #
+  Function ChooseUsers
     ${If} $InstallUsersSet == true
         Call ElevatePrivilege
         Abort ; so that the Leave function isn't called
@@ -753,17 +768,17 @@ Function ChooseUsers
     Push $2 ; store allusers radio hwnd on stack
     nsDialogs::show
     Pop $2
-FunctionEnd
+  FunctionEnd
 
-Function UsersClicked
+  Function UsersClicked
     Pop $1
     nsDialogs::GetUserData $1
     Pop $1
     GetDlgItem $0 $hwndParent 1
     SendMessage $0 ${BCM_SETSHIELD} 0 $1
-FunctionEnd
+  FunctionEnd
 
-Function ChooseUsersLeave
+  Function ChooseUsersLeave
     ${If} $InstallUsersSet == false
         ; get info from the ChooseUsers dialog
         pop $0  ;get hwnd
@@ -779,13 +794,13 @@ Function ChooseUsersLeave
     ${EndIf}
 
     Call ElevatePrivilege
-FunctionEnd
+  FunctionEnd
 
-#
-# This function is called when we show the Network configuration screen.
-#
-Function ChooseNetworkConfig
-   ${If} $UserConfigSet == false
+  #
+  # This function is called when we show the Network configuration screen.
+  #
+  Function ChooseNetworkConfig
+    ${If} $UserConfigSet == false
        File "/oname=$PLUGINSDIR\networks.dat" "${VISIT_SOURCE_DIR}\resources\hosts\networks.dat"
        !insertmacro MUI_HEADER_TEXT "Network configuration" "Select the desired network configuration."
 
@@ -800,11 +815,8 @@ Function ChooseNetworkConfig
        ${If} $0 == error
            Abort
        ${EndIf}
-
-
        ${NSD_CreateListBox} 15u 0u 85% 99% $R4
        Pop $NetConfigLB
-
        ${NSD_LB_AddString} $NetConfigLB "None"
        ; parse all network options from networks.dat
        FileOpen $DatFile "$PLUGINSDIR\networks.dat" r
@@ -825,76 +837,65 @@ Function ChooseNetworkConfig
        FileClose $DatFile
        ${NSD_LB_SelectString} $NetConfigLB "None"
        nsdialogs::show
-   ${EndIf}
-FunctionEnd
+    ${EndIf}
+  FunctionEnd
 
-Function ChooseNetworkConfigLeave
-   ${If} $UserConfigSet == false
+  Function ChooseNetworkConfigLeave
+    ${If} $UserConfigSet == false
        SendMessage $NetConfigLB ${LB_GETCURSEL} 0 0 $1
        !insertmacro StrSplice $5 "$Tags" "$1" ":"
        Pop $4 ; the selected tag
        StrCpy $NetConfig $4
-   ${EndIf}
-FunctionEnd
+    ${EndIf}
+  FunctionEnd
 
-
-#
-# This function is called when we show the Choose parallel bank screen.
-#
-Function ChooseParallelBank
-  ${If} $UserParBankSet == false
+  #
+  # This function is called when we show the Choose parallel bank screen.
+  #
+  Function ChooseParallelBank
+    ${If} $UserParBankSet == false
       ${If} $NetConfig == "llnl"
       ${OrIf} $NetConfig == "llnl_closed"
-    !insertmacro MUI_HEADER_TEXT "Parallel bank selection" \
-      "Select the desired parallel bank."
-    Var /GLOBAL ParallelBankText
-    Var /GLOBAL ParallelBank
-    nsDialogs::Create 1018
-    Pop $0
-    ${If} $0 == error
-        Abort
+        !insertmacro MUI_HEADER_TEXT "Parallel bank selection" \
+            "Select the desired parallel bank."
+        Var /GLOBAL ParallelBankText
+        Var /GLOBAL ParallelBank
+        nsDialogs::Create 1018
+        Pop $0
+        ${If} $0 == error
+          Abort
+        ${EndIf}
+        ${NSD_CreateLabel} 5u 5u 90% 34u "If you use a batch system that requires you to use a bank when submitting parallel jobs, enter the name of the bank now."
+        Pop $0
+        ${NSD_CreateText} 46u 46u 40% 12u "wbronze"
+        Pop $ParallelBankText
+        ; prevents stack corruption since we aren't using a notify function
+        GetFunctionAddress $0 OnStackSpam
+        nsDialogs::Show
+       ${EndIf}
     ${EndIf}
+  FunctionEnd
 
-    ${NSD_CreateLabel} 5u 5u 90% 34u "If you use a batch system that requires you to use a bank when submitting parallel jobs, enter the name of the bank now."
-    Pop $0
-
-    ${NSD_CreateText} 46u 46u 40% 12u "wbronze"
-    Pop $ParallelBankText
-    ; prevents stack corruption since we aren't using a notify function
-    GetFunctionAddress $0 OnStackSpam
-
-    nsDialogs::Show
-     ${EndIf}
-  ${EndIf}
-FunctionEnd
-
-Function ChooseParallelBankLeave
+  Function ChooseParallelBankLeave
     ${NSD_GetText} $ParallelBankText $ParallelBank
-FunctionEnd
+  FunctionEnd
 
-
-Function ChooseDefaultDatabasePlugin
+  Function ChooseDefaultDatabasePlugin
     ${If} $DefaultDatabaseSet == "false"
         !insertmacro MUI_HEADER_TEXT "Select default database reader plugin" \
           "Select the database reader plugin that VisIt will try first when opening a database."
-
     Var /GLOBAL DefaultDatabaseLB
         nsDialogs::Create 1018
         Pop $0
         ${If} $0 == error
             Abort
         ${EndIf}
-
         ${NSD_CreateLabel} 5u 5u 90% 48u "A default database reader plugin is the first plugin that VisIt will use when trying to open a database.  In most cases, it is not necessary to specify a default database reader plugin but it can help VisIt pick the right database reader plugin when there are mulitple database reader plugins that are associated with a given file extension."
         Pop $0
-
         ${NSD_CreateListBox} 20u 62u 60% 100 $R4
         Pop $DefaultDatabaseLB
-
         ${NSD_LB_AddString} $DefaultDatabaseLB "None"
-
     ; find all selected db's
-
     StrCpy $9 ${SEC_DP_0}
     StrCpy $8 ${NumDBPlugins}
     IntOp $8 $8 - 1
@@ -905,72 +906,65 @@ Function ChooseDefaultDatabasePlugin
         ${EndIf}
         IntOp $9 $9 +  1
     ${Next}
-
         ${NSD_LB_SelectString} $DefaultDatabaseLB "None"
-
         nsdialogs::show
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-Function ChooseDefaultDatabasePluginLeave
+  Function ChooseDefaultDatabasePluginLeave
     ${If} $DefaultDatabaseSet == "false"
         ${NSD_LB_GetSelection} $DefaultDatabaseLB $DefaultDatabase
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-Function OnStackSpam
+  Function OnStackSpam
     Pop $0
-FunctionEnd
+  FunctionEnd
 
-#
-# Allow the user to choose whether python script files will be associated
-# with VisIt.
-#
-Function ChooseFileAssociations
-  ${If} $AssociatePythonSet == false
-  ${OrIf} $AssociateCurvesSet == false
-    !insertmacro MUI_HEADER_TEXT "Associate File types with VisIt" \
+  #
+  # Allow the user to choose whether python script files and/or curve
+  # files will be associated with VisIt.
+  #
+  Function ChooseFileAssociations
+    ${If} $AssociatePythonSet == false
+    ${OrIf} $AssociateCurvesSet == false
+      !insertmacro MUI_HEADER_TEXT "Associate File types with VisIt" \
       "Associating file types with VisIt allows you to double click the file which will start VisIt and open the file"
-
-    nsDialogs::Create 1018
-    Pop $0
-    ${If} $0 == error
-      Abort
-    ${EndIf}
-
-    ${NSD_CreateCheckBox} 22u 48u 90% 12u "Python (*.py)  -- will start VisIt's cli and run the script."
-    Pop $0
-    ${If} $AssociatePythonSet == true
-    ${AndIf} $AssociatePython == 1
+      nsDialogs::Create 1018
+      Pop $0
+      ${If} $0 == error
+        Abort
+      ${EndIf}
+      ${NSD_CreateCheckBox} 22u 48u 90% 12u "Python (*.py)  -- will start VisIt's cli and run the script."
+      Pop $0
+      ${If} $AssociatePythonSet == true
+      ${AndIf} $AssociatePython == 1
         ${NSD_Check} $0
-    ${EndIf}
-    ${NSD_OnClick} $0 PythonAssocChecked
-
-    ${NSD_CreateCheckBox} 22u 78u 90% 12u "Curve files (*.curve, *.ultra, *.ult, *.u) -- will start VisIt and open the file"
-    Pop $0
-    ${If} $AssociateCurvesSet == true
-    ${AndIf} $AssociateCurves == 1
+      ${EndIf}
+      ${NSD_OnClick} $0 PythonAssocChecked
+      ${NSD_CreateCheckBox} 22u 78u 90% 12u "Curve files (*.curve, *.ultra, *.ult, *.u) -- will start VisIt and open the file"
+      Pop $0
+      ${If} $AssociateCurvesSet == true
+      ${AndIf} $AssociateCurves == 1
         ${NSD_Check} $0
+      ${EndIf}
+      ${NSD_OnClick} $0 CurveAssocChecked
+      nsDialogs::show
     ${EndIf}
-    ${NSD_OnClick} $0 CurveAssocChecked
+  FunctionEnd
 
-    nsDialogs::show
-  ${EndIf}
-FunctionEnd
+  Function PythonAssocChecked
+    Pop $0
+    ${NSD_GetState} $0 $AssociatePython
+  FunctionEnd
 
-Function PythonAssocChecked
-  Pop $0
-  ${NSD_GetState} $0 $AssociatePython
-FunctionEnd
+  Function CurveAssocChecked
+    Pop $0
+    ${NSD_GetState} $0 $AssociateCurves
+  FunctionEnd
 
-Function CurveAssocChecked
-  Pop $0
-  ${NSD_GetState} $0 $AssociateCurves
-FunctionEnd
-
-Function CheckForMPI
+  Function CheckForMPI
     StrCpy $InstallMPI 2
-
     Push $9
     StrCpy $9 "$ProgramFiles64"
     ${If} ${SectionIsSelected} ${SEC_PAR}
@@ -987,26 +981,21 @@ Function CheckForMPI
             Call CheckForMPILeave
           ${Else}
             !insertmacro MUI_HEADER_TEXT "MSMPI R2 installation" "Installation of files necessary to VisIt's parallel engine"
-
             nsDialogs::Create 1018
             Pop $0
             ${If} $0 == error
               Abort
             ${EndIf}
-
             ${NSD_CreateLabel} 5u 5u 90% 24u "Files needed to run VisIt's parallel engine (MSMPI from HPC PACK 2008 R2) do not appear to be installed on this machine.  Your options are:"
-
             ${NSD_CreateRadioButton} 22u 45u 90% 12u "Skip install of VisIt's parallel components"
             Pop $0
             nsDialogs::SetUserData $0 0
             ${NSD_OnClick} $0 InstallMPIClicked
             ${NSD_Check} $0
-
             ${NSD_CreateRadioButton} 22u 60u 90% 12u "Attempt the install of MSMPI as Admin "
             Pop $0
             nsDialogs::SetUserData $0 1
             ${NSD_OnClick} $0 InstallMPIClicked
-
             ${NSD_CreateRadioButton} 22u 75u 90% 12u "Skip install of MSMPI, but still install VisIt's parallel components."
             Pop $0
             nsDialogs::SetUserData $0 2
@@ -1019,29 +1008,22 @@ Function CheckForMPI
         !insertmacro UnSelectSection "${SEC_PAR}"
     ${EndIF}
     Pop $9
-FunctionEnd
+  FunctionEnd
 
-Function InstallMPIClicked
+  Function InstallMPIClicked
     Exch $0
     nsDialogs::GetUserData $0
     Pop $InstallMPI
     Pop $0
-FunctionEnd
+  FunctionEnd
 
-Function CheckForMPILeave
+  Function CheckForMPILeave
     ${If} $InstallMPI == 0
       !insertmacro UnSelectSection "${SEC_PAR}"
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-Function FinishPagePre
-   ${IfNot} ${SILENT}
-       Push "${VISITINSTDIR}\\visit_install.log"
-       Call DumpLog
-   ${EndIf}
-FunctionEnd
-
-Function FinishPageShow
+  Function FinishPageShow
     # firewall message
     ${NSD_CreateLabel} 120u 50u 60% 40% "Depending on the settings for Windows Firewall, communication between local VisIt processes and remote VisIt processes may be blocked. If you are not an admin, you may need assistance adding VisIt's processes to the firewall's exception list."
     Pop $0
@@ -1052,92 +1034,91 @@ Function FinishPageShow
         Pop $0
         SetCtlColors $0 0xFF0000 transparent
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
 
-###############################################################################
-#
-# Sections
-#
-###############################################################################
+  #############################################################################
+  #
+  # Sections
+  #
+  #############################################################################
 
-Section -PlotPlugins
+  Section -PlotPlugins
   SetOutPath "${VISITINSTDIR}\plots"
-  ${If} ${SectionIsSelected} ${SEC_PAR}
+    ${If} ${SectionIsSelected} ${SEC_PAR}
       File "${INSTALL_PREFIX}\plots\*.dll"
-  ${Else}
+    ${Else}
       File /x "*_par.dll" "${INSTALL_PREFIX}\plots\*.dll"
-  ${EndIf}
-SectionEnd
+    ${EndIf}
+  SectionEnd
 
-Section -OperatorPlugins
-  SetOutPath "${VISITINSTDIR}\operators"
-  ${If} ${SectionIsSelected} ${SEC_PAR}
+  Section -OperatorPlugins
+    SetOutPath "${VISITINSTDIR}\operators"
+    ${If} ${SectionIsSelected} ${SEC_PAR}
       File "${INSTALL_PREFIX}\operators\*.dll"
-  ${Else}
+    ${Else}
       File /x "*_par.dll" "${INSTALL_PREFIX}\operators\*.dll"
-  ${EndIf}
-SectionEnd
+    ${EndIf}
+  SectionEnd
 
-Section -ExecutableComponents
-  !insertmacro UpdateShellVarContext "$InstallUsers"
-  SetOutPath "${VISITINSTDIR}"
-  SetOverwrite ifnewer
-  ${If} ${SectionIsSelected} ${SEC_PAR}
+  Section -ExecutableComponents
+    !insertmacro UpdateShellVarContext "$InstallUsers"
+    SetOutPath "${VISITINSTDIR}"
+    SetOverwrite ifnewer
+    ${If} ${SectionIsSelected} ${SEC_PAR}
       File "${INSTALL_PREFIX}\*.dll"
-  ${Else}
+    ${Else}
       File /x "*_par.dll" "${INSTALL_PREFIX}\*.dll"
-  ${EndIf}
-  ${If} ${SectionIsSelected} ${SEC_PAR}
+    ${EndIf}
+    ${If} ${SectionIsSelected} ${SEC_PAR}
       File /x visit${VisItVersion}_x64.exe "${INSTALL_PREFIX}\*.exe"
-  ${Else}
+    ${Else}
       File /x visit${VisItVersion}_x64.exe /x "*_par.exe" "${INSTALL_PREFIX}\*.exe"
-  ${EndIf}
-  File "${VISIT_DIST_DIR}\installation\xml2plugin.bat"
-  File "${INSTALL_PREFIX}\makemovie.py"
-  File "${INSTALL_PREFIX}\makemoviemain.py"
-  File "${INSTALL_PREFIX}\visitcinema.py"
-  File "${INSTALL_PREFIX}\visitcinemamain.py"
-  File "${INSTALL_PREFIX}\visitdiff.py"
+    ${EndIf}
+    File "${VISIT_DIST_DIR}\installation\xml2plugin.bat"
+    File "${INSTALL_PREFIX}\makemovie.py"
+    File "${INSTALL_PREFIX}\makemoviemain.py"
+    File "${INSTALL_PREFIX}\visitcinema.py"
+    File "${INSTALL_PREFIX}\visitcinemamain.py"
+    File "${INSTALL_PREFIX}\visitdiff.py"
 
-  File /r "${INSTALL_PREFIX}\qtplugins"
-  File "${INSTALL_PREFIX}\qt.conf"
+    File /r "${INSTALL_PREFIX}\qtplugins"
+    File "${INSTALL_PREFIX}\qt.conf"
+    # Silex file
+    File /nonfatal "${INSTALL_PREFIX}\silex.exe"
+    # browser file
+    File /nonfatal "${INSTALL_PREFIX}\browser.exe"
+    # Icon files
+    File "${VISIT_DIST_DIR}\resources\*.ico"
+    # Uninstaller
+    File "$%TEMP%\uninstall_visit.exe"
+  SectionEnd
 
-  # Silex file
-  File /nonfatal "${INSTALL_PREFIX}\silex.exe"
-  # browser file
-  File /nonfatal "${INSTALL_PREFIX}\browser.exe"
+  Section -PythonModules
+    SetOutPath "${VISITINSTDIR}\lib"
+    File /r /x *.pyc "${INSTALL_PREFIX}\lib\python"
+    File /nonfatal "${INSTALL_PREFIX}\lib\*.pyd"
+    SetOutPath "${VISITINSTDIR}"
+  SectionEnd
 
-  # Icon files
-  File "${VISIT_DIST_DIR}\resources\*.ico"
+  Section -PythonFilterModules
+    SetOutPath "${VISITINSTDIR}\lib"
+    File /r /x *.pyc "${INSTALL_PREFIX}\lib\site-packages"
+    SetOutPath "${VISITINSTDIR}"
+  SectionEnd
 
-SectionEnd
+  Section -UltraWrapper
+    SetOutPath "${VISITINSTDIR}"
+    File /r "${INSTALL_PREFIX}\ultrawrapper"
+  SectionEnd
 
-Section -PythonModules
-  SetOutPath "${VISITINSTDIR}\lib"
-  File /r "${INSTALL_PREFIX}\lib\python"
-  File /nonfatal "${INSTALL_PREFIX}\lib\*.pyd"
-  SetOutPath "${VISITINSTDIR}"
-SectionEnd
+  Section -Resources
+    SetOutPath "${VISITINSTDIR}"
+    File /r /x CMakeLists.txt "${INSTALL_PREFIX}\resources"
+  SectionEnd
 
-Section -PythonFilterModules
-  SetOutPath "${VISITINSTDIR}\lib"
-  File /r "${INSTALL_PREFIX}\lib\site-packages"
-  SetOutPath "${VISITINSTDIR}"
-SectionEnd
-
-Section -UltraWrapper
-  SetOutPath "${VISITINSTDIR}"
-  File /r "${INSTALL_PREFIX}\ultrawrapper"
-SectionEnd
-
-Section -Resources
-  SetOutPath "${VISITINSTDIR}"
-  File /r /x CMakeLists.txt "${INSTALL_PREFIX}\resources"
-SectionEnd
-
-Section -AllHosts
-  ${IfNot} $NetConfig == "None"
+  Section -AllHosts
+    ${IfNot} $NetConfig == "None"
       StrCpy $0 "${VISITINSTDIR}\resources\hosts\$NetConfig"
       StrCpy $1 "${VISITINSTDIR}\hosts"
       CreateDirectory $1
@@ -1147,14 +1128,11 @@ Section -AllHosts
       ${Else}
           CopyFiles $0\*.xml $1
       ${EndIf}
-
       CopyFiles "$0\config"    "${VISITINSTDIR}"
       CopyFiles "$0\guiconfig" "${VISITINSTDIR}"
       CopyFiles "$0\visitrc"   "${VISITINSTDIR}"
-
       ; config, guiconfig, or visitrc may not have existed.
       ClearErrors
-
       ${If}   $NetConfig == "llnl"
       ${OrIf} $NetConfig == "llnl_closed"
           ${IfNot} $ParallelBank == "wbronze"
@@ -1170,16 +1148,16 @@ Section -AllHosts
       ${EndIf}
       StrCpy $UserConfigSet true
       SetOutPath "${VISITINSTDIR}"
-  ${EndIf}
-  SetOutPath "${VISITINSTDIR}"
-SectionEnd
+    ${EndIf}
+    SetOutPath "${VISITINSTDIR}"
+  SectionEnd
 
-Section -PlatformsDLL
-  SetOutPath "${VISITINSTDIR}"
-  File /nonfatal /r "${INSTALL_PREFIX}\platforms"
-SectionEnd
+  Section -PlatformsDLL
+    SetOutPath "${VISITINSTDIR}"
+    File /nonfatal /r "${INSTALL_PREFIX}\platforms"
+  SectionEnd
 
-Section -TestOpenGLVersion
+  Section -TestOpenGLVersion
     # Run a small program to test if the OpenGL Version is sufficent on the
     # system being installed. If not, Mesa3D's openg32.dll will be put in
     # VisIt's root dir, and a RegKey flag will be set notifying VisIt to set
@@ -1193,34 +1171,31 @@ Section -TestOpenGLVersion
     ${Else}
         StrCpy $RequiresMesaAsGL false
     ${Endif}
-SectionEnd
+  SectionEnd
 
-Section -AddVisItRegKeys
-#
-# This section installs the VISIT<version> key, which tells visit.exe where
-# to find the rest of the VisIt components. Note that we put keys in
-# HKEY_LOCAL_MACHINE or in HKEY_CURRENT_USER.
-#
-  SetRegView 64
+  #
+  # This section installs the VISIT<version> key, which tells visit.exe where
+  # to find the rest of the VisIt components. Note that we put keys in
+  # HKEY_LOCAL_MACHINE or in HKEY_CURRENT_USER.
+  #
+  Section -AddVisItRegKeys
+    SetRegView 64
 
-  ; our regular registry entries
-  WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "" ""
-  WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "VISITHOME" "${VISITINSTDIR}"
+    ; our regular registry entries
+    WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "" ""
+    WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "VISITHOME" "${VISITINSTDIR}"
 
   ${If} $RequiresMesaAsGL == true
       WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "VISITNEEDSMESA" "true"
   ${EndIf}
-
   ${IfNot} $DefaultDatabase == "None"
     Strcpy $0 "-assume_format $DefaultDatabase"
     WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" \
                       "VISITARGS" \
                       $0
   ${EndIf}
-
-  # Store a flag in the registry to aid in Uninstall
-  WriteRegStr HKLM "Software\Classes\VISIT${PRODUCT_VERSION}" "InstalledAllUsers" "$InstallUsers"
-
+    # Store a flag in the registry to aid in Uninstall
+    WriteRegStr HKLM "Software\Classes\VISIT${PRODUCT_VERSION}" "InstalledAllUsers" "$InstallUsers"
   ${IfNot} $MPIExec == ""
     ${If} $InstallUsers == "all"
       WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISIT_MPIEXEC "$MPIExec"
@@ -1228,67 +1203,59 @@ Section -AddVisItRegKeys
       WriteRegStr HKCU "Environment" VISIT_MPIEXEC "$MPIExec"
     ${EndIf}
    ${EndIf}
-SectionEnd
+  SectionEnd
 
-Section -CreateLinks
-  Strcpy $R0 "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
-  CreateDirectory "$R0"
-
-  CreateShortCut "$R0\VisIt ${PRODUCT_VERSION}.lnk"  \
-     "${VISITINSTDIR}\visit.exe" ""      \
-     "" 0  \
-     SW_SHOWMINIMIZED  \
-     ""  \
-     "VisIt allows you to visualize simulation data."
-
-  CreateShortCut "$R0\VisIt ${PRODUCT_VERSION} in stereo.lnk"  \
-      "${VISITINSTDIR}\visit.exe" "-stereo"      \
-      "" 0  \
-      SW_SHOWMINIMIZED  \
-      ""  \
-      "VisIt allows you to visualize simulation data in stereo."
-
-  CreateShortCut "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk" \
-      "${VISITINSTDIR}\visit.exe" ""      \
-      "" 0  \
-      SW_SHOWMINIMIZED  \
-      ""  \
-      "VisIt allows you to visualize simulation data."
-
-  CreateShortCut "$R0\VisIt Command Line Interface.lnk"  \
-      "${VISITINSTDIR}\visit.exe" "-cli"  \
-      "" 0  \
-      SW_SHOWNORMAL     \
-      ""  \
-      "VisIt's command line interface allows you to visualize simulation data via Python scripting."
-
-  CreateShortCut "$R0\VisIt with Debug logging.lnk"  \
-      "${VISITINSTDIR}\visit.exe" "-debug 5"  \
-      "" 0  \
-      SW_SHOWNORMAL     \
-      ""  \
-      "VisIt allows you to visualize simulation data."
-
-  ${If} ${SectionIsSelected} ${SEC_PAR}
+  Section -CreateLinks
+    Strcpy $R0 "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
+    CreateDirectory "$R0"
+    CreateShortCut "$R0\VisIt ${PRODUCT_VERSION}.lnk"  \
+       "${VISITINSTDIR}\visit.exe" ""      \
+       "" 0  \
+       SW_SHOWMINIMIZED  \
+       ""  \
+       "VisIt allows you to visualize simulation data."
+    CreateShortCut "$R0\VisIt ${PRODUCT_VERSION} in stereo.lnk"  \
+        "${VISITINSTDIR}\visit.exe" "-stereo"      \
+        "" 0  \
+        SW_SHOWMINIMIZED  \
+        ""  \
+        "VisIt allows you to visualize simulation data in stereo."
+    CreateShortCut "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk" \
+        "${VISITINSTDIR}\visit.exe" ""      \
+        "" 0  \
+        SW_SHOWMINIMIZED  \
+        ""  \
+        "VisIt allows you to visualize simulation data."
+    CreateShortCut "$R0\VisIt Command Line Interface.lnk"  \
+        "${VISITINSTDIR}\visit.exe" "-cli"  \
+        "" 0  \
+        SW_SHOWNORMAL     \
+        ""  \
+        "VisIt's command line interface allows you to visualize simulation data via Python scripting."
+    CreateShortCut "$R0\VisIt with Debug logging.lnk"  \
+        "${VISITINSTDIR}\visit.exe" "-debug 5"  \
+        "" 0  \
+        SW_SHOWNORMAL     \
+        ""  \
+        "VisIt allows you to visualize simulation data."
+    ${If} ${SectionIsSelected} ${SEC_PAR}
       CreateShortCut "$R0\VisIt parallel.lnk"  \
           "${VISITINSTDIR}\visit.exe" "-np $NCPUs"  \
           "" 0  \
           SW_SHOWNORMAL     \
           ""  \
           "VisIt with a parallel engine."
-  ${EndIf}
-
-  CreateShortCut "$R0\Silex.lnk"                         \
-      "${VISITINSTDIR}\silex.exe"  \
-      ""      \
-      ""  \
-      0  \
-      SW_SHOWNORMAL     \
-      ""  \
-      "Silex allows you to browse the contents of Silo files."
-
-  # Optionally add a link for xmledit.
-  ${If} ${SectionIsSelected} ${SEC_DEV}
+    ${EndIf}
+    CreateShortCut "$R0\Silex.lnk"                         \
+        "${VISITINSTDIR}\silex.exe"  \
+        ""      \
+        ""  \
+        0  \
+        SW_SHOWNORMAL     \
+        ""  \
+        "Silex allows you to browse the contents of Silo files."
+    # Optionally add a link for xmledit.
+    ${If} ${SectionIsSelected} ${SEC_DEV}
       CreateDirectory "$R0\Plugin development"
       CreateShortCut "$R0\Plugin development\XML Edit.lnk"  \
           "${VISITINSTDIR}\xmledit.exe"  \
@@ -1314,151 +1281,154 @@ Section -CreateLinks
       CreateShortCut "$R0\Plugin development\Documentation\VisIt and HDF5.lnk" \
            "http://www.visitusers.org/index.php?title=VisIt_and_HDF5"
     ${EndIf}
-SectionEnd
+  SectionEnd
 
-Section -AddFileAssociations
-  # Associate the Silo file format with VisIt and Silex.
-  SetRegView 64
-  WriteRegStr SHCTX "Software\Classes\.silo" "" "siloFile"
-  WriteRegStr SHCTX "Software\Classes\siloFile" "" "Silo File"
-  WriteRegStr SHCTX "Software\Classes\siloFile\DefaultIcon" "" "${VISITINSTDIR}\silo.ico"
-  WriteRegStr SHCTX "Software\Classes\siloFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
-  WriteRegStr SHCTX "Software\Classes\siloFile\shell\open with Silex\command" "" '${VISITINSTDIR}\silex.exe "%1"'
+  Section -AddFileAssociations
+    # Associate the Silo file format with VisIt and Silex.
+    SetRegView 64
+    WriteRegStr SHCTX "Software\Classes\.silo" "" "siloFile"
+    WriteRegStr SHCTX "Software\Classes\siloFile" "" "Silo File"
+    WriteRegStr SHCTX "Software\Classes\siloFile\DefaultIcon" "" "${VISITINSTDIR}\silo.ico"
+    WriteRegStr SHCTX "Software\Classes\siloFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
+    WriteRegStr SHCTX "Software\Classes\siloFile\shell\open with Silex\command" "" '${VISITINSTDIR}\silex.exe "%1"'
+    # Associate the VisIt file format with VisIt.
+    WriteRegStr SHCTX "Software\Classes\.visit" "" "visitFile"
+    WriteRegStr SHCTX "Software\Classes\visitFile" "" "VisIt File"
+    WriteRegStr SHCTX "Software\Classes\visitFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
+    WriteRegStr SHCTX "Software\Classes\visitFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
+    # Associate the VisIt session file format with VisIt.
+    WriteRegStr SHCTX "Software\Classes\.vses" "" "visitSessionFile"
+    WriteRegStr SHCTX "Software\Classes\.session" "" "visitSessionFile"
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile" "" "VisIt Session File"
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\DefaultIcon" "" "${VISITINSTDIR}\visitsessionfile.ico"
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make movie\command"          "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 480x480 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 480x480 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 640x480 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 640x480 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 800x600 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 800x600 -sessionfile "%1\'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 1024x768 movie\command" "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 1024x768 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 480x480 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 480x480 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 640x480 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 640x480 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 800x600 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 800x600 -sessionfile "%1\'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 1024x768 PNG frames\command" "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 1024x768 -sessionfile "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Edit\command" "" 'notepad.exe "%1"'
+    WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -sessionfile "%1"'
+    # Python files
+    # save the value for uninstall
+    WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedPythonWithVisIt" "$AssociatePython"
+    ${If} $AssociatePython == 1
+      # Associate python files with VisIt.
+      WriteRegStr SHCTX "Software\Classes\.py" "" "visitPythonFile"
+      WriteRegStr SHCTX "Software\Classes\visitPythonFile" "" "VisIt Python File"
+      WriteRegStr SHCTX "Software\Classes\visitPythonFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
+      WriteRegStr SHCTX "Software\Classes\visitPythonFile\shell\Edit\command" "" 'notepad.exe "%1"'
+      WriteRegStr SHCTX "Software\Classes\visitPythonFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -cli -s "%1"'
+    ${EndIf}
+    # Curve files
+    # save the value for uninstall
+    WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedCurvesWithVisIt" "$AssociateCurves"
+    ${If} $AssociateCurves == 1
+      # Associate python files with VisIt.
+      WriteRegStr SHCTX "Software\Classes\.curve" "" "visitCurveFile"
+      WriteRegStr SHCTX "Software\Classes\.ultra" "" "visitCurveFile"
+      WriteRegStr SHCTX "Software\Classes\.ult" "" "visitCurveFile"
+      WriteRegStr SHCTX "Software\Classes\.u" "" "visitCurveFile"
+      WriteRegStr SHCTX "Software\Classes\visitCurveFile" "" "VisIt Curve File"
+      WriteRegStr SHCTX "Software\Classes\visitCurveFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
+      WriteRegStr SHCTX "Software\Classes\visitCurveFile\shell\Edit\command" "" 'notepad.exe "%1"'
+      WriteRegStr SHCTX "Software\Classes\visitCurveFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
+    ${EndIf}
+  SectionEnd
 
-  # Associate the VisIt file format with VisIt.
-  WriteRegStr SHCTX "Software\Classes\.visit" "" "visitFile"
-  WriteRegStr SHCTX "Software\Classes\visitFile" "" "VisIt File"
-  WriteRegStr SHCTX "Software\Classes\visitFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
-  WriteRegStr SHCTX "Software\Classes\visitFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
-
-  # Associate the VisIt session file format with VisIt.
-  WriteRegStr SHCTX "Software\Classes\.vses" "" "visitSessionFile"
-  WriteRegStr SHCTX "Software\Classes\.session" "" "visitSessionFile"
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile" "" "VisIt Session File"
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\DefaultIcon" "" "${VISITINSTDIR}\visitsessionfile.ico"
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make movie\command"          "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 480x480 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 480x480 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 640x480 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 640x480 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 800x600 movie\command"  "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 800x600 -sessionfile "%1\'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 1024x768 movie\command" "" '${VISITINSTDIR}\visit.exe -movie -format mpeg -geometry 1024x768 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 480x480 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 480x480 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 640x480 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 640x480 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 800x600 PNG frames\command"  "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 800x600 -sessionfile "%1\'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Make 1024x768 PNG frames\command" "" '${VISITINSTDIR}\visit.exe -movie -format png -geometry 1024x768 -sessionfile "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\Edit\command" "" 'notepad.exe "%1"'
-  WriteRegStr SHCTX "Software\Classes\visitSessionFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -sessionfile "%1"'
-
-  # Python files
-  # save the value for uninstall
-  WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedPythonWithVisIt" "$AssociatePython"
-  ${If} $AssociatePython == 1
-    # Associate python files with VisIt.
-    WriteRegStr SHCTX "Software\Classes\.py" "" "visitPythonFile"
-    WriteRegStr SHCTX "Software\Classes\visitPythonFile" "" "VisIt Python File"
-    WriteRegStr SHCTX "Software\Classes\visitPythonFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
-    WriteRegStr SHCTX "Software\Classes\visitPythonFile\shell\Edit\command" "" 'notepad.exe "%1"'
-    WriteRegStr SHCTX "Software\Classes\visitPythonFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -cli -s "%1"'
-  ${EndIf}
-
-  # Curve files
-  # save the value for uninstall
-  WriteRegStr SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedCurvesWithVisIt" "$AssociateCurves"
-  ${If} $AssociateCurves == 1
-    # Associate python files with VisIt.
-    WriteRegStr SHCTX "Software\Classes\.curve" "" "visitCurveFile"
-    WriteRegStr SHCTX "Software\Classes\.ultra" "" "visitCurveFile"
-    WriteRegStr SHCTX "Software\Classes\.ult" "" "visitCurveFile"
-    WriteRegStr SHCTX "Software\Classes\.u" "" "visitCurveFile"
-    WriteRegStr SHCTX "Software\Classes\visitCurveFile" "" "VisIt Curve File"
-    WriteRegStr SHCTX "Software\Classes\visitCurveFile\DefaultIcon" "" "${VISITINSTDIR}\visitfile.ico"
-    WriteRegStr SHCTX "Software\Classes\visitCurveFile\shell\Edit\command" "" 'notepad.exe "%1"'
-    WriteRegStr SHCTX "Software\Classes\visitCurveFile\shell\open\command" "" '${VISITINSTDIR}\visit.exe -o "%1"'
-  ${EndIf}
-SectionEnd
-
-Section -AddVisItToPath
-  ; save value in $R0
-  Push $R0
-
-  ; Find out if we want to remove old VisIt versions from path
-  Push "${VISITINSTDIR}"
-  Push $InstallUsers
-  VIkit::FindVisItInPath
-  Pop $R0
-  ${IfNot} $R0 == ""
+  Section -AddVisItToPath
+    ; save value in $R0
+    Push $R0
+    ; Find out if we want to remove old VisIt versions from path
+    Push "${VISITINSTDIR}"
+    Push $InstallUsers
+    VIkit::FindVisItInPath
+    Pop $R0
+    ${IfNot} $R0 == ""
       MessageBox MB_YESNO $R0 /SD IDNO IDYES 0 IDNO AddToPath
       Push "${VISITINSTDIR}"
       Push $InstallUsers
       VIkit::RemoveAllVisItInPath
-  ${EndIf}
+    ${EndIf}
 
-AddToPath:
-  Push "${VISITINSTDIR}"
-  Push $InstallUsers
-  VIkit::AddVisItToPath
-  Pop $R0
-  Pop $R0
-  ${If} $InstallUsers == "all"
-    WriteRegStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITLOC "${VISITINSTDIR}"
-  ${Else}
-    WriteRegStr HKCU "Environment" VISITLOC "${VISITINSTDIR}"
-  ${EndIf}
-  ; propagate the changes so a reboot won't be necessary
-  SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
-SectionEnd
+    AddToPath:
+      Push "${VISITINSTDIR}"
+      Push $InstallUsers
+      VIkit::AddVisItToPath
+      Pop $R0
+      Pop $R0
+      ${If} $InstallUsers == "all"
+        WriteRegStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITLOC "${VISITINSTDIR}"
+      ${Else}
+        WriteRegStr HKCU "Environment" VISITLOC "${VISITINSTDIR}"
+      ${EndIf}
+      ; propagate the changes so a reboot won't be necessary
+      SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
+  SectionEnd
 
-Section -AddJavaInstallPath
+  Section -AddJavaInstallPath
    # Call our VIkit DLL to get the ${VISITINSTDIR} variable formatted as a Java preference.
    VIkit::GetInstallPathFormattedForJava
    Pop $R0
    # Write the reformatted string as a Java preference.
-
    Strcpy $R0 "$R0///LLNL///VisIt ${PRODUCT_VERSION}"
    WriteRegStr SHCTX "SOFTWARE\JavaSoft\Prefs\llnl\visit" "/V/I/S/I/T/H/O/M/E" $R0
-SectionEnd
+  SectionEnd
 
-Section -AdditionalIcons
-  ${DisableX64FSRedirection}
-  WriteIniStr "${VISITINSTDIR}\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-  CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Home Page.lnk" "${VISITINSTDIR}\${PRODUCT_NAME}.url"
-  CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Uninstall VisIt ${PRODUCT_VERSION}.lnk" "${V_UNINSTALLER}"
-SectionEnd
+  Section -AdditionalIcons
+    ${DisableX64FSRedirection}
+    WriteIniStr "${VISITINSTDIR}\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
+    CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Home Page.lnk" "${VISITINSTDIR}\${PRODUCT_NAME}.url"
+    CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Uninstall VisIt ${PRODUCT_VERSION}.lnk" "${V_UNINSTALLER}"
+  SectionEnd
 
-Section -Post
-  SetOutPath -
-  WriteUninstaller '${VISITINSTDIR}\uninstall_visit.exe'
-  SetRegView 64
-  WriteRegStr SHCTX "${PRODUCT_DIR_REGKEY}" "" "${VISITINSTDIR}\visit.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+  Section -Post
+    SetOutPath -
+    SetRegView 64
+    WriteRegStr SHCTX "${PRODUCT_DIR_REGKEY}" "" "${VISITINSTDIR}\visit.exe"
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "DisplayName" "$(^Name)"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "UninstallString" "${V_UNINSTALLER}"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "NoModify" "1"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "NoRepair" "1"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "DisplayIcon" "${VISITINSTDIR}\visit.exe"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "DisplayVersion" "${PRODUCT_VERSION}"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "URLInfoAbout" "${PRODUCT_WEB_SITE}"
-  WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
+    WriteRegStr ${PRODUCT_UNINST_ROOT_KEY} "${PRODUCT_UNINST_KEY}" \
       "Publisher" "${PRODUCT_PUBLISHER}"
-SectionEnd
+  SectionEnd
+!else ; ndef CREATING_UNINSTALLER
 
-
-${UnStrStrAdv}
-${UnStrTrimNewLines}
+  ; now CREATING_UNINSTALLER
+  ${UnStrStrAdv}
+  ${UnStrTrimNewLines}
+  !define MUI_UNICON "${VISIT_DIST_DIR}\resources\visit.ico"
+  !define MUI_WELCOMEPAGE_TEXT "The entire VisIt folder at $INSTDIR $\r$\nwill be removed. $\r$\n$\r$\nIf this is NOT okay, press Cancel." 
+  !insertmacro MUI_UNPAGE_WELCOME
   !insertmacro MUI_UNPAGE_INSTFILES
+  !insertmacro MUI_LANGUAGE "English"
 
-Function un.onUninstSuccess
+  Section
+     ; do nothing, just here to satisfy the requirement that there must
+     ; be sections
+  SectionEnd
+
+  Function un.onUninstSuccess
     HideWindow
     MessageBox MB_ICONINFORMATION|MB_OK \
         "$(^Name) was successfully removed from your computer." /SD IDOK
-FunctionEnd
+  FunctionEnd
 
-Function un.onInit
+  Function un.onInit
     SetRegView 64
     ${DisableX64FSRedirection}
 
@@ -1475,25 +1445,25 @@ Function un.onInit
            Quit
        ${EndIf}
     ${EndIf}
-FunctionEnd
+  FunctionEnd
 
-
-Section Uninstall
-    # Read in saved value to know whether VisIt was installed for AllUsers or
-    # current user.
+  Section Uninstall
+    ;MessageBox MB_OKCANCEL|MB_ICONSTOP "VisIt's uninstaller will be removing the entire directory at $INSTDIR, if this is NOT okay, press CANCEL." /SD IDOK IDOK +1 IDCANCEL +1
+    RMDir /r $INSTDIR
     ReadRegStr $0    HKLM "Software\Classes\VISIT${PRODUCT_VERSION}" "InstalledAllUsers"
     ${If} $0 == "all"
        !insertmacro UpdateShellVarContext "all"
     ${Else}
        !insertmacro UpdateShellVarContext "current"
     ${EndIf}
+    # Read in saved value to know whether VisIt was installed for AllUsers or
+    # current user.
+    # Remove all of the VisIt software components
 
     ReadRegStr $1 SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedPythonWithVisIt"
     ReadRegStr $2 SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedCurvesWithVisIt"
-
     # Remove the desktop shortcut
     Delete "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk"
-
     SetRegView 64
     ${DisableX64FSRedirection}
 
@@ -1519,68 +1489,6 @@ Section Uninstall
     RmDir "$R9\Plugin development"
     RMDir "$R9"
 
-    # Remove all of the VisIt software components
-    ${If} ${FileExists} "$INSTDIR\visit_install.log"
-        var /global line2
-        var /global delpath
-        var /global parsedline
-        FileOpen $R0 "$INSTDIR\visit_install.log" r
-        FileRead $R0 $line2
-        StrCpy $delpath ""
-        StrCpy $R9 0
-       ${DoUntil} $line2 == ""
-           ${UnStrTrimNewLines} $R1 "$line2"
-           ${UnStrStrAdv} $parsedline $R1 "Output folder: " ">" ">" "0" "0" "0"
-           ${If} $parsedline != ""
-               ${If} $delpath != ""
-                   IntOp $R9 $R9 + 1
-                   push $delpath
-               ${EndIf}
-               StrCpy $delpath "$parsedline"
-           ${Else}
-               ${UnStrStrAdv} $R2 $R1 "Extract: " ">" ">" "0" "0" "0"
-               ${If} $R2 != ""
-                   ${UnStrStrAdv} $R3 $R2 "..." ">" "<" "0" "0" "0"
-                   ${If} $R3 != ""
-                       StrCpy $parsedline $R3
-                   ${Else}
-                       StrCpy $parsedline $R2
-                   ${EndIF}
-               ${Else}
-                   StrCpy $parsedline ""
-               ${EndIF}
-               ${If} $parsedline != ""
-                   Delete "$delpath\$parsedline"
-               ${EndIf}
-           ${EndIf}
-           FileRead $R0 $line2
-       ${Loop}
-       FileClose $R0
-       Delete "$INSTDIR\visit_install.log"
-       Delete "$INSTDIR\config"
-       Delete "$INSTDIR\guiconfig"
-       Delete "$INSTDIR\visitrc"
-       Delete "$INSTDIR\hosts\*.xml"
-       RmDir  "$INSTDIR\hosts"
-       ClearErrors
-       ${ForEach} $R8 $R9 1 - 1
-           Pop $delpath
-           ${If} $delpath != "${VISITINSTDIR}"
-               RmDir "$delpath"
-           ${EndIf}
-           ClearErrors
-       ${Next}
-       delete "$INSTDIR\uninstall_visit.exe"
-       delete "$INSTDIR\VisIt.url"
-       RmDir /REBOOTOK "$INSTDIR"
-       ${UnStrStrAdv} $R9 "$INSTDIR" "LLNL\VisIt ${PRODUCT_VERSION}" ">" "<" "0" "0" "0"
-       ${If} ${FileExists} "$R9\LLNL"
-           RmDir /REBOOTOK  "$R9\LLNL"
-       ${EndIf}
-    ${Else}
-        MessageBox MB_OKCANCEL|MB_ICONSTOP "VisIt's uninstaller will be removing the entire directory at $INSTDIR, if this is NOT okay, press CANCEL." /SD IDOK IDOK +1 IDCANCEL +1
-        RMDir /r $INSTDIR
-    ${EndIf}
 
     # Delete the Silo file type from the registry.
     DeleteRegKey SHCTX "Software\Classes\.silo"
@@ -1633,5 +1541,5 @@ Section Uninstall
     SetAutoClose true
     SendMessage ${HWND_BROADCAST} ${WM_WININICHANGE} 0 "STR:Environment" /TIMEOUT=5000
   SectionEnd
-
+!endif
 
