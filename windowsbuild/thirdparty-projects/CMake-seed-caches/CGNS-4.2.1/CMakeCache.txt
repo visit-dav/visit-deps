@@ -5,5 +5,5 @@ HDF5_NEED_SZIP:BOOL=true
 SZIP_LIBRARY:FILEPATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/szip/2.1.1/lib/szip.lib
 HDF5_NEED_ZLIB:BOOL=true
 ZLIB_LIBRARY:FILEPATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/zlib/1.2.11/lib/zlib.lib
-CMAKE_INSTALL_PREFIX:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/cgns/4.1.2
+CMAKE_INSTALL_PREFIX:PATH=C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/cgns/4.1.0
 
