@@ -6,10 +6,18 @@
 # to load VTK's settings for an external project.
 
 # Compute the installation prefix from this VTKConfig.cmake file location.
-get_filename_component(VTK_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_FILE}" PATH)
-get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
-get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
-get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
+set(_vtk_installed_prefix "C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0/lib/cmake/vtk-8.1")
+set(_vtk_requested_prefix "${CMAKE_CURRENT_LIST_DIR}")
+get_filename_component(_vtk_installed_prefix_full "${_vtk_installed_prefix}" REALPATH)
+get_filename_component(_vtk_requested_prefix_full "${_vtk_requested_prefix}" REALPATH)
+if (_vtk_installed_prefix_full STREQUAL _vtk_requested_prefix_full)
+  set(VTK_INSTALL_PREFIX "C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0")
+else ()
+  set(VTK_INSTALL_PREFIX "${CMAKE_CURRENT_LIST_DIR}")
+  get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
+  get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
+  get_filename_component(VTK_INSTALL_PREFIX "${VTK_INSTALL_PREFIX}" PATH)
+endif ()
 set(VTK_MODULES_DIR "${VTK_INSTALL_PREFIX}/lib/cmake/vtk-8.1/Modules")
 
 set (__vtk_install_tree TRUE)
@@ -72,7 +80,32 @@ SET(VTK_USE_FILE "${VTK_CMAKE_DIR}/UseVTK.cmake")
 # The rendering backend VTK was configured to use.
 set(VTK_RENDERING_BACKEND "OpenGL2")
 
-set (VTK_RUNTIME_DIRS "${VTK_INSTALL_PREFIX}/bin")
+if (__vtk_install_tree)
+  if (WIN32)
+    set (VTK_RUNTIME_DIRS "C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0/bin")
+  else ()
+    set (VTK_RUNTIME_DIRS "C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/vtk/8.1.0/lib")
+  endif ()
+else()
+  if (WIN32)
+    set (VTK_RUNTIME_DIRS "C:/A_VisIt/ThirdParty/VTK-8.1.0-build/bin")
+  else ()
+    set (VTK_RUNTIME_DIRS "C:/A_VisIt/ThirdParty/VTK-8.1.0-build/lib")
+  endif ()
+endif()
+
+# Setup VTK-m if it was enabled
+set(VTK_HAS_VTKM false)
+if(VTK_HAS_VTKM AND __vtk_install_tree)
+  set(VTKM_CMAKE_DIR "${VTK_CMAKE_DIR}")
+  get_filename_component(VTKM_CMAKE_DIR "${VTKM_CMAKE_DIR}" PATH)
+  find_package(VTKm
+               PATHS "${CMAKE_CURRENT_LIST_DIR}"
+                     "${VTKM_CMAKE_DIR}"
+                     "${VTK_RUNTIME_DIRS}"
+               NO_DEFAULT_PATH
+               )
+endif()
 
 
 #-----------------------------------------------------------------------------
