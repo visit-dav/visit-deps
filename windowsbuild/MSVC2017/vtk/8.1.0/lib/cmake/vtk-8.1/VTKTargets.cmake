@@ -569,8 +569,7 @@ add_library(vtkRenderingOSPRay SHARED IMPORTED)
 
 set_target_properties(vtkRenderingOSPRay PROPERTIES
   INTERFACE_COMPILE_FEATURES "cxx_nullptr;cxx_override"
-  INTERFACE_LINK_LIBRARIES "vtkCommonDataModel;vtkRenderingCore;vtkRenderingOpenGL2;vtkRenderingSceneGraph;vtkRenderingVolume;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss/lib/intel64/vc14/tbb.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss/lib/intel64/vc14/tbbmalloc.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss/lib/intel64/vc14/tbb_debug.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/tbb/2018_20171205oss/lib/intel64/vc14/tbbmalloc_debug.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/embree/3.4.0/lib/embree3.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/ospray/1.6.1/lib/ospray.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/ospray/1.6.1/lib/ospray_module_ispc.lib;C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2017/ospray/1.6.1/lib/ospray_common.lib;vtkFiltersGeometry"
-)
+  INTERFACE_LINK_LIBRARIES "vtkCommonDataModel;vtkRenderingCore;vtkRenderingOpenGL2;vtkRenderingSceneGraph;vtkRenderingVolume;${TBB_LIBRARY};${TBB_LIBRARY_MALLOC};${EMBREE_LIBRARY};${OSPRAY_LIBRARIES}")
 
 # Create imported target vtkWrappingTools
 add_library(vtkWrappingTools STATIC IMPORTED)
@@ -605,7 +604,7 @@ add_library(vtkWrappingPythonCore SHARED IMPORTED)
 
 set_target_properties(vtkWrappingPythonCore PROPERTIES
   INTERFACE_COMPILE_FEATURES "cxx_nullptr;cxx_override"
-  INTERFACE_LINK_LIBRARIES "vtkCommonCore;vtksys;C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2017/python/3.7.7/libs/python37.lib"
+  INTERFACE_LINK_LIBRARIES "vtkCommonCore;vtksys;${PYTHON_LIBRARY}"
 )
 
 # Create imported target vtklibxml2
