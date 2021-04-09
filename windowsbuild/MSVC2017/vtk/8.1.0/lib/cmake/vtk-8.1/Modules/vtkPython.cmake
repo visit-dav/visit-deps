@@ -8,5 +8,5 @@ set(vtkPython_WRAP_HIERARCHY_FILE "${CMAKE_CURRENT_LIST_DIR}/vtkPythonHierarchy.
 set(vtkPython_KIT "")
 set(vtkPython_TARGETS_FILE "")
 set(vtkPython_EXCLUDE_FROM_WRAPPING 1)
-set(VTK_PYTHONPATH "${VTK_INSTALL_PREFIX}/lib/python2.7/site-packages")
+set(VTK_PYTHONPATH "${VTK_INSTALL_PREFIX}/lib/python3.7/site-packages")
 
