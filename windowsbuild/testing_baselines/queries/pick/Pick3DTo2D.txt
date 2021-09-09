@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+A:  globe.silo
 mesh1 
 Point: <0, -4.48889, 3.95556>
 Zone:  554
@@ -15,7 +15,7 @@ u:  <nodal>
     (842) = -2.93893
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+B:  globe.silo
 mesh1 
 Point: <0, 4.4, -2.44444>
 Zone:  945
@@ -31,7 +31,7 @@ u:  <nodal>
     (360) = 4.52254
 
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+C:  globe.silo
 mesh1 
 Point: <-0.629469, -3.97431, 4.07401>
 Zone:  554
@@ -47,7 +47,7 @@ u:  <nodal>
     (842) = -2.93893
 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+D:  globe.silo
 mesh1 
 Point: <-0.793176, 5.00792, -2.61567>
 Zone:  945
@@ -63,7 +63,7 @@ u:  <nodal>
     (360) = 4.52254
 
 
-E:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+E:  globe.silo
 mesh1 
 Point: <0, -4.48889, 3.95556>
 Zone:  554
@@ -79,7 +79,7 @@ u:  <nodal>
     (842) = -2.93893
 
 
-F:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+F:  globe.silo
 mesh1 
 Point: <0, 4.4, -2.44444>
 Zone:  945
@@ -95,7 +95,7 @@ u:  <nodal>
     (360) = 4.52254
 
 
-G:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+G:  globe.silo
 mesh1 
 Point: <-0.629469, -3.97431, 4.07401>
 Zone:  554
@@ -111,7 +111,7 @@ u:  <nodal>
     (842) = -2.93893
 
 
-H:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+H:  globe.silo
 mesh1 
 Point: <-0.793176, 5.00792, -2.61567>
 Zone:  945
@@ -127,7 +127,7 @@ u:  <nodal>
     (360) = 4.52254
 
 
-I:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+I:  globe.silo
 mesh1 
 Point: (in transformed space) 
        <-0.650387, 1.08398, 0>
@@ -144,7 +144,7 @@ u:  <nodal>
     (392) = 0.792547
 
 
-J:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+J:  globe.silo
 mesh1 
 Point: (in transformed space) 
        <-3.0785, -4.9863, 0>
@@ -161,7 +161,7 @@ u:  <nodal>
     (806) = -4.65847
 
 
-K:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+K:  globe.silo
 mesh1 
 Point: <0.782909, 1.53655, 1.746>
 Zone:  503
@@ -177,7 +177,7 @@ u:  <nodal>
     (230) = 0.931695
 
 
-L:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+L:  globe.silo
 mesh1 
 Point: <2.87067, -5.634, 6.40201>
 Zone:  596
@@ -195,7 +195,7 @@ u:  <nodal>
 
 Pick with all materials turned on:
 
-M:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+M:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.0666667, 0.0888889>
 Zone:  225
@@ -203,7 +203,7 @@ Incident Nodes:  269  270  280  281  390  391  401  402
 d:  <zonal> = 0.682125
 
 
-N:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+N:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.216667, 0.0625, 0.0833333>
 Zone:  226
@@ -211,7 +211,7 @@ Incident Nodes:  270  271  281  282  391  392  402  403
 d:  <zonal> = 0.667304
 
 
-O:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+O:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.511111, 0.555556>
 Zone:  605
@@ -219,7 +219,7 @@ Incident Nodes:  731  732  742  743  852  853  863  864
 d:  <zonal> = 0.320833
 
 
-P:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+P:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.216667, 0.5125, 0.55>
 Zone:  606
@@ -227,7 +227,7 @@ Incident Nodes:  732  733  743  744  853  854  864  865
 d:  <zonal> = 0.287983
 
 
-Q:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+Q:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.075, 0.1>
 Node:  402
@@ -243,7 +243,7 @@ d:  <zonal>
     (236) = 0.651187
 
 
-R:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+R:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.075, 0.1>
 Node:  402
@@ -259,7 +259,7 @@ d:  <zonal>
     (236) = 0.651187
 
 
-S:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+S:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.5, 0.566667>
 Node:  853
@@ -271,7 +271,7 @@ d:  <zonal>
     (606) = 0.287983
 
 
-T:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+T:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.5, 0.566667>
 Node:  853
@@ -285,7 +285,7 @@ d:  <zonal>
 
 Pick with material 2 turned off:
 
-U:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+U:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.0666667, 0.0888889>
 Zone:  226
@@ -293,7 +293,7 @@ Incident Nodes:  270  271  281  282  391  392  402  403
 d:  <zonal> = 0.667304
 
 
-V:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+V:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.216667, 0.0625, 0.0833333>
 Zone:  226
@@ -301,7 +301,7 @@ Incident Nodes:  270  271  281  282  391  392  402  403
 d:  <zonal> = 0.667304
 
 
-W:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+W:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.511111, 0.555556>
 Zone:  606
@@ -309,7 +309,7 @@ Incident Nodes:  732  733  743  744  853  854  864  865
 d:  <zonal> = 0.287983
 
 
-X:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+X:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.216667, 0.5125, 0.55>
 Zone:  606
@@ -317,7 +317,7 @@ Incident Nodes:  732  733  743  744  853  854  864  865
 d:  <zonal> = 0.287983
 
 
-Y:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+Y:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.075, 0.1>
 Node:  402
@@ -333,7 +333,7 @@ d:  <zonal>
     (236) = 0.651187
 
 
-Z:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+Z:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.075, 0.1>
 Node:  402
@@ -349,7 +349,7 @@ d:  <zonal>
     (236) = 0.651187
 
 
-a:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+a:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.5, 0.566667>
 Node:  853
@@ -361,7 +361,7 @@ d:  <zonal>
     (606) = 0.287983
 
 
-b:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+b:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.5, 0.566667>
 Node:  853

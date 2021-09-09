@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\netcdf_test_data\earth.nc
+A:  earth.nc
 mesh1350x675 
 Point: <671, 617>
 Node:  833621

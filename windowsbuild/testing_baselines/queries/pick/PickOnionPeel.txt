@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_ucd3d.silo
+A:  multi_ucd3d.silo
 mesh1 domain 4 
 Point: <1.64551, 1.80685, 0.666667>
 Zone:  15
@@ -54,7 +54,7 @@ v:  <nodal>
     (184) = 0
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_ucd3d.silo
+B:  multi_ucd3d.silo
 mesh1 domain 4 
 Point: <1.70473, 1.74947, 0.666667>
 Zone:  15
@@ -109,7 +109,7 @@ v:  <nodal>
     (184) = 0
 
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_ucd3d.silo
+C:  multi_ucd3d.silo
 mesh1 domain 4 
 Point: <1.66178, 1.7977, 0.333333>
 Zone:  15

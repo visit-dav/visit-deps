@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\curv3d.silo
+A:  curv3d.silo
 curvmesh3d 
 Point: <0.115986, 4.29042, 29.9>
 Zone:  35715
@@ -15,7 +15,7 @@ u:  <nodal>
     (39106) = -1
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\curv3d.silo
+B:  curv3d.silo
 curvmesh3d 
 Point: <0.040697, 2.25007, 29.9>
 Zone:  34905
@@ -34,7 +34,7 @@ u:  <nodal>
 *** Killed compute engine(s).
 ***
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\curv3d.silo
+C:  curv3d.silo
 curvmesh3d 
 Point: <0.15, 3.25007, 26.9>
 Zone:  31695
@@ -50,7 +50,7 @@ u:  <nodal>
     (34859) = -5.21606e-12
 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\curv3d.silo
+D:  curv3d.silo
 curvmesh3d 
 Point: <0.19, 3.75, 26.9>
 Zone:  31905

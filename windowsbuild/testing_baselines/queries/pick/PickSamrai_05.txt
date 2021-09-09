@@ -1,31 +1,19 @@
 
 Testing front:
 
-A:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+A:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.803403, 0.553261>
 Zone:  95
 Incident Nodes:  106  107  115  116  
 
-B:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+B:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.803403, 0.553261>
 Zone:  95
 Incident Nodes:  106  107  115  116  
 
-C:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
-amr_mesh level 1 patch level1,patch4 
-Point: <0.803403, 0.553261>
-Zone:  95
-Incident Nodes:  106  107  115  116  
-Distance to front:  <nodal> 
-    (106) = 0.320268
-    (107) = 0.351518
-    (115) = 0.357787
-    (116) = 0.389037
-
-
-D:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+C:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.803403, 0.553261>
 Zone:  95
@@ -37,19 +25,31 @@ Distance to front:  <nodal>
     (116) = 0.389037
 
 
-E:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+D:  summary.samrai  timestep 0
+amr_mesh level 1 patch level1,patch4 
+Point: <0.803403, 0.553261>
+Zone:  95
+Incident Nodes:  106  107  115  116  
+Distance to front:  <nodal> 
+    (106) = 0.320268
+    (107) = 0.351518
+    (115) = 0.357787
+    (116) = 0.389037
+
+
+E:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.78125, 0.5625>
 Node:  115
 Incident Zones:  94  95  
 
-F:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+F:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.78125, 0.5625>
 Node:  115
 Incident Zones:  94  95  
 
-G:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+G:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.78125, 0.5625>
 Node:  115
@@ -57,7 +57,7 @@ Incident Zones:  94  95
 Distance to front:  <nodal> = 0.357787
 
 
-H:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+H:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch4 
 Point: <0.78125, 0.5625>
 Node:  115
@@ -65,19 +65,19 @@ Incident Zones:  94  95
 Distance to front:  <nodal> = 0.357787
 
 
-I:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+I:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.803403, 0.569949>
 Zone:  156
 Incident Nodes:  165  166  182  183  
 
-J:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+J:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.803403, 0.569949>
 Zone:  156
 Incident Nodes:  165  166  182  183  
 
-K:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+K:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.803403, 0.569949>
 Zone:  156
@@ -89,7 +89,7 @@ Distance to front:  <nodal>
     (183) = 0.453921
 
 
-L:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+L:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.803403, 0.569949>
 Zone:  156
@@ -101,19 +101,19 @@ Distance to front:  <nodal>
     (183) = 0.453921
 
 
-M:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+M:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.8125, 0.5625>
 Node:  166
 Incident Zones:  156  157  141  
 
-N:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+N:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.8125, 0.5625>
 Node:  166
 Incident Zones:  156  157  141  
 
-O:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+O:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.8125, 0.5625>
 Node:  166
@@ -121,7 +121,7 @@ Incident Zones:  156  157  141
 Distance to front:  <nodal> = 0.389037
 
 
-P:  VISIT_TOP_DIR/data\samrai_test_data\front\.\visit_dump.00000\summary.samrai  timestep 0
+P:  summary.samrai  timestep 0
 amr_mesh level 0 patch level0,patch0 
 Point: <0.8125, 0.5625>
 Node:  166

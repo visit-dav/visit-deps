@@ -1,5 +1,5 @@
 
-shell 9:  VISIT_TOP_DIR/data\mili_test_data\single_proc\sslide14ball_l.plt.mili  timestep 0
+shell 9:  sslide14ball_l.plt.mili  timestep 0
 mesh1 
 Point: <1.24833, 1, 0.755>
 Zone:  15

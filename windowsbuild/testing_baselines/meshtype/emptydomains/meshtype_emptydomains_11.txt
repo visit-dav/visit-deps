@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_pdb_test_data\emptydomains.silo
+A:  emptydomains.silo
 mesh domain 2 
 Point: <10.5, 1.5, 3.5>
 Zone:  120

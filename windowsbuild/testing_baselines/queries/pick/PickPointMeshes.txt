@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+A:  noise.silo
 PointMesh 
 Point: <-4.75198, 8.34088, 9.56872>
 Node:  62
@@ -7,7 +7,7 @@ Incident Zones:  62
 PointVar:  <nodal> = 2.66047
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+B:  noise.silo
 PointMesh 
 Point: <8.56503, 5.32013, -4.20841>
 Node:  83
@@ -15,7 +15,7 @@ Incident Zones:  83
 PointVar:  <nodal> = 5.9183
 
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+C:  noise.silo
 PointMesh 
 Point: <-1.43786, -9.24374, 1.96653>
 Node:  84
@@ -23,43 +23,43 @@ Incident Zones:  84
 PointVar:  <nodal> = 1.07798
 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+D:  noise.silo
 PointMesh 
 Point: <-4.75198, 8.34088, 9.56872>
 Node:  62
 Incident Zones:  62  
 
-E:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+E:  noise.silo
 PointMesh 
 Point: <8.56503, 5.32013, -4.20841>
 Node:  83
 Incident Zones:  83  
 
-F:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+F:  noise.silo
 PointMesh 
 Point: <-1.43786, -9.24374, 1.96653>
 Node:  84
 Incident Zones:  84  
 
-G:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+G:  noise.silo
 PointMesh 
 Point: <-4.75198, 8.34088, 9.56872>
 Node:  62
 Incident Zones:  62  
 
-H:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+H:  noise.silo
 PointMesh 
 Point: <8.56503, 5.32013, -4.20841>
 Node:  83
 Incident Zones:  83  
 
-I:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+I:  noise.silo
 PointMesh 
 Point: <-1.43786, -9.24374, 1.96653>
 Node:  84
 Incident Zones:  84  
 
-J:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+J:  multi_point2d.silo
 mesh1 domain 5 
 Point: <-1.61803, 1.17557>
 Node:  0
@@ -73,7 +73,7 @@ u:  <nodal> = -1
 v:  <nodal> = 0
 
 
-K:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+K:  multi_point2d.silo
 mesh1 domain 4 
 Point: <-1.52824, 2.10345>
 Node:  51
@@ -87,7 +87,7 @@ u:  <nodal> = -0.620354
 v:  <nodal> = 0.784322
 
 
-L:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+L:  multi_point2d.silo
 mesh1 domain 3 
 Point: <-0.49379, 2.3231>
 Node:  35
@@ -101,7 +101,7 @@ u:  <nodal> = -0.383952
 v:  <nodal> = 0.923353
 
 
-M:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+M:  multi_point2d.silo
 mesh1 domain 5 
 Point: <-1.61803, 1.17557>
 Node:  0
@@ -115,7 +115,7 @@ u:  <nodal> = -1
 v:  <nodal> = 0
 
 
-N:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+N:  multi_point2d.silo
 mesh1 domain 4 
 Point: <-1.52824, 2.10345>
 Node:  51
@@ -129,7 +129,7 @@ u:  <nodal> = -0.620354
 v:  <nodal> = 0.784322
 
 
-O:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_point2d.silo
+O:  multi_point2d.silo
 mesh1 domain 3 
 Point: <-0.49379, 2.3231>
 Node:  35
@@ -143,19 +143,19 @@ u:  <nodal> = -0.383952
 v:  <nodal> = 0.923353
 
 
-P:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+P:  noise.silo
 PointMesh 
 Point: <-4.75198, 8.34088, 9.56872>
 Node:  62
 Incident Zones:  62  
 
-Q:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+Q:  noise.silo
 PointMesh 
 Point: <8.56503, 5.32013, -4.20841>
 Node:  83
 Incident Zones:  83  
 
-R:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+R:  noise.silo
 PointMesh 
 Point: <-1.43786, -9.24374, 1.96653>
 Node:  84

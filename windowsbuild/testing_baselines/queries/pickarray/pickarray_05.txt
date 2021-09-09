@@ -1,5 +1,5 @@
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0000.silo  timestep 0
+C:  wave0000.silo  timestep 0
 quadmesh 
 Point: <0.29, 0.47, 5>
 Zone:  14602
