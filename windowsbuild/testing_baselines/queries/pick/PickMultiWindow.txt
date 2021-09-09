@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+A:  wave0310.silo  timestep 31
 quadmesh 
 Point: <7.20585, 0.099664, 2.5>
 Zone:  7072
@@ -7,7 +7,7 @@ Incident Nodes:  7849  7850  7951  7950  8960  8961  9062  9061
 Material:  3 dirt 
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+B:  wave0640.silo  timestep 64
 quadmesh 
 Point: <7.20585, 0.099664, 2.37839>
 Zone:  7072
@@ -15,7 +15,7 @@ Incident Nodes:  7849  7850  7951  7950  8960  8961  9062  9061
 Material:  2 water 
 
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+C:  wave0310.silo  timestep 31
 quadmesh 
 Point: <5.86755, 0.264801, 3.56696>
 Zone:  10058
@@ -25,7 +25,7 @@ Material:
     3 dirt = 0.73
 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+D:  wave0640.silo  timestep 64
 quadmesh 
 Point: <5.86755, 0.039652, 3.56696>
 Zone:  10058
@@ -35,7 +35,7 @@ Material:
     2 water = 0.73
 
 
-E:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+E:  wave0310.silo  timestep 31
 quadmesh 
 Point: <7.20585, 0.099664, 2.5>
 Zone:  7072
@@ -51,7 +51,7 @@ v:  <nodal>
     (9061) = 0.011032
 
 
-F:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+F:  wave0310.silo  timestep 31
 quadmesh 
 Point: <5.86755, 0.264801, 3.56696>
 Zone:  10058
@@ -67,7 +67,7 @@ v:  <nodal>
     (12380) = 0.0450498
 
 
-G:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+G:  wave0640.silo  timestep 64
 quadmesh 
 Point: <7.20585, 0.099664, 2.37839>
 Zone:  7072
@@ -83,7 +83,7 @@ pressure:  <nodal>
     (9061) = 0.0716332
 
 
-H:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+H:  wave0640.silo  timestep 64
 quadmesh 
 Point: <5.86755, 0.039652, 3.56696>
 Zone:  10058

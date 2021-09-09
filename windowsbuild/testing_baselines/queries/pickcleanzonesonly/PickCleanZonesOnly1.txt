@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\ucd3d.silo
+A:  ucd3d.silo
 ucdmesh3d 
 Point: <-3.5, 0.01, 10.1>
 Zone:  1097

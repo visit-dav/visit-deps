@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+A:  noise.silo
 Point: <hardyglobal, shepardglobal>
 Node:  114898
 hardyglobal:  <nodal> = 2.4583
@@ -9,7 +9,7 @@ shepardglobal:  <nodal> = 3.78342
 radial:  <nodal> = 1.87044
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\noise.silo
+B:  noise.silo
 Point: <hardyglobal, shepardglobal>
 Node:  17449
 hardyglobal:  <nodal> = 2.46713
@@ -20,7 +20,7 @@ radial:  <nodal> = 17.5558
 
 Expressions used in Scatter
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+C:  multi_rect3d.silo
 Point: <xc, yc, zc>
 Node:  149
 xc:  <nodal> = 0.2
@@ -33,7 +33,7 @@ uvw_prod:  <nodal> = 0.136506
 
 Mix up the coordinates
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+D:  multi_rect3d.silo
 Point: <yc, xc, zc>
 Node:  213
 xc:  <nodal> = 0.8

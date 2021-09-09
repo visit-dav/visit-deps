@@ -1,5 +1,5 @@
 
-B:  VISIT_TOP_DIR/data\silo_pdb_test_data\emptydomains.silo
+B:  emptydomains.silo
 mesh domain 2 
 Point: <4, 0, 2>
 Node:  100

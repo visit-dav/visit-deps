@@ -11,7 +11,7 @@ Pick using results of MinMax Query:
 
 Pick for zone at 'd' minimum: 
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+C:  multi_rect3d.silo
 mesh1 domain 16 
 Point: <0.15, 0.4875, 0.483333>
 Zone:  494
@@ -20,7 +20,7 @@ d:  <zonal> = 0.350619
 
 Pick for zone at 'd' maximum: 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\multi_rect3d.silo
+D:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.0166667, 0.0125, 0.0166667>
 Zone:  0

@@ -1,13 +1,13 @@
 
 Testing clipped SAMRAI (3D):
 
-A:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+A:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5.22482, 5.72228, 3.55271e-15>
 Zone:  65
 Incident Nodes:  70  71  83  84  239  240  252  253  
 
-B:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+B:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5.22482, 5.72228, 3.55271e-15>
 Zone:  65
@@ -15,13 +15,13 @@ Incident Nodes:  70  71  83  84  239  240  252  253
 Primitive Var _number_0:  <zonal> = 10
 
 
-C:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+C:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5.22482, 5.72228, 3.55271e-15>
 Zone:  65
 Incident Nodes:  70  71  83  84  239  240  252  253  
 
-D:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+D:  summary.samrai  timestep 0
 amr_mesh level 2 patch level2,patch0 
 Point: <5.22482, 5.72228, 2.09091>
 Zone:  818
@@ -29,13 +29,13 @@ Incident Nodes:  901  902  920  921  1262  1263  1281  1282
 Primitive Var _number_0:  <zonal> = 10
 
 
-E:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+E:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5, 5, 0>
 Node:  70
 Incident Zones:  64  52  65  53  
 
-F:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+F:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5, 5, 0>
 Node:  70
@@ -47,13 +47,13 @@ Primitive Var _number_0:  <zonal>
     (53) = 10
 
 
-G:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+G:  summary.samrai  timestep 0
 amr_mesh level 1 patch level1,patch0 
 Point: <5, 5, 0>
 Node:  70
 Incident Zones:  64  52  65  53  
 
-H:  VISIT_TOP_DIR/data\samrai_test_data\sil_changes\visit_dump.00000\summary.samrai  timestep 0
+H:  summary.samrai  timestep 0
 amr_mesh level 2 patch level2,patch0 
 Point: <5, 5, 2>
 Node:  882

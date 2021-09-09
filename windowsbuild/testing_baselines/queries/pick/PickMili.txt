@@ -1,5 +1,5 @@
 
-A:  VISIT_TOP_DIR/data\mili_test_data\single_proc\m_plot.mili  timestep 77
+A:  m_plot.mili  timestep 77
 mesh1 
 Point: <7.16649, 1.51223, -9.94804>
 Zone:  510
@@ -7,7 +7,7 @@ Incident Nodes:  371  471  481  381  372  472  482  382
 Primal/brick/stress/sx:  <zonal> = 3567.2
 
 
-B:  VISIT_TOP_DIR/data\mili_test_data\single_proc\m_plot.mili  timestep 77
+B:  m_plot.mili  timestep 77
 mesh1 
 Point: <7, 1.11111, -10>
 Node:  372
@@ -19,7 +19,7 @@ Primal/brick/stress/sx:  <zonal>
     (510) = -8122.87
 
 
-C:  VISIT_TOP_DIR/data\mili_test_data\single_proc\m_plot.mili  timestep 77
+C:  m_plot.mili  timestep 77
 mesh1 
 Point: <8, 8.55808, -7.11117>
 Zone:  535
@@ -27,7 +27,7 @@ Incident Nodes:  502  602  612  512  503  603  613  513
 Primal/brick/stress/sx:  <zonal> = 282.835
 
 
-D:  VISIT_TOP_DIR/data\mili_test_data\single_proc\m_plot.mili  timestep 77
+D:  m_plot.mili  timestep 77
 mesh1 
 Point: <8.10904, 7.75375, -7.75409>
 Node:  603

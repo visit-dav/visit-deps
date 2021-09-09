@@ -6,7 +6,7 @@ pressure -- Max = 1 (node 42 at coord <4.2, 1, 0>)
 The total Surface Area is 118.678
 The total Volume is 25
 
-A:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+A:  wave0310.silo  timestep 31
 quadmesh 
 Point: <7.25, 0.122125, 2.5>
 Zone:  7072
@@ -23,7 +23,7 @@ pressure:  <nodal>
 
 
 
-B:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0310.silo  timestep 31
+B:  wave0310.silo  timestep 31
 quadmesh 
 Point: <5.8, 0.280899, 3.33333>
 Node:  11168
@@ -44,7 +44,7 @@ v -- Max = -0.000320944 (node 0 at coord <0, 0.00850051, 0>)
 The total Surface Area is 115.83
 The total Volume is 25
 
-C:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+C:  wave0640.silo  timestep 64
 quadmesh 
 Point: <7.25, 0.0985525, 2.5>
 Zone:  7072
@@ -61,7 +61,7 @@ v:  <nodal>
 
 
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\wave0640.silo  timestep 64
+D:  wave0640.silo  timestep 64
 quadmesh 
 Point: <5.8, 0.0384615, 3.33333>
 Node:  11168

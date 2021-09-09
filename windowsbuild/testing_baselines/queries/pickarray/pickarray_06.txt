@@ -1,5 +1,5 @@
 
-D:  VISIT_TOP_DIR/data\silo_hdf5_test_data\globe.silo
+D:  globe.silo
 mesh1 
 Point: <-2.20275, -4.30538, 8.59023>
 Zone:  493
@@ -19,7 +19,7 @@ arr3:  <zonal> = (-0.921542, 0, 0)
 
 Pick could not retrieve the requested information, possibly due to a bad expression in its variables list. Please check the requested variables list and try again.
 
-E:  VISIT_TOP_DIR/test\globe_temp.vtk
+E:  globe_temp.vtk
 mesh1 
 Point: <-2.20275, -4.30538, 8.59023>
 Zone:  493

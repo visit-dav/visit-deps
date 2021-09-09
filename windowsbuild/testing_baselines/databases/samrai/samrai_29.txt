@@ -1,5 +1,5 @@
 
-B:  VISIT_TOP_DIR/data\samrai_test_data\sparse_mats\summary.samrai
+B:  summary.samrai
 amr_mesh level 1 patch level1,patch0 
 Point: <-0.2875, 0.075>
 Zone:  247
