@@ -2,9 +2,9 @@
 # HDF5 Config file for compiling against hdf5 install directory
 #-----------------------------------------------------------------------------
 GET_FILENAME_COMPONENT (SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-message ("self dir: ${SELF_DIR}")
+#message ("self dir: ${SELF_DIR}")
 GET_FILENAME_COMPONENT(_IMPORT_PREFIX "${SELF_DIR}" PATH)
-message ("import prefix 1: ${_IMPORT_PREFIX}")
+#message ("import prefix 1: ${_IMPORT_PREFIX}")
 #GET_FILENAME_COMPONENT(_IMPORT_PREFIX "${_IMPORT_PREFIX}" PATH)
 #message ("import prefix 2: ${_IMPORT_PREFIX}")
 
