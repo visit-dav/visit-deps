@@ -15,10 +15,6 @@ if ("${PACKAGE_FIND_VERSION_MAJOR}" EQUAL 1)
     if ("${PACKAGE_FIND_VERSION_PATCH}" EQUAL 19)
       set (PACKAGE_VERSION_EXACT 1)    
 
-      if ("${PACKAGE_FIND_VERSION_TWEAK}" EQUAL )
-        # not using this yet
-      endif ("${PACKAGE_FIND_VERSION_TWEAK}" EQUAL )
-      
     endif ("${PACKAGE_FIND_VERSION_PATCH}" EQUAL 19)
     
   endif ("${PACKAGE_FIND_VERSION_MINOR}" EQUAL 8)
