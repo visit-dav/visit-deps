@@ -43,7 +43,7 @@ call "%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Professional\\VC\\Auxi
 Rem This is the hash for the current certificate, will need to be updated
 Rem if the certificate changes. The certificate needs to be properly
 Rem installed on the machine where this script is being run.
-set CSHash=bcefd3e987eaa06043c518366415210f73a86d4c
+set CSHash=9b7dd3101ccddc13175797f7562031f19ba4915b
 
 Rem Going to start with a fresh build directory.
 Rem Deleting takes awhile, so move it instead and delete later
@@ -73,11 +73,8 @@ cd %VBldDirName%
 -DVISIT_WINDOWS_APPLICATION:BOOL=true ^
 %VSrcDir%
 
-Rem build the source package
-msbuild _SRC_Package.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=srcpackage.warn /flp2:errorsonly;logfile=srcpackage.error
-
-Rem sign the source package
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% visitdev%VVERS%.exe
+Rem build the windev package
+msbuild _WINDEV_Package.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=srcpackage.warn /flp2:errorsonly;logfile=srcpackage.error
 
 Rem build the manuals
 msbuild doc\manuals.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=manuals.warn /flp2:errorsonly;logfile=manuals.error
