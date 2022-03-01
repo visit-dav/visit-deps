@@ -1,0 +1,6 @@
+#ifndef VTK_H_CONFIG_HPP
+#define VTK_H_CONFIG_HPP
+
+/* #undef VTK_H_ENABLE_FILTER_CONTOUR_TREE */
+
+#endif
