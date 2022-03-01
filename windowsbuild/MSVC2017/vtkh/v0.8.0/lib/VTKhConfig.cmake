@@ -53,24 +53,12 @@ set(VTKh_VERSION "0.7.0")
 
 set(VTKh_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include")
 
-# This is true when the package is still in the build directory (not installed)
-if(CMAKE_CURRENT_LIST_DIR STREQUAL "C:/A_Visit/ThirdParty/vtkh-v0.8.0-build/lib")
-  set(VTKh_PACKAGE_IN_BUILD TRUE)
-endif()
-
-if(NOT VTKM_DIR)
-  set(VTKM_DIR "C:/A_VisIt/GIT/visit-deps/windowsbuild/MSVC2017/vtkm/v1.7.0")
-  message(STATUS "VTKh automatically found VTKM_DIR: ${VTKM_DIR}")
-else()
-  message(STATUS "VTKh using provided path  VTKM_DIR: ${VTKM_DIR}")
-endif()
+message(STATUS "VTKh using provided path  VTKM_DIR: ${VTKM_DIR}")
 
 # set this before we load vtkm because package is overridden by vtkm
 # Load the library exports, but only if not compiling VTK-h itself
 set_and_check(VTKh_CONFIG_DIR "${PACKAGE_PREFIX_DIR}/lib")
-if(NOT "${CMAKE_BINARY_DIR}" STREQUAL "C:/A_Visit/ThirdParty/vtkh-v0.8.0-build")
-  include(${VTKh_CONFIG_DIR}/VTKhTargets.cmake)
-endif()
+include(${VTKh_CONFIG_DIR}/VTKhTargets.cmake)
 
 # use VTKM_DIR to setup the options that cmake's find VTKm needs
 file(GLOB VTKm_DIR "${VTKM_DIR}/lib/cmake/vtkm-*")

@@ -69,7 +69,7 @@ set_target_properties(vtkh_core PROPERTIES
 add_library(vtkh_filters STATIC IMPORTED)
 
 set_target_properties(vtkh_filters PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "C:/A_Visit/GIT/visit-deps/windowsbuild/MSVC2017/vtkm/v1.7.0/include/vtkm-1.7;C:/A_Visit/GIT/visit-deps/windowsbuild/MSVC2017/vtkm/v1.7.0/include/vtkm-1.7/vtkm/thirdparty/diy"
+  INTERFACE_INCLUDE_DIRECTORIES "${VTKM_DIR}/include/vtkm-1.7;${VTKM_DIR}/include/vtkm-1.7/vtkm/thirdparty/diy"
   INTERFACE_LINK_LIBRARIES "vtkh_core;vtkh_utils;vtkm_compiler_flags;vtkm_diy"
 )
 
