@@ -1,0 +1,21 @@
+--- C:\A_Visit\third-party\lib\vtkh-v0.8.0\src\vtkh\rendering\ScalarRenderer.cpp	2021-12-22 11:05:26.000000000 -0800
++++ C:\A_Visit\ThirdParty\vtkh-v0.8.0\src\vtkh\rendering\ScalarRenderer.cpp	2022-02-17 16:00:43.000000000 -0800
+@@ -246,16 +246,16 @@
+   {
+     if(num_cells == 0)
+     {
+       vtkm::Bounds b(bounds);
+       PayloadImage p(b, max_p);
+       int size = p.m_depths.size();
+-      float depths[size];
++      std::vector<float> depths(size);
+       for(int i = 0; i < size; i++)
+         depths[i] = std::numeric_limits<int>::max();
+-      std::copy(depths, depths + size, &p.m_depths[0]);
++      std::copy(&depths[0], &depths[0] + size, &p.m_depths[0]);
+       compositor.AddImage(p);
+     }
+ 
+     if(min_p != max_p)
+     {
+       throw Error("Scalar Renderer: mismatch in payload bytes");

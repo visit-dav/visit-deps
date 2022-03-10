@@ -1,0 +1,42 @@
+--- C:\A_Visit\third-party\lib\vtkh-v0.8.0\src\vtkh\StatisticsDB.hpp	2020-11-11 09:29:24.000000000 -0800
++++ C:\A_Visit\ThirdParty\vtkh-v0.8.0\src\vtkh\StatisticsDB.hpp	2022-03-01 08:28:57.000000000 -0800
+@@ -4,15 +4,19 @@
+ #ifdef VTKH_PARALLEL
+ #include <mpi.h>
+ #endif
+ 
+ #include <math.h>
+ #include <time.h>
++#ifndef _WIN32
+ #include <sys/time.h>
++#endif
+ #include <sys/timeb.h>
++#ifndef _WIN32
+ #include <unistd.h>
++#endif
+ #define TIMEINFO timeval
+ 
+ #include <map>
+ #include <string>
+ #include <vector>
+ #include <algorithm>
+@@ -70,15 +74,19 @@
+ 
+     double getTime()
+     {
+ #ifdef VTKH_PARALLEL
+         return MPI_Wtime();
+ #else
++#ifndef _WIN32
+         struct TIMEINFO ti;
+         gettimeofday(&ti, 0);
+         return (double)(ti.tv_sec + ti.tv_usec/1e6f);
++#else
++        return 0.;
++#endif
+ #endif
+     }
+ 
+     void begin() {ts = getTime()-t0;}
+     void end() {history.push_back(std::make_pair(ts, getTime()-t0));}
+ 
