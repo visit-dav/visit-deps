@@ -1,0 +1,36 @@
+--- C:\A_Visit\third-party\lib\vtkh-v0.8.0\src\vtkh\filters\Slice.cpp	2021-11-05 15:26:34.000000000 -0800
++++ C:\A_Visit\ThirdParty\vtkh-v0.8.0\src\vtkh\filters\Slice.cpp	2022-03-01 08:22:31.000000000 -0800
+@@ -206,14 +206,14 @@
+   vtkm::cont::DataSet MergeDomains(std::vector<vtkm::cont::DataSet> &doms)
+   {
+     vtkm::cont::DataSet res;
+ 
+     vtkm::Id num_cells = 0;
+     vtkm::Id num_points = 0;
+-    vtkm::Id cell_offsets[doms.size()];
+-    vtkm::Id point_offsets[doms.size()];
++    std::vector<vtkm::Id> cell_offsets(doms.size());
++    std::vector<vtkm::Id> point_offsets(doms.size());
+ 
+     for(size_t dom = 0; dom < doms.size(); ++dom)
+     {
+       auto cell_set = doms[dom].GetCellSet();
+ 
+       // In the past, we were making assumptions that the output of contour
+@@ -318,14 +318,14 @@
+       const vtkm::cont::Field &field = doms[0].GetField(f);
+ 
+       if(field.GetName() == m_skip_field) continue;
+ 
+       CopyField copier(res,
+                        doms,
+-                       point_offsets,
+-                       cell_offsets,
++                       &point_offsets[0],
++                       &cell_offsets[0],
+                        num_points,
+                        num_cells,
+                        f);
+ 
+       auto full = field.GetData().ResetTypes(vtkm::TypeListCommon(),VTKM_DEFAULT_STORAGE_LIST{});
+       full.CastAndCall(copier);
