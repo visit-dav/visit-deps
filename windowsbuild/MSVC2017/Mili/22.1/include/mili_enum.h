@@ -39,6 +39,12 @@
 #define MILI_ENUM_H
 
 
+enum subrec_layout
+{
+RESULT_ORDERED,
+OBJECT_ORDERED
+};
+
 /*****************************************************************
  * TAG( Control_function_type )
  *
@@ -271,7 +277,7 @@ enum Srec_header_indices
 #endif
 
 
-typedef enum ReturnValue
+typedef enum
 {
    OK     = 0,
    NOT_OK = 1,
@@ -288,6 +294,8 @@ typedef enum ReturnValue
    ENTRY_NOT_FOUND,
    HASH_TABLE_OVERFLOW,
    UNKNOWN_HASH_ACTION,
+   VECTOR_REDECLARATION_ERROR,
+   VARIABLE_AGG_TYPE_ERROR,
 
    BAD_FAMILY = 121,
    UNKNOWN_OS,
@@ -389,10 +397,15 @@ typedef enum ReturnValue
    INVALID_SVAR_AGG_TYPE,
    CONN_LABEL_ID_MISMATCH,
    ZERO_SIZE_ERROR,  // 220
-	TOO_MANY_LABELS,
+   TOO_MANY_LABELS,
    SVAR_VEC_ARRAY_ORG_MISMATCH,
    INVALID_VISIT_JSON_FILE,
-   NO_A_FILE_FOR_STATEMAP
+   NO_A_FILE_FOR_STATEMAP,
+   DIR_ZERO_COUNT,
+   SUBRECORD_ALIGN_ERROR,
+   STATE_NOT_INSTATIATED,
+   INVALID_SR_OFFSET_UNDER,
+   INVALID_SR_OFFSET_OVER //229
 } Return_value;
 
 
