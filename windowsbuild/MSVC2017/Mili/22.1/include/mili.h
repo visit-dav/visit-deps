@@ -58,7 +58,7 @@
 #define MILI_H
 /*The following is for bookkeeping only*/
 #ifndef MILI_VERSION
-#define MILI_REVISION_DATE ="09/30/2016:09:00";
+#define MILI_REVISION_DATE ="12/7/2021:19:00";
 #endif
 
 #include <ctype.h>
@@ -70,7 +70,7 @@ typedef int Famid;
 #include "mili_enum.h"
 
 #ifndef MILI_VERSION
-#define MILI_VERSION "V19_02"
+#define MILI_VERSION "V21_02"
 #endif
 
 #if defined(_WIN32) || defined(WIN32)
@@ -86,7 +86,7 @@ typedef int Famid;
 /**/
 /* Need to improve this for all 64- and 32-bit OS cases. */
 #ifdef HAVEINT8
-#define LONGLONG long long
+#define LONGLONG size_t
 #if defined (_MSC_VER)
 #define CLONGLONGCONST(c) c##i64
 #else
@@ -182,13 +182,6 @@ typedef enum
    MESH_NAME
 } Query_request_type;
 
-
-/*
- * State data organization options.
- */
-#define RESULT_ORDERED  (0)
-#define OBJECT_ORDERED  (1)
-
 /*
  * Categories of information in a Mili family.
  */
@@ -221,7 +214,6 @@ typedef enum
 /*
  * Convenience type definitions
  */
-
 typedef enum
 {
    SCALAR,
@@ -260,43 +252,11 @@ typedef struct _subrecord
    int *surface_variable_flag;
 } Subrecord;
 
-/* Obj Group *
-typedef struct _objgroup
-{
-   char   *group_name;
-
-   int    numVertex;
-   int    numLineSegs;
-   int    numFaces;
-   int    numPoints;
-
-   float  **vertex;
-   float  **normal;
-   int    *vertex_id, *normal_id;
-
-   int    *smoothing_group;
-   int    **facesVertex;
-   int    **linesVertex;
-   int    **pointsVertex;
-   int    *facesNormal;
-} ObjGroup;
-*/
-/* Obj top-level *
-typedef struct _objdef
-{
-   char *obj_name;
-   int  num_groups;
-   char **group_names;
-   ObjGroup *groups;
-} ObjDef;
-*/
-/* Mili version */
-/* const char *mili_version; */
 
 /*
-                * *                                      * *
-                * *   File family management routines.   * *
-                * *                                      * *
+* *                                      * *
+* *   File family management routines.   * *
+* *                                      * *
 */
 Return_value mc_writeMiliMetaData(Famid database_id);
 
@@ -785,6 +745,10 @@ mc_load_conn_labels(       /* Read element labels into memory. */
    int  *labels );        /* (output) Destination buffer for element labels */
 
 Return_value
+mc_reload_states( 
+   Famid famid );
+
+Return_value
 mc_load_surface(           /* Read surface connectivities into memory. */
    Famid fam_id,          /* Mili family identifier */
    int mesh_id,           /* Ident of mesh to which surface belongs */
@@ -984,7 +948,7 @@ Return_value
 mc_wrt_stream(             /* Write a sequential stream of state data words */
    Famid fam_id,          /* Mili family identifier */
    int type,              /* Data type of words */
-   int qty,               /* Quantity of words */
+   LONGLONG qty,               /* Quantity of words */
    void *data );          /* Data to be written to family */
 
 Return_value
@@ -1052,13 +1016,20 @@ mc_limit_states(           /* Set quantity of states per state-data file */
 Return_value
 mc_limit_filesize(         /* Set quantity of states per state-data file */
    Famid fam_id,          /* Mili family identifier */
-   long filesize );       /* Requested filesize in bytes */
+   LONGLONG filesize );       /* Requested filesize in bytes */
 
 Return_value
 mc_suffix_width(           /* Set suffix width for state-data filenames */
    Famid fam_id,          /* Mili family identifier */
    int suffix_width );    /* Min numeric suffix width for state-file names */
-
+Return_value 
+mc_set_subrec_check(
+   Famid fam_id, 
+   Bool_type check);
+Return_value
+mc_check_subrec_start(
+   Famid fam_id, 
+   int srec_id);
 void
 mc_print_error(            /* Print diagnostic message for error return */
    char *preamble,        /* Text to be prepended to ": <message>" */
@@ -1689,10 +1660,10 @@ mc_silo_ti_enable_only(  Famid fam_id ) ;
  *****************************************************************
  */
 
-int
+LONGLONG
 mc_calc_bytecount(
    int datatype,
-   int size );
+   LONGLONG size );
 
 void
 mc_blocks_to_list(  /* Converts block pair format to ids */
