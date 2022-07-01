@@ -89,19 +89,19 @@ Rem create the install dir that will be packaged
 msbuild INSTALL.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=package.warn /flp2:errorsonly;logfile=package.error
 
 Rem sign the executables that will be packaged
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\*.exe 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.exe 
 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\*.dll 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.dll 
 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\databases\*.dll 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\operators\*.dll 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\plots\*.dll
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\databases\*.dll 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\operators\*.dll 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\plots\*.dll
  
 Rem Create the installer 
 msbuild _Package.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=package.warn /flp2:errorsonly;logfile=package.error
 
 Rem Sign the installer 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt %VVERS%"\visit%VVERS%_x64.exe 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "visit%VVERS%_x64.exe 
 
 
 cd %VRootDir%

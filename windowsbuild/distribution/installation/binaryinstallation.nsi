@@ -144,6 +144,14 @@
 #   Also fixed uninstaller logic to simply remove the folder, as previous logic
 #   could leave .pyc files remaining the in the installation folder.
 #
+#   Kathleen Biagas, Fri July 1, 2022
+#   Removed most sections, replaced with ExtractTarball which has logic to
+#   install the 7zip file containing everything, and extract to the install
+#   location everything except items allowed to be skipped (like specific
+#   database plugins).  Retained optional sections, so that user has the
+#   ability to choose not to install them (data, help, etc).
+#   Removed the space in the install name 'VisIt <version>'->'VisIt<verison>'.
+#
 ###############################################################################
 
 !addPluginDir ".\VIkit"
@@ -157,10 +165,10 @@
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}_x64.exe"
 
-!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME} ${PRODUCT_VERSION}"
+!define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}${PRODUCT_VERSION}"
 !define PRODUCT_UNINST_ROOT_KEY "SHCTX"
 
-!define PRODUCT_INST "${PRODUCT_PUBLISHER}\${PRODUCT_NAME} ${PRODUCT_VERSION}"
+!define PRODUCT_INST "${PRODUCT_PUBLISHER}\${PRODUCT_NAME}${PRODUCT_VERSION}"
 !define V_INSTDIR_USER  "$Profile"
 
 !define V_INSTDIR_ADMIN "$ProgramFiles64"
@@ -168,7 +176,7 @@
 !define V_UNINSTALLER "${VISITINSTDIR}\uninstall_visit.exe"
 
 RequestExecutionLevel user
-Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
+Name "${PRODUCT_NAME}${PRODUCT_VERSION}_x64"
 
 !ifdef CREATING_UNINSTALLER
   OutFile "$%TEMP%\tempinstaller.exe"
@@ -193,8 +201,7 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
   !ifdef CODESIGN_HASH
     !system "signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 ${CODESIGN_HASH} $%TEMP%\uninstall_visit.exe" = 0
   !endif
-  OutFile "${INSTALL_PREFIX}\visit${PRODUCT_VERSION}_x64.exe"
-  
+  OutFile "${BIN_DIR}\visit${PRODUCT_VERSION}_x64.exe"
 
   !include "LogicLib.nsh"
   !include "MUI2.nsh"
@@ -247,6 +254,8 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
 
   ; Instfiles page
   !insertmacro MUI_PAGE_INSTFILES
+  # useful for debuggin, uncomment as necessary
+  #!define MUI_FINISHPAGE_NOAUTOCLOSE
   !define MUI_FINISHPAGE_TEXT ""
   !define MUI_PAGE_CUSTOMFUNCTION_SHOW FinishPageShow
   !insertmacro MUI_PAGE_FINISH
@@ -341,42 +350,12 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
   !system "${BIN_DIR}\CreateDBSections.exe"
   !include "${BIN_DIR}\DBSections.txt"
   Section DataFiles SEC_DATA
-    SetOutPath "${VISITINSTDIR}\data"
-    #!insertmacro CompileTimeIfFileExists "${INSTALL_PREFIX}\data\globe.silo" haveVisItDistData
-    #!insertmacro CompileTimeIfFileExists "$%VISIT_DATA_DIR%" haveVisItDataDir
-    #!ifdef haveVisItDistData
-      #DetailPrint "using visit dist data "
-      File "${INSTALL_PREFIX}\data\*"
-    #!else
-    #  !ifdef haveVisItDataDir
-    #    DetailPrint "using visit data dir "
-    #    File "$%VISIT_DATA_DIR%\*.silo"
-    #    File "$%VISIT_DATA_DIR%\wave.visit"
-    #    File "$%VISIT_DATA_DIR%\PDB\db*.pdb"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.hdr"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.img"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\ANALYZE_test_data\*.visit"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\FVCOM\*.nc"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\crotamine.pdb"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1NTS.pdb"
-    #    File /nonfatal "$%VISIT_DATA_DIR%\molecules\1UZ9.pdb"
-    #  !else
-    #    File "${VISIT_DIST_DIR}\visit_dist_data\*.silo"
-    #    File "${VISIT_DIST_DIR}\visit_dist_data\*.pdb"
-    #  !endif
-    #!endif
-    SetOutPath "${VISITINSTDIR}"
   SectionEnd
 
   Section HelpFiles SEC_HELP
-    SetOutPath "${VISITINSTDIR}"
-    File /r "${INSTALL_PREFIX}\help"
   SectionEnd
 
   Section /o "Plugin development" SEC_DEV
-    SetOutPath "${VISITINSTDIR}"
-    File /r "${INSTALL_PREFIX}\lib"
-    File /r "${INSTALL_PREFIX}\include"
     ${If} $InstallUsers == "all"
       WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITARCHHOME "%VISITLOC%"
       WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
@@ -394,8 +373,6 @@ Name "${PRODUCT_NAME} ${PRODUCT_VERSION}_x64"
   SectionEnd
 
   Section /o "LibSIM" SEC_LIBSIM
-    SetOutPath "${VISITINSTDIR}"
-    File /nonfatal /r "${INSTALL_PREFIX}\libsim"
   SectionEnd
 
   !insertmacro MUI_FUNCTION_DESCRIPTION_BEGIN
@@ -1043,78 +1020,46 @@ FunctionEnd
   #
   #############################################################################
 
-  Section -PlotPlugins
-  SetOutPath "${VISITINSTDIR}\plots"
-    ${If} ${SectionIsSelected} ${SEC_PAR}
-      File "${INSTALL_PREFIX}\plots\*.dll"
-    ${Else}
-      File /x "*_par.dll" "${INSTALL_PREFIX}\plots\*.dll"
-    ${EndIf}
-  SectionEnd
-
-  Section -OperatorPlugins
-    SetOutPath "${VISITINSTDIR}\operators"
-    ${If} ${SectionIsSelected} ${SEC_PAR}
-      File "${INSTALL_PREFIX}\operators\*.dll"
-    ${Else}
-      File /x "*_par.dll" "${INSTALL_PREFIX}\operators\*.dll"
-    ${EndIf}
-  SectionEnd
-
-  Section -ExecutableComponents
+  Section -ExtractTarball
     !insertmacro UpdateShellVarContext "$InstallUsers"
     SetOutPath "${VISITINSTDIR}"
-    SetOverwrite ifnewer
-    ${If} ${SectionIsSelected} ${SEC_PAR}
-      File "${INSTALL_PREFIX}\*.dll"
-    ${Else}
-      File /x "*_par.dll" "${INSTALL_PREFIX}\*.dll"
-    ${EndIf}
-    ${If} ${SectionIsSelected} ${SEC_PAR}
-      File /x visit${VisItVersion}_x64.exe "${INSTALL_PREFIX}\*.exe"
-    ${Else}
-      File /x visit${VisItVersion}_x64.exe /x "*_par.exe" "${INSTALL_PREFIX}\*.exe"
-    ${EndIf}
     File "${VISIT_DIST_DIR}\installation\xml2plugin.bat"
-    File "${INSTALL_PREFIX}\makemovie.py"
-    File "${INSTALL_PREFIX}\makemoviemain.py"
-    File "${INSTALL_PREFIX}\visitcinema.py"
-    File "${INSTALL_PREFIX}\visitcinemamain.py"
-    File "${INSTALL_PREFIX}\visitdiff.py"
-
-    File /r "${INSTALL_PREFIX}\qtplugins"
-    File "${INSTALL_PREFIX}\qt.conf"
-    # Silex file
-    File /nonfatal "${INSTALL_PREFIX}\silex.exe"
-    # browser file
-    File /nonfatal "${INSTALL_PREFIX}\browser.exe"
-    # Icon files
-    File "${VISIT_DIST_DIR}\resources\*.ico"
-    # Uninstaller
     File "$%TEMP%\uninstall_visit.exe"
-  SectionEnd
 
-  Section -PythonModules
-    SetOutPath "${VISITINSTDIR}\lib"
-    File /r /x *.pyc "${INSTALL_PREFIX}\lib\python"
-    File /nonfatal "${INSTALL_PREFIX}\lib\*.pyd"
-    SetOutPath "${VISITINSTDIR}"
-  SectionEnd
+    File "/oname=$PLUGINSDIR\visit${PRODUCT_VERSION}.7z" "${BIN_DIR}\visit${PRODUCT_VERSION}.7z"
+    File "/oname=$PLUGINSDIR\7z.exe" "${VISIT_WINDOWS_DIR}\${COMPILER}\p7zip\18.05\7z.exe"
+    File "/oname=$PLUGINSDIR\7z.dll" "${VISIT_WINDOWS_DIR}\${COMPILER}\p7zip\18.05\7z.dll"
 
-  Section -PythonFilterModules
-    SetOutPath "${VISITINSTDIR}\lib"
-    File /r /x *.pyc "${INSTALL_PREFIX}\lib\site-packages"
-    SetOutPath "${VISITINSTDIR}"
-  SectionEnd
+    # create a var to hold exclusions
+    strcpy $0 ""
+    ${IfNot} ${SectionIsSelected} ${SEC_PAR}
+        strcpy $0 "-xr!*_par.* -xr!*\plots\*_par.* -xr!*\operators\*_par.*"
+    ${EndIf}
+    ${IfNot} ${SectionIsSelected} ${SEC_DEV}
+        strcpy $0 "$0 -xr!lib\*.lib -xr!include\"
+    ${EndIf}
+    ${IfNot} ${SectionIsSelected} ${SEC_HELP}
+        strcpy $0 "$0 -xr!*\resources\help\"
+    ${EndIf}
+    ${IfNot} ${SectionIsSelected} ${SEC_DATA}
+        strcpy $0 "$0 -xr!data\"
+    ${EndIf}
+    ${IfNot} ${SectionIsSelected} ${SEC_LIBSIM}
+        strcpy $0 "$0 -xr!libsim\"
+    ${EndIf}
 
-  Section -UltraWrapper
-    SetOutPath "${VISITINSTDIR}"
-    File /r "${INSTALL_PREFIX}\ultrawrapper"
-  SectionEnd
+    StrCpy $9 ${SEC_DP_0}
+    StrCpy $8 ${NumDBPlugins}
+    IntOp $8 $8 - 1
+    ${For} $R0 0 $8
+        ${IfNot} ${SectionIsSelected} $9
+            SectionGetText $9 $R2
+            strcpy $0 "$0 -xr!*databases\?$R2*.dll"
+        ${EndIf}
+        IntOp $9 $9 + 1
+    ${Next}
 
-  Section -Resources
-    SetOutPath "${VISITINSTDIR}"
-    File /r /x CMakeLists.txt "${INSTALL_PREFIX}\resources"
+    ExecWait '"$PLUGINSDIR\7z.exe" x -spe $0 -o"${VISITINSTDIR}" $PLUGINSDIR\visit${PRODUCT_VERSION}.7z' $7
   SectionEnd
 
   Section -AllHosts
@@ -1150,11 +1095,6 @@ FunctionEnd
       SetOutPath "${VISITINSTDIR}"
     ${EndIf}
     SetOutPath "${VISITINSTDIR}"
-  SectionEnd
-
-  Section -PlatformsDLL
-    SetOutPath "${VISITINSTDIR}"
-    File /nonfatal /r "${INSTALL_PREFIX}\platforms"
   SectionEnd
 
   Section -TestOpenGLVersion
@@ -1206,21 +1146,21 @@ FunctionEnd
   SectionEnd
 
   Section -CreateLinks
-    Strcpy $R0 "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
+    Strcpy $R0 "$SMPROGRAMS\VisIt${PRODUCT_VERSION}"
     CreateDirectory "$R0"
-    CreateShortCut "$R0\VisIt ${PRODUCT_VERSION}.lnk"  \
+    CreateShortCut "$R0\VisIt${PRODUCT_VERSION}.lnk"  \
        "${VISITINSTDIR}\visit.exe" ""      \
        "" 0  \
        SW_SHOWMINIMIZED  \
        ""  \
        "VisIt allows you to visualize simulation data."
-    CreateShortCut "$R0\VisIt ${PRODUCT_VERSION} in stereo.lnk"  \
+    CreateShortCut "$R0\VisIt${PRODUCT_VERSION} in stereo.lnk"  \
         "${VISITINSTDIR}\visit.exe" "-stereo"      \
         "" 0  \
         SW_SHOWMINIMIZED  \
         ""  \
         "VisIt allows you to visualize simulation data in stereo."
-    CreateShortCut "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk" \
+    CreateShortCut "$DESKTOP\VisIt${PRODUCT_VERSION}.lnk" \
         "${VISITINSTDIR}\visit.exe" ""      \
         "" 0  \
         SW_SHOWMINIMIZED  \
@@ -1374,15 +1314,15 @@ FunctionEnd
    VIkit::GetInstallPathFormattedForJava
    Pop $R0
    # Write the reformatted string as a Java preference.
-   Strcpy $R0 "$R0///LLNL///VisIt ${PRODUCT_VERSION}"
+   Strcpy $R0 "$R0///LLNL///VisIt${PRODUCT_VERSION}"
    WriteRegStr SHCTX "SOFTWARE\JavaSoft\Prefs\llnl\visit" "/V/I/S/I/T/H/O/M/E" $R0
   SectionEnd
 
   Section -AdditionalIcons
     ${DisableX64FSRedirection}
     WriteIniStr "${VISITINSTDIR}\${PRODUCT_NAME}.url" "InternetShortcut" "URL" "${PRODUCT_WEB_SITE}"
-    CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\VisIt Home Page.lnk" "${VISITINSTDIR}\${PRODUCT_NAME}.url"
-    CreateShortCut "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}\Uninstall VisIt ${PRODUCT_VERSION}.lnk" "${V_UNINSTALLER}"
+    CreateShortCut "$SMPROGRAMS\VisIt${PRODUCT_VERSION}\VisIt Home Page.lnk" "${VISITINSTDIR}\${PRODUCT_NAME}.url"
+    CreateShortCut "$SMPROGRAMS\VisIt${PRODUCT_VERSION}\Uninstall VisIt${PRODUCT_VERSION}.lnk" "${V_UNINSTALLER}"
   SectionEnd
 
   Section -Post
@@ -1463,20 +1403,20 @@ FunctionEnd
     ReadRegStr $1 SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedPythonWithVisIt"
     ReadRegStr $2 SHCTX "Software\Classes\VISIT${PRODUCT_VERSION}" "AssociatedCurvesWithVisIt"
     # Remove the desktop shortcut
-    Delete "$DESKTOP\VisIt ${PRODUCT_VERSION}.lnk"
+    Delete "$DESKTOP\VisIt${PRODUCT_VERSION}.lnk"
     SetRegView 64
     ${DisableX64FSRedirection}
 
     # Remove the Start menu program group
-    Strcpy $R9 "$SMPROGRAMS\VisIt ${PRODUCT_VERSION}"
-    Delete "$R9\VisIt ${PRODUCT_VERSION}.lnk"
-    Delete "$R9\VisIt ${PRODUCT_VERSION} in stereo.lnk"
+    Strcpy $R9 "$SMPROGRAMS\VisIt${PRODUCT_VERSION}"
+    Delete "$R9\VisIt${PRODUCT_VERSION}.lnk"
+    Delete "$R9\VisIt${PRODUCT_VERSION} in stereo.lnk"
     Delete "$R9\VisIt Command Line Interface.lnk"
     Delete "$R9\VisIt with Debug logging.lnk"
     Delete "$R9\VisIt parallel.lnk"
     Delete "$R9\Silex.lnk"
     Delete "$R9\VisIt Home Page.lnk"
-    Delete "$R9\Uninstall VisIt ${PRODUCT_VERSION}.lnk"
+    Delete "$R9\Uninstall VisIt${PRODUCT_VERSION}.lnk"
     Delete "$R9\Plugin development\XML Edit.lnk"
     Delete "$R9\Plugin development\Documentation\Plot plugins.lnk"
     Delete "$R9\Plugin development\Documentation\Operator plugins.lnk"
@@ -1519,7 +1459,7 @@ FunctionEnd
     DeleteRegKey SHCTX "${PRODUCT_DIR_REGKEY}"
 
     DeleteRegKey SHCTX "SOFTWARE\JavaSoft\Prefs\llnl"
-    DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\VisIt ${PRODUCT_VERSION}"
+    DeleteRegKey SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\VisIt${PRODUCT_VERSION}"
 
     ${If} $0 == "all"
         DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITLOC
