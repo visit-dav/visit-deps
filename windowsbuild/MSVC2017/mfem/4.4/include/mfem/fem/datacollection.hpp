@@ -376,12 +376,12 @@ public:
    virtual ~DataCollection();
 
    /// Errors returned by Error()
-   enum { NO_ERROR = 0, READ_ERROR = 1, WRITE_ERROR = 2 };
+   enum { MFEM_NO_ERROR = 0, READ_ERROR = 1, WRITE_ERROR = 2 };
 
    /// Get the current error state
    int Error() const { return error; }
    /// Reset the error state
-   void ResetError(int err_state = NO_ERROR) { error = err_state; }
+   void ResetError(int err_state = MFEM_NO_ERROR) { error = err_state; }
 
 #ifdef MFEM_USE_MPI
    friend class ParMesh;

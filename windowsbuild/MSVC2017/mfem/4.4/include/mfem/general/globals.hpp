@@ -119,7 +119,12 @@ void SetGlobalMPI_Comm(MPI_Comm comm);
 #if defined(__GNUC__) || defined(__clang__)
 #define MFEM_DEPRECATED __attribute__((deprecated))
 #elif defined(_MSC_VER)
-#define MFEM_DEPRECATED __declspec(deprecated)
+// using __declspec(deprecated) causes unnecessary warnings whenever a header
+// that uses MFEM_DEPRECATED is included in another project regardless of
+// whether or not the project is actually using the deprecated method.
+// Commented out here to to reduce excessive warning noise during compilation
+//#define MFEM_DEPRECATED __declspec(deprecated)
+#define MFEM_DEPRECATED
 #else
 #pragma message("WARNING: You need to implement MFEM_DEPRECATED for this compiler")
 #define MFEM_DEPRECATED
