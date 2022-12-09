@@ -43,7 +43,7 @@ call "%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Professional\\VC\\Auxi
 Rem This is the hash for the current certificate, will need to be updated
 Rem if the certificate changes. The certificate needs to be properly
 Rem installed on the machine where this script is being run.
-set CSHash=9b7dd3101ccddc13175797f7562031f19ba4915b
+set CSHash=0c5beb375cde202ffa7e143a313cbd470aaafe9a
 
 Rem Going to start with a fresh build directory.
 Rem Deleting takes awhile, so move it instead and delete later
