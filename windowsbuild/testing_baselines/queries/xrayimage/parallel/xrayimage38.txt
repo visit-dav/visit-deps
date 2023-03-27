@@ -1,1 +1,1 @@
-engine_par.exe: Directory VISIT_TOP_DIR/test\testdir\doesnotexist does not exist.
+engine_par.exe: ERROR: Directory VISIT_TOP_DIR/test\testdir\doesnotexist does not exist.
