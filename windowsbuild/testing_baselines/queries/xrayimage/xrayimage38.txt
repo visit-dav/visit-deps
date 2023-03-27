@@ -1,1 +1,1 @@
-engine_ser.exe: Directory VISIT_TOP_DIR/test\testdir\doesnotexist does not exist.
+engine_ser.exe: ERROR: Directory VISIT_TOP_DIR/test\testdir\doesnotexist does not exist.
