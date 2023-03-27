@@ -25,7 +25,7 @@
 #define CONDUIT_PLATFORM_UNIX
 #endif
 
-#define CONDUIT_INSTALL_PREFIX "C:\\A_Visit\\ForRegression\\visit-deps\\windowsbuild\\MSVC2017\\conduit\\v0.8.7"
+#define CONDUIT_INSTALL_PREFIX ""
 
 // version info
 #define CONDUIT_VERSION "0.8.7"
