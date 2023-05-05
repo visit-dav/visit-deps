@@ -1,0 +1,5 @@
+
+[test]
+pytest
+flake8
+mypy

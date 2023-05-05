@@ -1,0 +1,6 @@
+QMAKE_PRL_BUILD_DIR = C:/A_Visit/ThirdParty/qtbase-everywhere-src-6.4.2-build/src/platformsupport/fbconvenience
+QMAKE_PRL_TARGET = Qt6FbSupport.lib
+QMAKE_PRL_CONFIG = static
+QMAKE_PRL_VERSION = 6.4.2
+QMAKE_PRL_LIBS = $$[QT_INSTALL_LIBS]/Qt6Core.lib $$[QT_INSTALL_LIBS]/Qt6Gui.lib $$[QT_INSTALL_LIBS]/Qt6Core.lib -lmpr -luserenv -ld3d11 -ldxgi -ldxguid
+QMAKE_PRL_LIBS_FOR_CMAKE = $$[QT_INSTALL_LIBS]/Qt6Core.lib;$$[QT_INSTALL_LIBS]/Qt6Gui.lib;$$[QT_INSTALL_LIBS]/Qt6Core.lib;-lmpr;-luserenv;-ld3d11;-ldxgi;-ldxguid
