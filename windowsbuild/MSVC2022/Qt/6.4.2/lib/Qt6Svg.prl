@@ -1,0 +1,4 @@
+QMAKE_PRL_BUILD_DIR = C:/A_Visit/ThirdParty/qtsvg-everywhere-src-6.4.2/src/svg
+QMAKE_PRL_TARGET = Qt6Svg.lib
+QMAKE_PRL_CONFIG = shared
+QMAKE_PRL_VERSION = 6.4.2
