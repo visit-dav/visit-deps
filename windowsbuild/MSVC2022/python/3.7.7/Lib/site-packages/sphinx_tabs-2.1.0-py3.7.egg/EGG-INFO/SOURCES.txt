@@ -1,0 +1,14 @@
+CHANGELOG.md
+LICENSE
+MANIFEST.in
+README.md
+setup.py
+sphinx_tabs/__init__.py
+sphinx_tabs/tabs.py
+sphinx_tabs.egg-info/PKG-INFO
+sphinx_tabs.egg-info/SOURCES.txt
+sphinx_tabs.egg-info/dependency_links.txt
+sphinx_tabs.egg-info/requires.txt
+sphinx_tabs.egg-info/top_level.txt
+sphinx_tabs/static/tabs.css
+sphinx_tabs/static/tabs.js
