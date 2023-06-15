@@ -99,7 +99,7 @@ set(SILO_ENABLE_JSON OFF)
 set(SILO_ENABLE_PYTHON_MODULE ON)
 set(SILO_ENABLE_TESTS OFF)
 set(SILO_BUILD_FOR_BSD_LICENSE ON)
-set(SILO_ENABLE_ZFP ON)
+set(SILO_ENABLE_ZFP )
 
 if(NOT SILO_BUILD_FOR_BSD_LICENSE)
   set(SILO_ENABLE_FPZIP OFF)
@@ -114,9 +114,9 @@ set(${SILO_PACKAGE_NAME}_INCLUDE_DIR ${PACKAGE_PREFIX_DIR}/include)
 #-----------------------------------------------------------------------------
 # Version Strings
 #-----------------------------------------------------------------------------
-set(${SILO_PACKAGE_NAME}_VERSION_STRING 4.11)
+set(${SILO_PACKAGE_NAME}_VERSION_STRING 4.10.3)
 set(${SILO_PACKAGE_NAME}_VERSION_MAJOR  4)
-set(${SILO_PACKAGE_NAME}_VERSION_MINOR  11)
+set(${SILO_PACKAGE_NAME}_VERSION_MINOR  10)
 
 #-----------------------------------------------------------------------------
 # Don't include targets if this file is being picked up by another
