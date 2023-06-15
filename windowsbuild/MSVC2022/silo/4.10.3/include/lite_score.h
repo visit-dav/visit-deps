@@ -1,5 +1,5 @@
 /*
-Copyright (C) 1994-2016 Lawrence Livermore National Security, LLC.
+Copyright (c) 1994 - 2010, Lawrence Livermore National Security, LLC.
 LLNL-CODE-425250.
 All rights reserved.
 
@@ -194,7 +194,7 @@ extern "C" {
 #define SC_USER_I        	22	/*first user defined index available */
 
 #define UNCOLLECT       	SHRT_MAX
-#define MAXLINE             4096
+#define MAXLINE			4096
 
 #undef PRINT
 #define PRINT (*putln)

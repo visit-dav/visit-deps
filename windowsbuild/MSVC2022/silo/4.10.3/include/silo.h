@@ -1,5 +1,5 @@
 /*
-Copyright (C) 1994-2016 Lawrence Livermore National Security, LLC.
+Copyright (c) 1994 - 2010, Lawrence Livermore National Security, LLC.
 LLNL-CODE-425250.
 All rights reserved.
 
@@ -127,19 +127,19 @@ typedef char const * const *         DBCAS_t;
 #endif
 
 /* Minor release number of silo library. Can be empty. */
-#define _SILO_VERS_MIN_11
+#define _SILO_VERS_MIN_10
 #ifdef _SILO_VERS_MIN_
 #define SILO_VERS_MIN 0 /* NO_FORTRAN_DEFINE */
 #else
-#define SILO_VERS_MIN 11
+#define SILO_VERS_MIN 10
 #endif
 
 /* Patch release number of silo library.  Can be empty. */
-#define _SILO_VERS_PAT_
+#define _SILO_VERS_PAT_3
 #ifdef _SILO_VERS_PAT_
 #define SILO_VERS_PAT 0 /* NO_FORTRAN_DEFINE */
 #else
-#define SILO_VERS_PAT 
+#define SILO_VERS_PAT 3
 #endif
 
 /* Pre-release release number of silo library.  Can be empty. */
@@ -152,7 +152,7 @@ typedef char const * const *         DBCAS_t;
 
 /* The symbol Silo uses to enforce link-time
    header/object version compatibility */
-#define SILO_VERS_TAG Silo_version_4_11
+#define SILO_VERS_TAG Silo_version_4_10_3
 
 /* Useful macro for comparing Silo versions (and DB_ alias) */
 #define SILO_VERSION_GE(Maj,Min,Pat)  \
@@ -291,8 +291,6 @@ typedef char const * const *         DBCAS_t;
 #define DBQMGhostZoneLabels       0x0000000040000000ULL
 #define DBUMGhostNodeLabels       0x0000000080000000ULL
 #define DBZonelistGhostZoneLabels 0x0000000100000000ULL
-#define DBMBNamesAndTypes         0x0000000200000000ULL
-#define DBMBOptions               0x0000000400000000ULL
 
 /* Definitions for COORD_TYPE */
 /* Placed before DBObjectType enum because the
@@ -498,8 +496,6 @@ typedef enum {
 #define DBOPT_H5_SILO_USE_DIRECT    530
 #define DBOPT_H5_FIC_SIZE           531
 #define DBOPT_H5_FIC_BUF            532
-#define DBOPT_H5_FCPL_HID_T         533
-#define DBOPT_H5_FAPL_HID_T         534
 #define DBOPT_H5_LAST               599
 
 /* Error trapping method */
@@ -600,10 +596,6 @@ typedef enum {
 #define DB_GHOSTTYPE_NOGHOST ((char)0x00)
 #define DB_GHOSTTYPE_INTDUP ((char)0x01)
 
-/* Definitions for compatability mode */
-#define DB_MAX_COMPATABILITY            0
-#define DB_MAX_PERFORMANCE              1
-
 /* Definitions for CSG boundary types 
    Designed so low-order 16 bits are unused.
 
@@ -677,10 +669,6 @@ typedef enum {
 /* Miscellaneous constants */
 #define     DB_F77NULL  (-99)   /*Fortran NULL pointer      */
 #define     DB_F77NULLSTRING  "NULLSTRING"  /* FORTRAN STRING */
-
-/* Mode constants for partial I/O operations */
-#define DB_PARTIO_POINTS 0x1
-#define DB_PARTIO_HSLABS 0x2
 
 /*-------------------------------------------------------------------------
  * Index selection macros
@@ -1649,13 +1637,6 @@ typedef struct _DBnamescheme
     char **exprstrs;        /* expressions to be evaluated for each conv. spec. */
 } DBnamescheme;
 
-typedef struct _DBmemfile_bufinfo
-{
-    void *buf;
-    size_t size;
-    size_t used;
-} DBmemfile_bufinfo;
-
 typedef struct DBfile *___DUMMY_TYPE;  /* Satisfy ANSI scope rules */
 
 /*
@@ -1674,9 +1655,6 @@ typedef struct DBfile_pub {
     int            Grab;        /*drive has access to low-level interface */
     void          *GrabId;      /*pointer to low-level driver descriptor */
     char          *file_lib_version; /* version of lib file was created with */
-    /* we use pointer to struct here to avoid having to include private type
-       information in the public header file */
-    struct SILO_Globals_t *file_scope_globals;
 
     /* Public Methods */
     int            (*close)(struct DBfile *);
@@ -1801,8 +1779,6 @@ typedef struct DBfile_pub {
     int            (*cpdir)(struct DBfile *, char const *, struct DBfile *, char const *);
     int            (*sort_obo)(struct DBfile *dbfile, int nobjs, char const *const *obj_names, int *ranks);
     int            (*flush)(struct DBfile *);
-    int            (*r_varvals)(struct DBfile *, char const *, int, int, int, void const *, void **, int*, int*);
-    int            (*g_varblf)(struct DBfile *, char const *);  /*byte length in file */
     int            (*cpnobjs)(int, struct DBfile *, char const * const *, struct DBfile *, char const * const *);
     int            (*mksymlink)(struct DBfile *, char const *, char const *);
     int            (*g_symlink)(struct DBfile *, char const *, char *);
@@ -1843,48 +1819,29 @@ SILO_API extern int Silo_version_4_10;
 
 /* Error handling and other global library behavior */
 SILO_API extern void                   DBShowErrors(int, DBErrFunc_t);
+SILO_API extern char const *           DBErrString(void);
+SILO_API extern char const *           DBErrFuncname(void);
 SILO_API extern DBErrFunc_t            DBErrfunc(void);
+SILO_API extern int                    DBErrno(void);
 SILO_API extern int                    DBErrlvl(void);
-SILO_API extern char const *           DBErrString(void);   /* last error string */
-SILO_API extern char const *           DBErrFuncname(void); /* last error'ing function */
-SILO_API extern int                    DBErrno(void);       /* last error number */
 /* Designed to prevent accidental use of old interface by forcing a human readable compile time error */
 #define DBSetDataReadMask(A) ,DBSetDataReadMask_is_replaced_with_DBSetDataReadMask2_using_unsigned_long_long
 #define DBGetDataReadMask() ,DBGetDataReadMask_is_replaced_with_DBGetDataReadMask2_using_unsigned_long_long
 SILO_API extern unsigned long long     DBSetDataReadMask2(unsigned long long);
 SILO_API extern unsigned long long     DBGetDataReadMask2(void);
-SILO_API extern unsigned long long     DBSetDataReadMask2File(DBfile *f, unsigned long long);
-SILO_API extern unsigned long long     DBGetDataReadMask2File(DBfile *f);
 SILO_API extern char *                 DBGetDatatypeString(int datatype);
 SILO_API extern int                    DBSetAllowOverwrites(int allow);
 SILO_API extern int                    DBGetAllowOverwrites(void);
-SILO_API extern int                    DBSetAllowOverwritesFile(DBfile *f, int allow);
-SILO_API extern int                    DBGetAllowOverwritesFile(DBfile *f);
 SILO_API extern int                    DBSetAllowEmptyObjects(int allow);
 SILO_API extern int                    DBGetAllowEmptyObjects(void);
-SILO_API extern int                    DBSetAllowEmptyObjectsFile(DBfile *f, int allow);
-SILO_API extern int                    DBGetAllowEmptyObjectsFile(DBfile *f);
 SILO_API extern int                    DBSetEnableChecksums(int enable);
 SILO_API extern int                    DBGetEnableChecksums(void);
-SILO_API extern int                    DBSetEnableChecksumsFile(DBfile *f, int enable);
-SILO_API extern int                    DBGetEnableChecksumsFile(DBfile *f);
 SILO_API extern void                   DBSetCompression(char const *);
 SILO_API extern char const *           DBGetCompression(void);
-SILO_API extern void                   DBSetCompressionFile(DBfile *f, char const *);
-SILO_API extern char const *           DBGetCompressionFile(DBfile *f);
 SILO_API extern int                    DBSetFriendlyHDF5Names(int enable);
 SILO_API extern int                    DBGetFriendlyHDF5Names(void);
-SILO_API extern int                    DBSetFriendlyHDF5NamesFile(DBfile *f, int enable);
-SILO_API extern int                    DBGetFriendlyHDF5NamesFile(DBfile *f);
 SILO_API extern int                    DBSetDeprecateWarnings(int max);
-SILO_API extern int                    DBGetDeprecateWarnings(void);
-SILO_API extern int                    DBSetDeprecateWarningsFile(DBfile *f, int max);
-SILO_API extern int                    DBGetDeprecateWarningsFile(DBfile *f);
-SILO_API extern int                    DBSetAllowLongStrComponents(int allow);
-SILO_API extern int                    DBGetAllowLongStrComponents(void);
-SILO_API extern int                    DBSetAllowLongStrComponentsFile(DBfile *f, int allow);
-SILO_API extern int                    DBGetAllowLongStrComponentsFile(DBfile *f);
-
+SILO_API extern int                    DBGetDeprecateWarnings();
 SILO_API extern int const *            DBSetUnknownDriverPriorities(int const *);
 SILO_API extern int const *            DBGetUnknownDriverPriorities();
 SILO_API extern int                    DBRegisterFileOptionsSet(DBoptlist const *opts);
@@ -1895,6 +1852,8 @@ SILO_API extern int                    DBVersionDigits(int *Maj, int *Min, int *
 SILO_API extern int                    DBVersionGE(int Maj, int Min, int Pat);
 SILO_API extern int                    DBVariableNameValid(char const *s);
 SILO_API extern int                    DBForceSingle(int);
+
+/* Functions involving files, file structure and file inquiries */
 SILO_API extern DBfile *               DBOpenReal(char const *name, int dbtype, int mode);
 SILO_API extern DBfile *               DBCreateReal(char const *name, int mode, int targ, char const *info, int dbtype);
 SILO_API extern int                    DBInqFileReal(char const *name);
@@ -2022,10 +1981,6 @@ SILO_API extern int                    DBIsEmptyCSGZonelist(DBcsgzonelist const 
 SILO_API extern int                    DBIsEmptyCsgvar(DBcsgvar const *var);
 SILO_API extern int                    DBIsEmptyMaterial(DBmaterial const *mat);
 SILO_API extern int                    DBIsEmptyMatspecies(DBmatspecies const *spec);
-SILO_API extern int                    DBIsEmptyMultimesh(DBmultimesh const *mmesh);
-SILO_API extern int                    DBIsEmptyMultivar(DBmultivar const *mvar);
-SILO_API extern int                    DBIsEmptyMultimat(DBmultimat const *mmat);
-SILO_API extern int                    DBIsEmptyMultimatspecies(DBmultimatspecies const *mspec);
 
 /* User-defined (generic) Data and Object functions */
 SILO_API extern int                    DBGetObjtypeTag(char const *);
@@ -2056,13 +2011,10 @@ SILO_API extern int                    DBWriteSlice(DBfile *dbfile, char const *
 SILO_API extern int                    DBRead(DBfile *, char const *, void *);
 SILO_API extern int                    DBReadVar(DBfile *, char const *, void *);
 SILO_API extern int                    DBReadVarSlice(DBfile *, char const *, int const *, int const *, int const *, int, void *);
-SILO_API extern int                    DBReadVarVals(DBfile *, char const *, int mode, int nvals, int ndims,
-                                           void const *indices, void **vals, int *ncomps, int *nitems);
 SILO_API extern DBcompoundarray *      DBGetCompoundarray(DBfile *, char const *);
 SILO_API extern int                    DBInqCompoundarray(DBfile *, char const *, char ***, int **, int *, int *, int *);
 SILO_API extern void *                 DBGetVar(DBfile *, char const *);
 SILO_API extern int                    DBGetVarByteLength(DBfile *, char const *);
-SILO_API extern int                    DBGetVarByteLengthInFile(DBfile *, char const *);
 SILO_API extern int                    DBGetVarLength(DBfile *, char const *);
 SILO_API extern int                    DBGetVarDims(DBfile *, char const *, int, int *);
 SILO_API extern int                    DBGetVarType(DBfile *, char const *);
@@ -2204,8 +2156,6 @@ SILO_API extern char **                DBStringListToStringArray(char const *str
 SILO_API extern void                   DBFreeStringArray(char **strArray, int n);
 SILO_API extern int                    DBIsDifferentDouble(double a, double b, double abstol, double reltol, double reltol_eps);
 SILO_API extern int                    DBIsDifferentLongLong(long long a, long long b, double abstol, double reltol, double reltol_eps);
-SILO_API extern int                    DBCalcDenseArraysFromMaterial(DBmaterial const *mat, int datatype, int *narrs, void ***vfracs);
-SILO_API extern DBmaterial            *DBCalcMaterialFromDenseArrays(int narrs, int ndims, int const *dims, int const *matnos, int dtype, DBVCP2_t const vfracs);
 
 /* Fortran interface functions */
 SILO_API extern void *                 DBFortranAccessPointer(int value);
