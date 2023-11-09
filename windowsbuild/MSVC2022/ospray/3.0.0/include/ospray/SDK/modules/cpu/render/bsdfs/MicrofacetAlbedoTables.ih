@@ -1,0 +1,155 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "MicrofacetAlbedoTablesShared.h"
+#include "math/interpolation.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+inline float MicrofacetAlbedoTable_eval(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float cosThetaO,
+    float roughness)
+{
+  const uniform int size = MICROFACET_ALBEDO_TABLE_SIZE;
+  const vec2f p = make_vec2f(cosThetaO, roughness) * (size - 1);
+  return interp2DLinear(p, albedoTable->albedo_dir, make_vec2i(size));
+}
+
+inline float MicrofacetAlbedoTable_evalAvg(
+    const MicrofacetAlbedoTables *uniform albedoTable, float roughness)
+{
+  const uniform int size = MICROFACET_ALBEDO_TABLE_SIZE;
+  const float x = roughness * (size - 1);
+  return interp1DLinear(x, albedoTable->albedo_avg, size);
+}
+
+inline float MicrofacetDielectricAlbedoTable_eval(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float cosThetaO,
+    float eta,
+    float roughness)
+{
+  const uniform int size = MICROFACET_DIELECTRIC_ALBEDO_TABLE_SIZE;
+
+  if (eta <= 1.f) {
+    const uniform float minEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR);
+    const uniform float maxEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR);
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec3f p = make_vec3f(cosThetaO, etaParam, roughness) * (size - 1);
+    return interp3DLinear(
+        p, albedoTable->dielectricAlbedo_dir, make_vec3i(size));
+  } else {
+    const uniform float minEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR;
+    const uniform float maxEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR;
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec3f p = make_vec3f(cosThetaO, etaParam, roughness) * (size - 1);
+    return interp3DLinear(
+        p, albedoTable->dielectricRcpEtaAlbedo_dir, make_vec3i(size));
+  }
+}
+
+inline float MicrofacetDielectricAlbedoTable_evalAvg(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float eta,
+    float roughness)
+{
+  const uniform int size = MICROFACET_DIELECTRIC_ALBEDO_TABLE_SIZE;
+
+  if (eta <= 1.f) {
+    const uniform float minEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR);
+    const uniform float maxEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR);
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec2f p = make_vec2f(etaParam, roughness) * (size - 1);
+    return interp2DLinear(
+        p, albedoTable->dielectricAlbedo_avg, make_vec2i(size));
+  } else {
+    const uniform float minEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR;
+    const uniform float maxEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR;
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec2f p = make_vec2f(etaParam, roughness) * (size - 1);
+    return interp2DLinear(
+        p, albedoTable->dielectricRcpEtaAlbedo_avg, make_vec2i(size));
+  }
+}
+
+inline float MicrofacetDielectricReflectionAlbedoTable_eval(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float cosThetaO,
+    float eta,
+    float roughness)
+{
+  const uniform int size = MICROFACET_DIELECTRIC_ALBEDO_TABLE_SIZE;
+
+  // if (eta <= 1.f)
+  {
+    const uniform float minEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR);
+    const uniform float maxEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR);
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec3f p = make_vec3f(cosThetaO, etaParam, roughness) * (size - 1);
+    return interp3DLinear(
+        p, albedoTable->dielectricReflectionAlbedo_dir, make_vec3i(size));
+  }
+  /*
+  else
+  {
+    const uniform float minEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR;
+    const uniform float maxEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR;
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec3f p = make_vec3f(cosThetaO, etaParam, roughness) * (size-1);
+    return interp3DLinear(p,
+  MicrofacetDielectricReflectionRcpEtaAlbedoTable_dir, make_vec3i(size));
+  }
+  */
+}
+
+inline float MicrofacetDielectricReflectionAlbedoTable_evalAvg(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float eta,
+    float roughness)
+{
+  const uniform int size = MICROFACET_DIELECTRIC_ALBEDO_TABLE_SIZE;
+
+  // if (eta <= 1.f)
+  {
+    const uniform float minEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR);
+    const uniform float maxEta =
+        rcp(MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR);
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec2f p = make_vec2f(etaParam, roughness) * (size - 1);
+    return interp2DLinear(
+        p, albedoTable->dielectricReflectionAlbedo_avg, make_vec2i(size));
+  }
+  /*
+  else
+  {
+    const uniform float minEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MIN_IOR;
+    const uniform float maxEta = MICROFACET_DIELECTRIC_ALBEDO_TABLE_MAX_IOR;
+    const float etaParam = (eta - minEta) / (maxEta - minEta);
+    const vec2f p = make_vec2f(etaParam, roughness) * (size-1);
+    return interp2DLinear(p,
+  MicrofacetDielectricReflectionRcpEtaAlbedoTable_avg, make_vec2i(size));
+  }
+  */
+}
+
+inline float MicrofacetSheenAlbedoTable_eval(
+    const MicrofacetAlbedoTables *uniform albedoTable,
+    float cosThetaO,
+    float roughness)
+{
+  const uniform int size = MICROFACET_SHEEN_ALBEDO_TABLE_SIZE;
+  const vec2f p = make_vec2f(cosThetaO, roughness) * (size - 1);
+  return interp2DLinear(p, albedoTable->sheenAlbedo_dir, make_vec2i(size));
+}
+
+OSPRAY_END_ISPC_NAMESPACE

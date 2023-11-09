@@ -1,0 +1,28 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "rkcommon/math/vec.ih"
+// c++ shared
+#include "Distribution2DShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+// Initialize the 2D distribution after populating the input cdf_x array
+// and writing f_y into cdf_y. The distribution will then compute cdf_y from f_y
+SYCL_EXTERNAL void Distribution2D_init(Distribution2D *uniform self);
+
+struct Sample2D
+{
+  vec2f uv;
+  float pdf;
+};
+
+// inline?
+SYCL_EXTERNAL Sample2D Distribution2D_sample(
+    const Distribution2D *uniform, const vec2f &s);
+SYCL_EXTERNAL float Distribution2D_pdf(
+    const Distribution2D *uniform, const vec2f &uv);
+
+OSPRAY_END_ISPC_NAMESPACE

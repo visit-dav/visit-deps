@@ -1,0 +1,117 @@
+// Copyright 2019 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "Intersect.ih"
+#include "Ray.ih"
+#include "RayQueryContext.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+#ifndef OSPRAY_TARGET_SYCL
+unmasked void clippingIntersectionFilterV(
+    const RTCFilterFunctionNArguments *uniform args);
+
+inline bool filterCall(const RTCIntersectFunctionNArguments *uniform args,
+    const RTCHit &rtcHitTemp)
+{
+  varying int imask;
+  varying bool mask = __mask;
+  unmasked
+  {
+    imask = mask ? -1 : 0;
+  }
+
+  // call filter intersection callback
+  uniform RTCFilterFunctionNArguments filterArgs;
+  filterArgs.valid = (int *uniform) & imask;
+  filterArgs.geometryUserPtr = args->geometryUserPtr;
+  filterArgs.context = args->context;
+  filterArgs.ray = (RTCRayN * uniform) args->rayhit;
+  filterArgs.hit = (RTCHitN * uniform) & rtcHitTemp;
+  filterArgs.N = args->N;
+  clippingIntersectionFilterV(&filterArgs);
+
+  // return true if hit has been accepted
+  return imask == -1;
+}
+#endif
+
+inline bool filterIntersectionSingle(
+    const RTCIntersectFunctionNArguments *uniform args,
+    const Hit &hit,
+    const uniform bool isOcclusionTest,
+    const uniform bool alwaysReject)
+{
+  // if there is a hit
+  varying Ray *uniform ray = (varying Ray * uniform) args->rayhit;
+  if (hit.hit && hit.t > ray->t0 && hit.t <= ray->t) {
+    // set a new hit value
+    const float tOld = ray->t;
+    ray->t = hit.t;
+
+    // prepare temporary hit structure
+    RTCHit rtcHitTemp;
+    rtcHitTemp.Ng_x = hit.N.x;
+    rtcHitTemp.Ng_y = hit.N.y;
+    rtcHitTemp.Ng_z = hit.N.z;
+    rtcHitTemp.u = hit.u;
+    rtcHitTemp.v = 0.f;
+    rtcHitTemp.primID = args->primID;
+    rtcHitTemp.geomID = args->geomID;
+    rtcHitTemp.instID[0] = args->context->instID[0];
+
+    // call filter intersection callback if needed
+#ifndef OSPRAY_TARGET_SYCL
+    RayQueryContextDefault *uniform ctx =
+        (RayQueryContextDefault * uniform) args->context;
+    const uniform bool noFilter = ctx->type != RQCT_CLIPPING;
+    const bool accept = noFilter || filterCall(args, rtcHitTemp);
+#else
+    const bool accept = true;
+#endif
+    if (alwaysReject) {
+      // the hit is always rejected
+      ray->t = tOld;
+    } else {
+      if (accept) {
+        // hit has been accepted
+        if (isOcclusionTest) {
+          ray->t = neg_inf;
+        } else {
+          ray->Ng.x = hit.N.x;
+          ray->Ng.y = hit.N.y;
+          ray->Ng.z = hit.N.z;
+
+          ray->u = hit.u;
+          ray->v = 0.f;
+
+          ray->primID = args->primID;
+          ray->geomID = args->geomID;
+          ray->instID = args->context->instID[0];
+        }
+        return true;
+      } else {
+        // the hit has been rejected in the filter function,
+        // restore initial ray dimensions
+        ray->t = tOld;
+      }
+    }
+  }
+
+  // no hit or not accepted
+  return false;
+}
+
+inline bool filterIntersectionBoth(
+    const RTCIntersectFunctionNArguments *uniform args,
+    const Intersections &isect,
+    const uniform bool isOcclusionTest)
+{
+  if (!filterIntersectionSingle(args, isect.entry, isOcclusionTest, false)) {
+    return filterIntersectionSingle(args, isect.exit, isOcclusionTest, false);
+  }
+  return true;
+}
+OSPRAY_END_ISPC_NAMESPACE

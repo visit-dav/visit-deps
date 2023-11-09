@@ -1,0 +1,40 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+// camera.ih Defines the abstract base class of an ISPC-side camera
+
+#pragma once
+
+#include "common/Ray.ih"
+#include "rkcommon/math/box.ih"
+// c++ shared
+#include "CameraShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+// Specifies the input parameters (time, screen, and lens
+// samples) required for 'initRay' to generate a primary ray
+struct CameraSample
+{
+  vec2f screen; // normalized screen sample, in [0..1]
+  vec2f lens;
+  float time;
+};
+
+inline vec2f Camera_subRegion(const Camera *uniform self, const vec2f &screen)
+{
+  return lerp(screen, self->subImage.lower, self->subImage.upper);
+}
+
+inline float Camera_shutterTime(
+    const Camera *uniform self, const vec2f &screen, float time)
+{
+  if (self->globalShutter)
+    return lerp(time, self->shutter.lower, self->shutter.upper);
+
+  time *= self->rollingShutterDuration;
+  const float pos = self->rollingShutterHorizontal ? screen.x : screen.y;
+  return clamp(time + lerp(pos, self->shutter.lower, self->shutter.upper));
+}
+
+OSPRAY_END_ISPC_NAMESPACE

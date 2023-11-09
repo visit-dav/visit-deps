@@ -1,0 +1,20 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "common/FeatureFlags.ih"
+#include "rkcommon/math/vec.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct PathContext;
+struct PathState;
+struct PathVertex;
+
+SYCL_EXTERNAL vec3f nextEventEstimation(const PathContext &pathContext,
+    const PathState &pathState,
+    PathVertex &pathVertex,
+    const uniform FeatureFlagsHandler &ffh);
+
+OSPRAY_END_ISPC_NAMESPACE

@@ -1,0 +1,83 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "BSDF.ih"
+#include "Optics.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+// uses a variant of Blinn-Phong BRDF:
+// f = r*(n+2)/(4pi(2-2^(-n/2)))*cos(HN)^n/cos(LN)
+struct Specular
+{
+  BSDF super;
+
+  vec3f ks; // reflectivity albedo, including normalization
+  vec3f weight; // = constant part of f * cosNL/pdf
+  float ns; // exponent
+};
+
+inline BSDF_EvalRes Specular_eval(
+    const varying Specular *uniform self, const vec3f &wo, const vec3f &wi)
+{
+  BSDF_EvalRes res;
+
+  const vec3f N = getN(&self->super);
+  const float cosThetaO = dot(wo, N);
+  const float cosThetaI = dot(wi, N);
+  if (cosThetaO <= 0.0f || cosThetaI <= 0.0f)
+    return make_BSDF_EvalRes_zero();
+
+  const vec3f wh = normalize(wo + wi);
+  const float cosThetaH = dot(wh, N);
+  res.pdf = powerCosineSampleHemispherePDF(cosThetaH, self->ns)
+      * rcp(4.0f * dot(wo, wh));
+  res.value = self->ks * powf(cosThetaH, self->ns);
+
+  return res;
+}
+
+inline BSDF_SampleRes Specular_sample(const varying Specular *uniform self,
+    const vec3f &wo,
+    const vec2f &s,
+    float)
+{
+  BSDF_SampleRes res;
+
+  const vec3f wh_local = powerCosineSampleHemisphere(self->ns, s);
+  const vec3f wh = getFrame(&self->super) * wh_local;
+  const float cosThetaOH = dot(wo, wh);
+  res.wi = reflect(wo, wh, cosThetaOH);
+
+  const float cosThetaI = dot(res.wi, getN(&self->super));
+  if (cosThetaI <= 0.0f) // below surface?
+    return make_BSDF_SampleRes_zero();
+
+  const float cosThetaH = wh_local.z;
+  res.pdf = powerCosineSampleHemispherePDF(cosThetaH, self->ns)
+      * rcp(4.0f * cosThetaOH);
+  res.type = BSDF_GLOSSY_REFLECTION;
+  res.weight = self->weight * cosThetaOH;
+
+  return res;
+}
+
+inline void Specular_Constructor(varying Specular *uniform self,
+    const varying linear3f *uniform frame,
+    vec3f R,
+    float exp_)
+{
+  BSDF_Constructor(
+      &self->super, R, BSDF_GLOSSY_REFLECTION, BSDF_TYPE_SPECULAR, frame);
+
+  // convert from Phong exponent to Blinn
+  self->ns = exp_ * 4.f;
+  const float tmp =
+      (self->ns + 2.f) * rcp(2.f - exp(self->ns * -(float)lntwo_over_two));
+  self->ks = R * ((float)one_over_four_pi * tmp);
+  self->weight = R * (2.f * tmp * rcp(self->ns + 1.f));
+}
+
+OSPRAY_END_ISPC_NAMESPACE

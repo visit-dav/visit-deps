@@ -1,0 +1,103 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "common/DifferentialGeometry.ih"
+#include "common/FeatureFlags.ih"
+#include "texture/TextureParam.ih"
+// c++ shared
+#include "MaterialShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+#define define_texture_get_ff(fn, map, dg, val, ffh)                           \
+  ((getFeatureFlagsOther(ffh) & FFO_TEXTURE_IN_MATERIAL) ? fn(map, dg, val)    \
+                                                         : val)
+#define get1f_ff(map, dg, val, ff)                                             \
+  define_texture_get_ff(get1f, map, dg, val, ff)
+#define get3f_ff(map, dg, val, ff)                                             \
+  define_texture_get_ff(get3f, map, dg, val, ff)
+#define get4f_ff(map, dg, val, ff)                                             \
+  define_texture_get_ff(get4f, map, dg, val, ff)
+
+inline linear3f makeShadingFrame(const DifferentialGeometry &dg)
+{
+  vec3f N = dg.Ns;
+  vec3f U = normalize(dg.dPds);
+  vec3f V = cross(N, U);
+  if (dot(V, V) > 0.f) {
+    V = normalize(V);
+    U = cross(V, N);
+    return make_LinearSpace3f(U, V, N);
+  } else {
+    return frame(N);
+  }
+}
+
+inline linear3f makeShadingFrame(const linear3f &f, const vec3f &localN)
+{
+  // in general f is not ortho-normal, thus need to re-normalize
+  vec3f N = normalize(f * localN); // transform normal to world space
+  vec3f U = f.vx;
+  vec3f V = cross(N, U);
+  if (dot(V, V) > 0.f) {
+    V = normalize(V);
+    U = cross(V, N);
+    return make_LinearSpace3f(U, V, N);
+  } else {
+    return frame(N);
+  }
+}
+
+inline linear3f makeShadingFrame(
+    const DifferentialGeometry &dg, const vec3f &localN)
+{
+  linear3f f = makeShadingFrame(dg);
+  return makeShadingFrame(f, localN);
+}
+
+inline linear3f makeShadingFrame(const DifferentialGeometry &dg,
+    const uniform TextureParam &normalMap,
+    const uniform linear2f &normalRot,
+    uniform float normalScale = 1.f)
+{
+  if (valid(normalMap)) {
+    linear3f f =
+        make_LinearSpace3f(normalize(dg.dPds), normalize(dg.dPdt), dg.Ns);
+    // get normal from texture
+    vec3f localN =
+        getNormal(normalMap, dg) * make_vec3f(normalScale, normalScale, 1.f);
+    // rotate in 2D (tangent space) to account for tc transformations
+    vec2f rotN = normalRot * make_vec2f(localN.x, localN.y);
+    localN.x = rotN.x;
+    localN.y = rotN.y;
+    return makeShadingFrame(f, localN);
+  } else {
+    return makeShadingFrame(dg);
+  }
+}
+
+inline linear3f makeShadingFrame_ff(const DifferentialGeometry &dg,
+    const uniform TextureParam &normalMap,
+    const uniform linear2f &normalRot,
+    const uniform FeatureFlagsHandler &ffh)
+{
+  return (getFeatureFlagsOther(ffh) & FFO_TEXTURE_IN_MATERIAL)
+      ? makeShadingFrame(dg, normalMap, normalRot)
+      : makeShadingFrame(dg);
+}
+
+SYCL_EXTERNAL vec3f Material_getTransparency(
+    const uniform Material *uniform self,
+    const DifferentialGeometry &dg,
+    const Ray &ray,
+    const Medium &currentMedium,
+    const uniform FeatureFlagsHandler &ffh);
+
+SYCL_EXTERNAL void Material_selectNextMedium(
+    const uniform Material *uniform self,
+    const DifferentialGeometry &dg,
+    Medium &currentMedium);
+
+OSPRAY_END_ISPC_NAMESPACE

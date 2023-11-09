@@ -1,0 +1,128 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "BSDF.ih"
+#include "ShadingContext.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct MultiBSDF_Child
+{
+  float weight;
+  float importance;
+};
+
+#define DEFINE_MULTIBSDF(size)                                                 \
+  BSDF super;                                                                  \
+  float importanceSum;                                                         \
+  MultiBSDF_Child children[size]
+
+struct MultiBSDF
+{
+  DEFINE_MULTIBSDF(1);
+};
+
+inline void MultiBSDF_add(varying MultiBSDF *uniform self,
+    const uniform int id,
+    const varying BSDF *uniform bsdf,
+    float weight = 1.f,
+    float importance = 1.f)
+{
+  self->super.albedo = self->super.albedo + bsdf->albedo * weight;
+  self->super.scatteringType |= bsdf->scatteringType;
+  if (!self->super.frame) // use first frame TODO use dominant frame
+    self->super.frame = bsdf->frame;
+  self->children[id].weight = weight;
+  unmasked
+  {
+    self->children[id].importance = 0.f;
+  }
+  self->children[id].importance = importance;
+  self->importanceSum += importance;
+}
+
+inline void MultiBSDF_Constructor(
+    varying MultiBSDF *uniform self, const uniform int count)
+{
+  BSDF_Constructor(
+      &self->super, make_vec3f(0.f), BSDF_NONE, BSDF_TYPE_MULTI_BSDF, NULL);
+  unmasked
+  {
+    self->importanceSum = 0.0f;
+    for (uniform int i = 0; i < count; i++) {
+      self->children[i].weight = 0.f;
+      self->children[i].importance = 0.f;
+    }
+  }
+}
+
+OSPRAY_END_ISPC_NAMESPACE
+
+// Eval macros
+
+#define MULTIBSDF_EVAL_BEGIN()                                                 \
+  BSDF_EvalRes eRes = make_BSDF_EvalRes_zero();                                \
+  const int choice = -1
+
+#define MULTIBSDF_EVAL_CHILD(id, child_bsdf, eval_fn)                          \
+  if ((self->children[id].importance > 0.f) && (choice != id)) {               \
+    BSDF_EvalRes cur = eval_fn(child_bsdf, wo, wi);                            \
+    cur.value = cur.value * self->children[id].weight;                         \
+    eRes.value = eRes.value + cur.value;                                       \
+    eRes.pdf += cur.pdf * self->children[id].importance;                       \
+  }
+
+#define MULTIBSDF_EVAL_END() eRes.pdf *= rcp(self->importanceSum)
+
+#define MULTIBSDF_EVAL_GET() eRes
+
+// Sample macros
+
+#define MULTIBSDF_SAMPLE_BEGIN()                                               \
+  BSDF_SampleRes res = make_BSDF_SampleRes_zero();                             \
+  float x = ss * self->importanceSum;                                          \
+  int choice = 0;                                                              \
+  float prefixSum = 0.f;                                                       \
+  if (self->importanceSum == 0.f) {                                            \
+  return res
+
+#define MULTIBSDF_SAMPLE_CHILD(id, child_bsdf, sample_fn)                      \
+  }                                                                            \
+  else if (x < (prefixSum += self->children[id].importance))                   \
+  {                                                                            \
+    choice = id;                                                               \
+                                                                               \
+    ss = (x + self->children[id].importance - prefixSum)                       \
+        * rcp(self->children[id].importance);                                  \
+                                                                               \
+    res = sample_fn(child_bsdf, wo, s, ss);                                    \
+    res.weight = res.weight * self->children[id].weight
+
+#define MULTIBSDF_SAMPLE_EVAL()                                                \
+  }                                                                            \
+  if (eq(res.weight, make_vec3f(0.0f)) || (res.pdf == 0.0f))                   \
+    return make_BSDF_SampleRes_zero();                                         \
+                                                                               \
+  /* if the sampled BSDF is specular (has a delta distribution), we cannot add \
+   * the contributions from the other BSDFs [Pharr et al., 2016, "Physically   \
+   * Based Rendering", 3rd Edition, Section 14.1.6] */                         \
+  if (res.type & BSDF_SPECULAR) {                                              \
+    /* scale by rcp(selection pdf) */                                          \
+    res.weight = res.weight                                                    \
+        * (self->importanceSum * rcp(self->children[choice].importance));      \
+    return res;                                                                \
+  }                                                                            \
+  BSDF_EvalRes eRes;                                                           \
+  eRes.value = res.weight * res.pdf;                                           \
+  res.pdf *= self->children[choice].importance;                                \
+  eRes.pdf = res.pdf;                                                          \
+  const vec3f wi = res.wi
+
+#define MULTIBSDF_SAMPLE_END()                                                 \
+  res.pdf = eRes.pdf;                                                          \
+  res.pdf *= rcp(self->importanceSum);                                         \
+  res.weight = eRes.value * rcp(res.pdf)
+
+#define MULTIBSDF_SAMPLE_GET() res

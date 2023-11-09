@@ -1097,21 +1097,21 @@ FunctionEnd
     SetOutPath "${VISITINSTDIR}"
   SectionEnd
 
-  Section -TestOpenGLVersion
-    # Run a small program to test if the OpenGL Version is sufficent on the
-    # system being installed. If not, Mesa3D's openg32.dll will be put in
-    # VisIt's root dir, and a RegKey flag will be set notifying VisIt to set
-    # MESA_GL_VERSION_OVERRIDE=3.3 in the environment for VisIt processes.
-    File "/oname=$PLUGINSDIR\vtkTestOpenGLVersion.exe" "${INSTALL_PREFIX}\vtkTestOpenGLVersion.exe"
-    ExecWait '"$PLUGINSDIR\vtkTestOpenGlVersion.exe"' $0
-    ${If} $0 == 1
-        SetOutPath "${VISITINSTDIR}"
-        FILE "/oname=opengl32.dll" "${INSTALL_PREFIX}\mesagl\opengl32.dll"
-        StrCpy $RequiresMesaAsGL true
-    ${Else}
-        StrCpy $RequiresMesaAsGL false
-    ${Endif}
-  SectionEnd
+  #Section -TestOpenGLVersion
+  #  # Run a small program to test if the OpenGL Version is sufficent on the
+  #  # system being installed. If not, Mesa3D's openg32.dll will be put in
+  #  # VisIt's root dir, and a RegKey flag will be set notifying VisIt to set
+  #  # MESA_GL_VERSION_OVERRIDE=3.3 in the environment for VisIt processes.
+  #  File "/oname=$PLUGINSDIR\vtkTestOpenGLVersion.exe" "${INSTALL_PREFIX}\vtkTestOpenGLVersion.exe"
+  #  ExecWait '"$PLUGINSDIR\vtkTestOpenGlVersion.exe"' $0
+  #  ${If} $0 == 1
+  #      SetOutPath "${VISITINSTDIR}"
+  #      FILE "/oname=opengl32.dll" "${INSTALL_PREFIX}\mesagl\opengl32.dll"
+  #      StrCpy $RequiresMesaAsGL true
+  #  ${Else}
+  #      StrCpy $RequiresMesaAsGL false
+  #  ${Endif}
+  #SectionEnd
 
   #
   # This section installs the VISIT<version> key, which tells visit.exe where
