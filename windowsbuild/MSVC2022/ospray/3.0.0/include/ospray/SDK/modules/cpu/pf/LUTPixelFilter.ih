@@ -1,0 +1,16 @@
+// Copyright 2020 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "PixelFilter.ih"
+#include "math/Distribution2D.ih"
+// c++ shared
+#include "LUTPixelFilterShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+SYCL_EXTERNAL vec2f LUTPixelFilter_sample(
+    const PixelFilter *uniform self, const vec2f &s);
+
+OSPRAY_END_ISPC_NAMESPACE

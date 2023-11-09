@@ -1,0 +1,72 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "BSDF.ih"
+#include "ShadingContext.ih"
+#include "math/sampling.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct Minneart
+{
+  BSDF super;
+  /*! The amount of backscattering. A value of 0 means lambertian
+   *  diffuse, and inf means maximum backscattering. */
+  float b;
+};
+
+inline BSDF_EvalRes Minneart_eval(
+    const varying Minneart *uniform self, const vec3f &wo, const vec3f &wi)
+{
+  BSDF_EvalRes res;
+
+  const float cosThetaI = clamp(dot(wi, getN(&self->super)));
+  const float backScatter = pow(clamp(dot(wo, wi)), self->b);
+  res.pdf = cosineSampleHemispherePDF(cosThetaI);
+  res.value =
+      (backScatter * cosThetaI * (float)one_over_pi) * self->super.albedo;
+  return res;
+}
+
+inline BSDF_SampleRes Minneart_sample(const varying Minneart *uniform self,
+    const vec3f &wo,
+    const vec2f &s,
+    float)
+{
+  BSDF_SampleRes res;
+
+  const vec3f localDir = cosineSampleHemisphere(s);
+  res.wi = getFrame(&self->super) * localDir;
+  res.type = BSDF_DIFFUSE_REFLECTION;
+  BSDF_EvalRes eval = Minneart_eval(self, wo, res.wi);
+  res.pdf = eval.pdf;
+  res.weight = eval.value * rcp(eval.pdf);
+  return res;
+}
+
+inline void Minneart_Constructor(varying Minneart *uniform self,
+    const varying linear3f *uniform frame,
+    vec3f R,
+    float b)
+{
+  BSDF_Constructor(
+      &self->super, R, BSDF_DIFFUSE_REFLECTION, BSDF_TYPE_MINNEART, frame);
+
+  self->b = b;
+}
+
+inline varying BSDF *uniform Minneart_create(
+    uniform ShadingContext *uniform ctx,
+    const varying linear3f *uniform frame,
+    vec3f R,
+    float b)
+{
+  varying Minneart *uniform self =
+      (varying Minneart * uniform) ShadingContext_alloc(ctx, sizeof(Minneart));
+  Minneart_Constructor(self, frame, R, b);
+  return &self->super;
+}
+
+OSPRAY_END_ISPC_NAMESPACE

@@ -1,0 +1,11 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "../common/DifferentialGeometry.ih"
+#include "../common/Ray.ih"
+#include "rkcommon/math/AffineSpace.ih"
+
+// c++ shared
+#include "GeometryShared.h"

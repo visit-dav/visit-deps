@@ -1,0 +1,32 @@
+// Copyright 2022 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "fb/Tile.ih"
+// c++ shared
+#include "SparseFBShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+SYCL_EXTERNAL uniform RenderTaskDesc SparseFB_getRenderTaskDesc(
+    FrameBuffer *uniform _fb, const uniform uint32 taskID);
+
+SYCL_EXTERNAL void SparseFB_accumulateSample(FrameBuffer *uniform _fb,
+    const varying ScreenSample &screenSample,
+    uniform RenderTaskDesc &taskDesc);
+
+SYCL_EXTERNAL void SparseFB_completeTask(
+    FrameBuffer *uniform _fb, const uniform RenderTaskDesc &taskDesc);
+
+inline uniform uint32 SparseFB_getTileIndexForTask(
+    const SparseFB *uniform fb, const uniform uint32 taskID)
+{
+  // Find which tile this task falls into
+  const uniform vec2i tileDims = make_vec2i(TILE_SIZE);
+  const uniform vec2i tasksPerTile = tileDims / fb->super.renderTaskSize;
+  const uniform int nTasksPerTile = tasksPerTile.x * tasksPerTile.y;
+  // tileIdx -> index in the SparseFB's list of tiles
+  return taskID / nTasksPerTile;
+}
+OSPRAY_END_ISPC_NAMESPACE

@@ -1,0 +1,53 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "BSDF.ih"
+#include "Fresnel.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct Conductor
+{
+  BSDF super;
+  Fresnel *uniform fresnel;
+};
+
+inline BSDF_SampleRes Conductor_sample(
+    const varying BSDF *uniform super, const vec3f &wo, const vec2f &, float)
+{
+  const varying Conductor *uniform self =
+      (const varying Conductor *uniform)super;
+  BSDF_SampleRes res;
+  res.wi = reflect(wo, getN(super));
+  res.pdf = inf;
+  res.type = BSDF_SPECULAR_REFLECTION;
+  res.weight = Fresnel_dispatch_eval(self->fresnel, dot(wo, getN(super)));
+  return res;
+}
+
+inline void Conductor_Constructor(varying Conductor *uniform self,
+    const varying linear3f *uniform frame,
+    Fresnel *uniform fresnel)
+{
+  BSDF_Constructor(&self->super,
+      Fresnel_dispatch_evalAvg(fresnel),
+      BSDF_SPECULAR_REFLECTION,
+      BSDF_TYPE_CONDUCTOR,
+      frame);
+  self->fresnel = fresnel;
+}
+
+inline varying BSDF *uniform Conductor_create(
+    uniform ShadingContext *uniform ctx,
+    const varying linear3f *uniform frame,
+    Fresnel *uniform fresnel)
+{
+  varying Conductor *uniform self = (varying Conductor * uniform)
+      ShadingContext_alloc(ctx, sizeof(Conductor));
+  Conductor_Constructor(self, frame, fresnel);
+  return &self->super;
+}
+
+OSPRAY_END_ISPC_NAMESPACE

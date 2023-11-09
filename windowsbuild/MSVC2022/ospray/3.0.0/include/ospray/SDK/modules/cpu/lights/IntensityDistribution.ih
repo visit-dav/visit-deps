@@ -1,0 +1,42 @@
+// Copyright 2022 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "rkcommon/math/vec.ih"
+// c++ shared
+#include "IntensityDistributionShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+inline float IntensityDistribution_eval(
+    const IntensityDistribution *uniform self,
+    const uniform vec3f &c0,
+    const uniform vec3f &c90,
+    float cosAngle,
+    const vec3f &dir /*normalized*/)
+{
+  const float u = acos(clamp(cosAngle, -1.f, 1.f)) * self->scale.x;
+  const float u_frac = frac(u);
+  const int u0 = u;
+  const int u1 = (u0 + 2 >= self->size.x) ? self->size.x - 1 : u0 + 1;
+
+  float intensity;
+  if (self->size.y == 1) { // 1D
+    intensity = lerp(u_frac, self->lid[u0], self->lid[u1]);
+  } else { // 2D
+    const float v =
+        (atan2(dot(dir, c90), dot(dir, c0)) + (float)pi) * self->scale.y;
+    const float v_frac = frac(v);
+    const int v0 = v;
+    const int v1 = (v0 + 1 >= self->size.y) ? 0 : v0 + 1;
+    const int r0 = v0 * self->size.x;
+    const int r1 = v1 * self->size.x;
+    const float li0 = lerp(u_frac, self->lid[r0 + u0], self->lid[r0 + u1]);
+    const float li1 = lerp(u_frac, self->lid[r1 + u0], self->lid[r1 + u1]);
+    intensity = lerp(v_frac, li0, li1);
+  }
+  return intensity;
+}
+
+OSPRAY_END_ISPC_NAMESPACE

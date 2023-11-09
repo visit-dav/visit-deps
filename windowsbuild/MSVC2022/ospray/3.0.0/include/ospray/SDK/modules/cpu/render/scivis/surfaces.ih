@@ -1,0 +1,98 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "SciVis.ih"
+#include "common/FeatureFlagsEnum.h"
+#include "render/Material.ih"
+#include "render/materials/OBJ.ih"
+// c++ shared
+#include "render/materials/OBJShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct SurfaceShadingInfo
+{
+  vec3f shadedColor;
+  vec3f transmission;
+  vec3f albedo;
+  float opacity;
+};
+
+typedef SurfaceShadingInfo SSI;
+
+SYCL_EXTERNAL __noinline SSI SciVis_computeShading(const SciVis *uniform self,
+    const World *uniform world,
+    const DifferentialGeometry &dg,
+    ScreenSample &sample,
+    varying LDSampler *uniform ldSampler,
+    const varying vec3f &inDir,
+    const uniform FeatureFlagsHandler &ff);
+
+SYCL_EXTERNAL vec3f evaluateLights(const World *uniform world,
+    const DifferentialGeometry &dg,
+    const Ray &ray,
+    const uniform FeatureFlagsHandler &ffh);
+
+struct SciVisBSDF
+{
+  vec3f diffuse;
+  vec3f specular;
+  float shininess;
+  vec3f transmission;
+  vec3f albedo;
+  float opacity;
+};
+
+inline SciVisBSDF evalMaterial(
+    const DifferentialGeometry &dg, const uniform FeatureFlagsHandler &ffh)
+{
+  const uniform FeatureFlagsOther ffo = getFeatureFlagsOther(ffh);
+
+  const OBJ *mat = (const OBJ *)dg.material;
+
+  // defaults
+  SciVisBSDF res;
+  res.diffuse = make_vec3f(dg.color);
+  res.specular = make_vec3f(0.0f);
+  res.shininess = 10.0f;
+  res.transmission = make_vec3f(1.f - dg.color.w);
+  res.opacity = dg.color.w;
+
+#ifdef OSPRAY_TARGET_SYCL
+  {
+    const OBJ *m = mat;
+#else
+  foreach_unique (m in mat) {
+#endif
+    if (m != NULL && m->super.type == MATERIAL_TYPE_OBJ) {
+      float d = m->d * get1f_ff(m->dMap, dg, 1.f, ffh) * dg.color.w;
+      res.diffuse = res.diffuse * m->Kd;
+      if (valid(m->KdMap) && (ffo & FFO_TEXTURE_IN_MATERIAL)) {
+        vec4f Kd_from_map = get4f(m->KdMap, dg);
+        res.diffuse = res.diffuse * make_vec3f(Kd_from_map);
+        d *= Kd_from_map.w;
+      }
+      res.diffuse = res.diffuse * d;
+      res.specular = d * m->Ks * get3f_ff(m->KsMap, dg, make_vec3f(1.f), ffh);
+      res.shininess = m->Ns * get1f_ff(m->NsMap, dg, 1.f, ffh);
+      res.transmission = m->Tf * d + make_vec3f(1.f - d);
+      res.opacity = d;
+    }
+  }
+
+  res.albedo = res.diffuse + res.specular; // before normalization!
+
+  // convert from Phong exponent to Blinn
+  res.shininess *= 4.0f;
+  // BRDF normalization
+  res.diffuse = res.diffuse * (float)one_over_pi;
+  res.specular = res.specular
+      * ((res.shininess + 2.f) * (float)one_over_four_pi
+          * rcp(2.f - exp(res.shininess * -(float)lntwo_over_two)));
+
+  return res;
+}
+
+OSPRAY_END_ISPC_NAMESPACE

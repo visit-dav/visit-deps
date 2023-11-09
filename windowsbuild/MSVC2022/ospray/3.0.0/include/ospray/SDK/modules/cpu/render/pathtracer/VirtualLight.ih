@@ -1,0 +1,22 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "rkcommon/math/vec.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+struct PathContext;
+struct PathState;
+struct PathVertex;
+struct Ray;
+
+SYCL_EXTERNAL vec3f evaluateVirtualLights(const PathContext &pathContext,
+    const PathState &pathState,
+    const PathVertex &lastVertex,
+    const PathVertex &pathVertex,
+    Ray &ray,
+    const uniform FeatureFlagsHandler &ffh);
+
+OSPRAY_END_ISPC_NAMESPACE

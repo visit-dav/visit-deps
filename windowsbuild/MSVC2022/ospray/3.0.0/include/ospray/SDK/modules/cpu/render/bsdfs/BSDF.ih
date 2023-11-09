@@ -1,0 +1,132 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "common/FeatureFlags.ih"
+#include "common/OSPCommon.ih"
+#include "render/pathtracer/Scattering.ih"
+#include "rkcommon/math/LinearSpace.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+// keep interface of BSDFs the same
+typedef Scattering_EvalRes BSDF_EvalRes;
+typedef Scattering_SampleRes BSDF_SampleRes;
+typedef Scattering_Type BSDFScatteringType;
+
+#define BSDF_SPECULAR_REFLECTION SCATTERING_SPECULAR_REFLECTION
+#define BSDF_GLOSSY_REFLECTION SCATTERING_GLOSSY_REFLECTION
+#define BSDF_DIFFUSE_REFLECTION SCATTERING_DIFFUSE_REFLECTION
+#define BSDF_SPECULAR_TRANSMISSION SCATTERING_SPECULAR_TRANSMISSION
+#define BSDF_GLOSSY_TRANSMISSION SCATTERING_GLOSSY_TRANSMISSION
+#define BSDF_DIFFUSE_TRANSMISSION SCATTERING_DIFFUSE_TRANSMISSION
+#define BSDF_DIFFUSE SCATTERING_DIFFUSE
+#define BSDF_GLOSSY SCATTERING_GLOSSY
+#define BSDF_SPECULAR SCATTERING_SPECULAR
+#define BSDF_REFLECTION SCATTERING_REFLECTION
+#define BSDF_TRANSMISSION SCATTERING_TRANSMISSION
+#define BSDF_SMOOTH SCATTERING_SMOOTH
+#define BSDF_NONE SCATTERING_NONE
+#define BSDF_ALL SCATTERING_ALL
+
+enum BSDFType
+{
+  BSDF_TYPE_UNKNOWN,
+  BSDF_TYPE_OBJ,
+  BSDF_TYPE_THINGLASS,
+  BSDF_TYPE_GLASS,
+  BSDF_TYPE_LUMINOUS,
+  BSDF_TYPE_METAL,
+  BSDF_TYPE_METAL_ROUGH,
+  BSDF_TYPE_METALLICPAINT,
+  BSDF_TYPE_MIX,
+  BSDF_TYPE_CARPAINT,
+  BSDF_TYPE_PRINCIPLED,
+  BSDF_TYPE_ALLOY,
+  BSDF_TYPE_ALLOY_ROUGH,
+  BSDF_TYPE_PLASTIC,
+  BSDF_TYPE_VELVET,
+
+  BSDF_TYPE_CONDUCTOR,
+  BSDF_TYPE_DIELECTRIC,
+  BSDF_TYPE_DIELECTRIC_LAYER,
+  BSDF_TYPE_LAMBERT,
+  BSDF_TYPE_LAMBERT_TRANSMISSION,
+  BSDF_TYPE_MICROFACET_CONDUCTOR,
+  BSDF_TYPE_MICROFACET_DIELECTRIC,
+  BSDF_TYPE_MICROFACET_DIELECTRIC_LAYER,
+  BSDF_TYPE_MICROFACET_SHEEN_LAYER,
+  BSDF_TYPE_MINNEART,
+  BSDF_TYPE_MULTI_BSDF,
+  BSDF_TYPE_OREN_NAYAR,
+  BSDF_TYPE_SPECULAR,
+  BSDF_TYPE_SCALE,
+  BSDF_TYPE_REFLECTION,
+  BSDF_TYPE_ROBUST_DIELECTRIC,
+  BSDF_TYPE_ROBUST_THIN_DIELECTRIC,
+  BSDF_TYPE_THIN_DIELECTRIC,
+  BSDF_TYPE_THIN_MICROFACET_DIELECTRIC,
+  BSDF_TYPE_TRANSMISSION,
+  BSDF_TYPE_VELVETY
+};
+
+inline BSDF_EvalRes make_BSDF_EvalRes_zero()
+{
+  BSDF_EvalRes res;
+  res.value = make_vec3f(0.0f);
+  res.pdf = 0.0f;
+  return res;
+}
+
+inline BSDF_SampleRes make_BSDF_SampleRes_zero()
+{
+  BSDF_SampleRes res;
+  res.weight = make_vec3f(0.0f);
+  return res;
+}
+
+struct BSDF
+{
+  varying vec3f albedo;
+  varying BSDFScatteringType scatteringType;
+  uniform BSDFType bsdfType;
+  const varying linear3f *uniform frame;
+};
+
+inline void BSDF_Constructor(varying BSDF *uniform self,
+    varying vec3f albedo,
+    varying BSDFScatteringType scatteringType,
+    uniform BSDFType bsdfType,
+    const varying linear3f *uniform frame)
+{
+  self->albedo = albedo;
+  self->scatteringType = scatteringType;
+  self->bsdfType = bsdfType;
+  self->frame = frame;
+}
+
+inline vec3f getN(const varying BSDF *uniform bsdf)
+{
+  return bsdf->frame->vz;
+}
+
+inline linear3f getFrame(const varying BSDF *uniform bsdf)
+{
+  return *bsdf->frame;
+}
+
+SYCL_EXTERNAL __noinline BSDF_EvalRes BSDF_dispatch_eval(
+    const varying BSDF *uniform self,
+    const vec3f &wo,
+    const vec3f &wi,
+    const uniform FeatureFlagsHandler &ffh);
+
+SYCL_EXTERNAL __noinline BSDF_SampleRes BSDF_dispatch_sample(
+    const varying BSDF *uniform self,
+    const vec3f &wo,
+    const vec2f &s,
+    float ss,
+    const uniform FeatureFlagsHandler &ffh);
+
+OSPRAY_END_ISPC_NAMESPACE

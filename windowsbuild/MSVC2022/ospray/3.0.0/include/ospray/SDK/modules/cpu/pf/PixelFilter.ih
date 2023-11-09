@@ -1,0 +1,30 @@
+// Copyright 2020 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "rkcommon/math/vec.ih"
+// c++ shared
+#include "pf/PixelFilterShared.h"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+inline void PixelFilter_Constructor(PixelFilter *uniform self,
+    uniform float width,
+    uniform PixelFilter_SampleFunc sample)
+{
+  self->width = width;
+  self->sample = sample;
+}
+
+inline vec2f Point_sample(const PixelFilter *uniform, const vec2f &)
+{
+  return make_vec2f(0.0f);
+}
+
+inline vec2f Box_sample(const PixelFilter *uniform self, const vec2f &s)
+{
+  return (s + make_vec2f(-0.5f)) * make_vec2f(self->width);
+}
+
+OSPRAY_END_ISPC_NAMESPACE

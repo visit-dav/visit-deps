@@ -1,0 +1,54 @@
+// Copyright 2009 Intel Corporation
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+
+#include "BSDF.ih"
+
+OSPRAY_BEGIN_ISPC_NAMESPACE
+
+inline BSDF_EvalRes LambertTransmission_eval(
+    const varying BSDF *uniform self, const vec3f &, const vec3f &wi)
+{
+  BSDF_EvalRes res;
+  float cosThetaI = max(-dot(wi, getN(self)), 0.f);
+  res.pdf = cosineSampleHemispherePDF(cosThetaI);
+  res.value = self->albedo * (float)one_over_pi * cosThetaI;
+  return res;
+}
+
+inline BSDF_SampleRes LambertTransmission_sample(
+    const varying BSDF *uniform self, const vec3f &, const vec2f &s, float)
+{
+  const vec3f localDir = cosineSampleHemisphere(s);
+  BSDF_SampleRes res;
+  res.wi = neg(getFrame(self) * localDir);
+  res.pdf = cosineSampleHemispherePDF(localDir);
+  res.type = BSDF_DIFFUSE_TRANSMISSION;
+  res.weight = self->albedo;
+  return res;
+}
+
+inline void LambertTransmission_Constructor(varying BSDF *uniform self,
+    const varying linear3f *uniform frame,
+    const varying vec3f &R)
+{
+  BSDF_Constructor(self,
+      R,
+      BSDF_DIFFUSE_TRANSMISSION,
+      BSDF_TYPE_LAMBERT_TRANSMISSION,
+      frame);
+}
+
+inline varying BSDF *uniform LambertTransmission_create(
+    uniform ShadingContext *uniform ctx,
+    const varying linear3f *uniform frame,
+    const varying vec3f &R)
+{
+  varying BSDF *uniform self =
+      (varying BSDF * uniform) ShadingContext_alloc(ctx, sizeof(BSDF));
+  LambertTransmission_Constructor(self, frame, R);
+  return self;
+}
+
+OSPRAY_END_ISPC_NAMESPACE
