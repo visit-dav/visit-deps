@@ -43,7 +43,8 @@ call "%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Professional\\VC\\Auxi
 Rem This is the hash for the current certificate, will need to be updated
 Rem if the certificate changes. The certificate needs to be properly
 Rem installed on the machine where this script is being run.
-set CSHash=0c5beb375cde202ffa7e143a313cbd470aaafe9a
+Rem set CSHash=0c5beb375cde202ffa7e143a313cbd470aaafe9a
+set CSHash=57455396D6BD848A2E9CE47E153A71EF8F266D8A
 
 Rem Going to start with a fresh build directory.
 Rem Deleting takes awhile, so move it instead and delete later
@@ -53,7 +54,7 @@ mkdir %VBldDirName%
 
 cd %VBldDirName%
 
-"%PROGRAMFILES%\CMake\bin\cmake.exe" ^
+"%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
 -G "Visual Studio 15 2017 Win64" ^
 -T "host=x64" ^
 -DCODESIGN_HASH:STRING=%CSHash% ^
@@ -63,7 +64,7 @@ cd %VBldDirName%
 -DVISIT_WINDOWS_APPLICATION:BOOL=true ^
 %VSrcDir%
 
-"%PROGRAMFILES%\CMake\bin\cmake.exe" ^
+"%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
 -G "Visual Studio 15 2017 Win64" ^
 -T "host=x64" ^
 -DCODESIGN_HASH:STRING=%CSHash% ^
