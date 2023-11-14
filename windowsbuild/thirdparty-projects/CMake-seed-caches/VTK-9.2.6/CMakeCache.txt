@@ -30,9 +30,9 @@ VTK_MODULE_ENABLE_VTK_libxml2:STRING=YES
 
 VTK_WRAP_PYTHON:BOOL=true
 VTK_PYTHON_VERSION:STRING=3
-Python3_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.7/python.exe
-Python3_INCLUDE_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.7/include
-Python3_LIBRARY:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.7/libs/python37.lib
+Python3_EXECUTABLE:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.16/python.exe
+Python3_INCLUDE_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.16/include
+Python3_LIBRARY:FILEPATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/python/3.7.16/libs/python37.lib
 
 VTK_MODULE_ENABLE_VTK_RenderingRayTracing:STRING=YES
 ospray_DIR:PATH=C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/ospray/3.0.0/lib/cmake/ospray-3.0.0
