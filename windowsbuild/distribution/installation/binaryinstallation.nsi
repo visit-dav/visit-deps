@@ -382,7 +382,7 @@ Name "${PRODUCT_NAME}${PRODUCT_VERSION}_x64"
 
     !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DATA} "Sample data files"
     !insertmacro MUI_DESCRIPTION_TEXT ${SEC_HELP} "VisIt's help files"
-    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV} "Plugin development components. Note that you must have Microsoft Visual Studio 2017 to develop plugins compatible with this binary VisIt distribution."
+    !insertmacro MUI_DESCRIPTION_TEXT ${SEC_DEV} "Plugin development components. Note that you must have Microsoft Visual Studio 2022 to develop plugins compatible with this binary VisIt distribution."
 
     !insertmacro MUI_DESCRIPTION_TEXT ${SEC_LIBSIM} "VisIt's libsim files"
   !insertmacro MUI_FUNCTION_DESCRIPTION_END
