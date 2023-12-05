@@ -99,12 +99,8 @@ set(SILO_ENABLE_JSON OFF)
 set(SILO_ENABLE_PYTHON_MODULE ON)
 set(SILO_ENABLE_TESTS OFF)
 set(SILO_BUILD_FOR_BSD_LICENSE ON)
-set(SILO_ENABLE_ZFP )
 
-if(NOT SILO_BUILD_FOR_BSD_LICENSE)
-  set(SILO_ENABLE_FPZIP OFF)
-  set(SILO_ENABLE_HZIP OFF)
-endif()
+
 
 #-----------------------------------------------------------------------------
 # Directories

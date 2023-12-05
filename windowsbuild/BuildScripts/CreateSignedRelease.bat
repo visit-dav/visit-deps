@@ -38,7 +38,7 @@ cd %VRootDir%
 
 Rem Keep current working directory after call to vcvars.
 set "VSCMD_START_DIR=%CD%"
-call "%PROGRAMFILES(X86)%\\Microsoft Visual Studio\\2017\\Professional\\VC\\Auxiliary\\Build\\vcvars64.bat"
+call "%PROGRAMFILES%\\Microsoft Visual Studio\\2022\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat"
 
 Rem This is the hash for the current certificate, will need to be updated
 Rem if the certificate changes. The certificate needs to be properly
@@ -55,7 +55,8 @@ mkdir %VBldDirName%
 cd %VBldDirName%
 
 "%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
--G "Visual Studio 15 2017 Win64" ^
+-G "Visual Studio 17 2022" ^
+-A "x64" ^
 -T "host=x64" ^
 -DCODESIGN_HASH:STRING=%CSHash% ^
 -DVISIT_ENABLE_DATA_MANUAL_EXAMPLES:BOOL=true ^
@@ -65,7 +66,8 @@ cd %VBldDirName%
 %VSrcDir%
 
 "%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
--G "Visual Studio 15 2017 Win64" ^
+-G "Visual Studio 17 2022" ^
+-A "x64" ^
 -T "host=x64" ^
 -DCODESIGN_HASH:STRING=%CSHash% ^
 -DVISIT_ENABLE_DATA_MANUAL_EXAMPLES:BOOL=true ^
