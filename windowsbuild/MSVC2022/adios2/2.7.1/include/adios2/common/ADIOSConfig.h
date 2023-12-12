@@ -17,12 +17,12 @@
  * ADIOS Build Information:
  *
  * Compiler:
- *   C: C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe
- *     Id: MSVC 19.16.27048.0
- *   CXX: C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe
- *     Id: MSVC 19.16.27048.0
- *   Fortran: C:/Program Files (x86)/Microsoft Visual Studio/2017/Professional/VC/Tools/MSVC/14.16.27023/bin/Hostx64/x64/cl.exe
- *     Id:  19.16.27048.0
+ *   C: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe
+ *     Id: MSVC 19.38.33130.0
+ *   CXX: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe
+ *     Id: MSVC 19.38.33130.0
+ *   Fortran: C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe
+ *     Id:  19.38.33130.0
  */
 
 /* Everything between here and the note below is programatically generated */
