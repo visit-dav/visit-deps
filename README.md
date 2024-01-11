@@ -10,6 +10,9 @@ Contains pre-built third-party dlls/libs for building and doing VisIt developmen
 
 Pending
 
+## Troubleshooting
+
+If you have issues with cloning this repo on Windows or you download a zip and WinZip complains about filenames being too long, try using 7zip instead.
 
 ## License
 
