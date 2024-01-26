@@ -1,7 +1,7 @@
 Windows Build Notes for h5part-1.6.6
 
 Contents of hfpart-1.6.6-projects.zip:
- projects for MSVC 2012 (in folder visualc11) and MSVC 2013 (in folder visualc12)
+ projects for MSVC 2022 (in folder visualc2022)
  Modified headers and source code for a clean compile and for building a dll on windows.
  This readme.
 
@@ -22,23 +22,15 @@ To build H5Part on Windows using these project files,
 the following variables must be defined:
 
 HDF5_INC_DIR       /* Path to the HDF5 includes */
-HDF5_INC_DIR_X64   /* Path to the HDF5 x64 includes */
 HDF5_LIB_DIR       /* Path to the HDF5 libraries */
-HDF5_LIB_DIR_X64   /* Path to the 64bit hdf5 libraries */
 
 ZLIB_INC_DIR       /* Path to the zlib includes */
 ZLIB_LIB_DIR       /* Path to the zlib libraries */
-ZLIB_LIB_DIR_X64   /* Path to the 64bit zlib libraries */
 
 SZIP_INC_DIR       /* Path to the szip includes */
 SZIP_LIB_DIR       /* Path to the szip libraries */
-SZIP_LIB_DIR_X64   /* Path to the 64bit szip libraries */
 
 There is a property sheet available which can be hand-edited to point to the appropriate paths before opening the solution file.
 
-To build with MSVC 2012:
-   Open the visualc11 folder, modify DependentLibs.vsprops, Open the solution file, and build. 
-
-To build with MSVC 2013:
-   Open the visualc12 folder, modify DependentLibs.props file.  Open the solution file, and build. 
+Open the visualc2022 folder, modify DependentLibs.vsprops, Open the solution file, and build. 
 
