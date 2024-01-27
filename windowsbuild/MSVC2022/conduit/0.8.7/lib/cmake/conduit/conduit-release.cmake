@@ -75,16 +75,6 @@ set_target_properties(conduit_relay_io_blueprint_python PROPERTIES
 list(APPEND _cmake_import_check_targets conduit_relay_io_blueprint_python )
 list(APPEND _cmake_import_check_files_for_conduit_relay_io_blueprint_python "${_IMPORT_PREFIX}/python-modules/conduit/relay/io/blueprint/conduit_relay_io_blueprint_python.pyd" )
 
-# Import target "conduit_relay_web_python" for configuration "Release"
-set_property(TARGET conduit_relay_web_python APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(conduit_relay_web_python PROPERTIES
-  IMPORTED_COMMON_LANGUAGE_RUNTIME_RELEASE ""
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/python-modules/conduit/relay/web/conduit_relay_web_python.pyd"
-  )
-
-list(APPEND _cmake_import_check_targets conduit_relay_web_python )
-list(APPEND _cmake_import_check_files_for_conduit_relay_web_python "${_IMPORT_PREFIX}/python-modules/conduit/relay/web/conduit_relay_web_python.pyd" )
-
 # Import target "conduit_relay_mpi_python" for configuration "Release"
 set_property(TARGET conduit_relay_mpi_python APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(conduit_relay_mpi_python PROPERTIES

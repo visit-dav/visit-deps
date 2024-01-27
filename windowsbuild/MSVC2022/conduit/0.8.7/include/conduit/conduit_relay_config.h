@@ -30,10 +30,10 @@
 
 #define CONDUIT_RELAY_MPI_ENABLED
 
-#define CONDUIT_RELAY_WEBSERVER_ENABLED
+/* #undef CONDUIT_RELAY_WEBSERVER_ENABLED */
 
 // this path points to the source dir
-#define CONDUIT_RELAY_SOURCE_DIR  "C:\\A_Visit\\ThirdParty\\conduit-v0.8.7\\src\\libs\\relay"
+#define CONDUIT_RELAY_SOURCE_DIR  ""
 
 #endif
 

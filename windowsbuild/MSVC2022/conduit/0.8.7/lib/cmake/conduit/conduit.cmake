@@ -19,7 +19,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_cmake_targets_defined "")
 set(_cmake_targets_not_defined "")
 set(_cmake_expected_targets "")
-foreach(_cmake_expected_target IN ITEMS conduit conduit_python conduit_utils_python conduit_relay conduit_relay_python conduit_relay_io_python conduit_relay_io_blueprint_python conduit_relay_web_python conduit_relay_mpi_python conduit_relay_mpi conduit_relay_mpi_io conduit_blueprint conduit_blueprint_python conduit_blueprint_mcarray_python conduit_blueprint_mcarray_examples_python conduit_blueprint_mesh_python conduit_blueprint_mesh_examples_python conduit_blueprint_table_python conduit_blueprint_table_examples_python conduit_blueprint_mpi)
+foreach(_cmake_expected_target IN ITEMS conduit conduit_python conduit_utils_python conduit_relay conduit_relay_python conduit_relay_io_python conduit_relay_io_blueprint_python conduit_relay_mpi_python conduit_relay_mpi conduit_relay_mpi_io conduit_blueprint conduit_blueprint_python conduit_blueprint_mcarray_python conduit_blueprint_mcarray_examples_python conduit_blueprint_mesh_python conduit_blueprint_mesh_examples_python conduit_blueprint_table_python conduit_blueprint_table_examples_python conduit_blueprint_mpi)
   list(APPEND _cmake_expected_targets "${_cmake_expected_target}")
   if(TARGET "${_cmake_expected_target}")
     list(APPEND _cmake_targets_defined "${_cmake_expected_target}")
@@ -98,13 +98,6 @@ add_library(conduit_relay_io_blueprint_python MODULE IMPORTED)
 
 set_target_properties(conduit_relay_io_blueprint_python PROPERTIES
   INTERFACE_LINK_LIBRARIES "${PYTHON_LIBRARY};conduit;conduit_relay;conduit_blueprint"
-)
-
-# Create imported target conduit_relay_web_python
-add_library(conduit_relay_web_python MODULE IMPORTED)
-
-set_target_properties(conduit_relay_web_python PROPERTIES
-  INTERFACE_LINK_LIBRARIES "${PYTHON_LIBRARY};conduit;conduit_relay"
 )
 
 # Create imported target conduit_relay_mpi_python
