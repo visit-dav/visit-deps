@@ -126,7 +126,7 @@
 #endif
 
 
-/* #undef XDMF_HAVE_FCNTL */
+#define XDMF_HAVE_FCNTL
 /* #undef XDMF_HAVE_NETINET */
 /* #undef XDMF_HAVE_MMAN */
 
