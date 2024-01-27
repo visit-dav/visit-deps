@@ -44,7 +44,7 @@
 #define NC_HAS_SZIP      0 /*!< szip support (hdf5 only) */
 #define NC_HAS_DAP2      0 /*!< DAP2 support. */
 #define NC_HAS_DAP4      0 /*!< DAP4 support. */
-#define NC_HAS_DISKLESS  0 /*!< diskless support. */
+#define NC_HAS_DISKLESS  1 /*!< diskless support. */
 #define NC_HAS_MMAP      0 /*!< mmap support. */
 #define NC_HAS_JNA       0 /*!< jna support. */
 #define NC_HAS_PNETCDF   0 /*!< pnetcdf support. */
