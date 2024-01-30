@@ -1,0 +1,9 @@
+sphinx<7,>=1.6
+docutils<0.19
+sphinxcontrib-jquery<5,>=4
+
+[dev]
+transifex-client
+sphinxcontrib-httpdomain
+bump2version
+wheel

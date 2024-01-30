@@ -8,4 +8,3 @@
 ###############################################################################
 from .conduit_blueprint_table_python import *
 
-from . import examples
