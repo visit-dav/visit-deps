@@ -30,7 +30,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/netCDFTargets.cmake")
 
 # Compiling Options
 #
-set(netCDF_C_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/cl.exe")
+set(netCDF_C_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe")
 set(netCDF_C_COMPILER_FLAGS "/DWIN32 /D_WINDOWS /W3 /MD /O2 /Ob2 /DNDEBUG")
 set(netCDF_C_CPP_FLAGS " ")
 set(netCDF_LDFLAGS "/machine:x64 /LARGEADDRESSAWARE /STACK:40000000 /INCREMENTAL:NO")
@@ -51,6 +51,6 @@ set(netCDF_HAS_PARALLEL no)
 set(netCDF_HAS_DAP no)
 set(netCDF_HAS_DAP2 no)
 set(netCDF_HAS_DAP4 no)
-set(netCDF_HAS_DISKLESS no)
+set(netCDF_HAS_DISKLESS yes)
 set(netCDF_HAS_MMAP no)
 set(netCDF_HAS_JNA no)

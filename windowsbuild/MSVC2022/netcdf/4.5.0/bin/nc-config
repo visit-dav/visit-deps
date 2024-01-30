@@ -4,14 +4,14 @@
 # various things about the netCDF installation. This code was
 # contributed by netCDF user Arlindo DaSilva. Thanks Arlindo!
 
-prefix="C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0"
-exec_prefix="C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0"
-libdir="C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0/lib"
-includedir="C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0/include"
+prefix="C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0"
+exec_prefix="C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0"
+libdir="C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0/lib"
+includedir="C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0/include"
 
-cc="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/cl.exe"
-cflags="-IC:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0/include"
-libs="-LC:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/netcdf/4.5.0/lib -lnetcdf -lzlib -lszip"
+cc="C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.38.33130/bin/Hostx64/x64/cl.exe"
+cflags="-IC:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0/include"
+libs="-LC:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/netcdf/4.5.0/lib -lnetcdf -lhdf5::hdf5-shared -lhdf5::hdf5_hl-shared -lzlib"
 
 has_dap2="OFF"
 if [ -z $has_dap2 -o "$has_dap2" = "OFF" ]; then
