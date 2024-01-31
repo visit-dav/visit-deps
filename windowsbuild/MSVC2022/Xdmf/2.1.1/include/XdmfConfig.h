@@ -32,7 +32,7 @@
   #define XDMF_BYTE_ORDER_LITTLE
 #endif
 
-#define XDMF_SYSTEM Windows-10.0.19044
+#define XDMF_SYSTEM Windows-10.0.19045
 
 #define XDMF_VOID_VALID
 #ifndef XDMF_VOID_VALID
@@ -126,7 +126,7 @@
 #endif
 
 
-/* #undef XDMF_HAVE_FCNTL */
+#define XDMF_HAVE_FCNTL
 /* #undef XDMF_HAVE_NETINET */
 /* #undef XDMF_HAVE_MMAN */
 
