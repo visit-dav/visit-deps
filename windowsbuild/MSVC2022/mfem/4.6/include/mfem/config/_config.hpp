@@ -31,10 +31,10 @@
 #define MFEM_VERSION_PATCH ((MFEM_VERSION)%100)
 
 // MFEM source directory.
-#define MFEM_SOURCE_DIR "C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/Build2/MFEM/src/MFEM"
+/* #undef MFEM_SOURCE_DIR  */
 
 // MFEM install directory.
-#define MFEM_INSTALL_DIR "C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/mfem/4.6"
+/* #undef MFEM_INSTALL_DIR */
 
 // Description of the git commit used to build MFEM.
 #define MFEM_GIT_STRING "(unknown)"
