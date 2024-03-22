@@ -152,6 +152,11 @@
 #   ability to choose not to install them (data, help, etc).
 #   Removed the space in the install name 'VisIt <version>'->'VisIt<verison>'.
 #
+#   Kathleen Biagas, Fri Mar 22, 2024
+#   Fix bad installation when a lot of DB plugins de-selected. Modified to
+#   write the exclusions list to a text file in the temporary directory and
+#   pass that to 7z instead of a long list.
+#
 ###############################################################################
 
 !addPluginDir ".\VIkit"
@@ -1031,21 +1036,30 @@ FunctionEnd
     File "/oname=$PLUGINSDIR\7z.dll" "${VISIT_WINDOWS_DIR}\${COMPILER}\p7zip\18.05\7z.dll"
 
     # create a var to hold exclusions
+    FileOpen $4 "$PLUGINSDIR\7zExclusions.txt" w
     strcpy $0 ""
     ${IfNot} ${SectionIsSelected} ${SEC_PAR}
-        strcpy $0 "-xr!*_par.* -xr!*\plots\*_par.* -xr!*\operators\*_par.*"
+        FileWrite $4 "*_par.*$\r$\n"
+        FileWrite $4 "*\plots\*_par.*$\r$\n"
+        FileWrite $4 "*\operators\*_par.*$\r$\n"
+        strcpy $0 "yes"
     ${EndIf}
     ${IfNot} ${SectionIsSelected} ${SEC_DEV}
-        strcpy $0 "$0 -xr!lib\*.lib -xr!include\"
+        FileWrite $4 "*lib\*.lib$\r$\n"
+        FileWrite $4 "*include\$\r$\n"
+        strcpy $0 "yes"
     ${EndIf}
     ${IfNot} ${SectionIsSelected} ${SEC_HELP}
-        strcpy $0 "$0 -xr!*\resources\help\"
+        FileWrite $4 "*\resources\help\$\r$\n"
+        strcpy $0 "yes"
     ${EndIf}
     ${IfNot} ${SectionIsSelected} ${SEC_DATA}
-        strcpy $0 "$0 -xr!data\"
+        FileWrite $4 "data\$\r$\n"
+        strcpy $0 "yes"
     ${EndIf}
     ${IfNot} ${SectionIsSelected} ${SEC_LIBSIM}
-        strcpy $0 "$0 -xr!libsim\"
+        FileWrite $4 "libsim\$\r$\n"
+        strcpy $0 "yes"
     ${EndIf}
 
     StrCpy $9 ${SEC_DP_0}
@@ -1054,12 +1068,18 @@ FunctionEnd
     ${For} $R0 0 $8
         ${IfNot} ${SectionIsSelected} $9
             SectionGetText $9 $R2
-            strcpy $0 "$0 -xr!*databases\?$R2*.dll"
+            FileWrite $4 "*databases\?$R2*.dll$\r$\n"
+            strcpy $0 "yes"
         ${EndIf}
         IntOp $9 $9 + 1
     ${Next}
+    FileClose $4
 
-    ExecWait '"$PLUGINSDIR\7z.exe" x -spe $0 -o"${VISITINSTDIR}" $PLUGINSDIR\visit${PRODUCT_VERSION}.7z' $7
+    ${If} $0 == "yes"
+        ExecWait '"$PLUGINSDIR\7z.exe" x -spe -xr@"$PLUGINSDIR\7zExclusions.txt" -o"${VISITINSTDIR}" $PLUGINSDIR\visit${PRODUCT_VERSION}.7z' $7
+    ${Else}
+        ExecWait '"$PLUGINSDIR\7z.exe" x -spe -o"${VISITINSTDIR}" $PLUGINSDIR\visit${PRODUCT_VERSION}.7z' $7
+    ${EndIf}
   SectionEnd
 
   Section -AllHosts
