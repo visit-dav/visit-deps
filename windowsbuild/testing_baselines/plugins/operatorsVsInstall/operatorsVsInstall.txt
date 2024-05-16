@@ -1,0 +1,5 @@
+{   'CartographicProjection': 'success',
+    'CracksClipper': 'success',
+    'RadialResample': 'success',
+    'Slice': 'success',
+    'Threshold': 'success'}
