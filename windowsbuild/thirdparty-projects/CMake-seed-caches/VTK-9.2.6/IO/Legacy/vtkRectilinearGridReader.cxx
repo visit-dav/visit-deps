@@ -134,6 +134,18 @@ int vtkRectilinearGridReader::ReadMetaDataSimple(const std::string& fname, vtkIn
 
         dimsRead = true;
       }
+      else if (!strncmp(this->LowerCase(line), "x_coordinate", 12))
+      {
+        break;
+      }
+      else if (!strncmp(this->LowerCase(line), "y_coordinate", 12))
+      {
+        break;
+      }
+      else if (!strncmp(this->LowerCase(line), "z_coordinate", 12))
+      {
+        break;
+      }
     }
   }
 
