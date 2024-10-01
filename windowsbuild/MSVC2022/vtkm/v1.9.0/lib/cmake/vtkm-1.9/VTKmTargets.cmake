@@ -19,7 +19,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_cmake_targets_defined "")
 set(_cmake_targets_not_defined "")
 set(_cmake_expected_targets "")
-foreach(_cmake_expected_target IN ITEMS vtkm_vectorization_flags vtkm_compiler_flags vtkm_developer_flags vtkmdiympi_nompi vtkmdiy diy_developer_flags vtkm_diy vtkm_lodepng vtkm_loguru vtkm_optionparser vtkm_lcl vtkm_cont vtkm_cont_testing vtkm_worklet vtkm_filter_core vtkm_filter vtkm_filter_clean_grid vtkm_filter_connected_components vtkm_filter_contour vtkm_filter_density_estimate vtkm_filter_entity_extraction vtkm_filter_flow vtkm_filter_image_processing vtkm_filter_field_conversion vtkm_filter_field_transform vtkm_filter_geometry_refinement vtkm_filter_mesh_info vtkm_filter_multi_block vtkm_filter_resampling vtkm_filter_scalar_topology vtkm_filter_vector_analysis vtkm_filter_zfp vtkm_rendering vtkm_rendering_gl_context vtkm_io vtkm_source)
+foreach(_cmake_expected_target IN ITEMS vtkm_vectorization_flags vtkm_compiler_flags vtkm_developer_flags vtkmdiympi_nompi vtkmdiy diy_developer_flags vtkm_diy vtkm_lodepng vtkm_loguru vtkm_optionparser vtkm_lcl vtkm_cont vtkm_worklet vtkm_filter_core vtkm_filter vtkm_filter_clean_grid vtkm_filter_connected_components vtkm_filter_contour vtkm_filter_density_estimate vtkm_filter_entity_extraction vtkm_filter_flow vtkm_filter_image_processing vtkm_filter_field_conversion vtkm_filter_field_transform vtkm_filter_geometry_refinement vtkm_filter_mesh_info vtkm_filter_multi_block vtkm_filter_resampling vtkm_filter_scalar_topology vtkm_filter_vector_analysis vtkm_filter_zfp vtkm_rendering vtkm_rendering_gl_context vtkm_io vtkm_source)
   list(APPEND _cmake_expected_targets "${_cmake_expected_target}")
   if(TARGET "${_cmake_expected_target}")
     list(APPEND _cmake_targets_defined "${_cmake_expected_target}")
@@ -140,28 +140,21 @@ set_target_properties(vtkm_lcl PROPERTIES
 add_library(vtkm_cont STATIC IMPORTED)
 
 set_target_properties(vtkm_cont PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_compiler_flags;Threads::Threads;vtkm_optionparser;vtkm_diy;vtkm_lcl;\$<LINK_ONLY:vtkm_loguru>"
-)
-
-# Create imported target vtkm_cont_testing
-add_library(vtkm_cont_testing STATIC IMPORTED)
-
-set_target_properties(vtkm_cont_testing PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_cont;vtkm_worklet"
+  INTERFACE_LINK_LIBRARIES "vtkm_compiler_flags;Threads::Threads;vtkm_optionparser;vtkm_diy;vtkm_lcl;\$<LINK_ONLY:vtkm_loguru>"
 )
 
 # Create imported target vtkm_worklet
 add_library(vtkm_worklet STATIC IMPORTED)
 
 set_target_properties(vtkm_worklet PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_cont"
+  INTERFACE_LINK_LIBRARIES "vtkm_cont"
 )
 
 # Create imported target vtkm_filter_core
 add_library(vtkm_filter_core STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_core PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_cont;vtkm_worklet"
+  INTERFACE_LINK_LIBRARIES "vtkm_cont;vtkm_worklet"
 )
 
 # Create imported target vtkm_filter
@@ -175,119 +168,119 @@ set_target_properties(vtkm_filter PROPERTIES
 add_library(vtkm_filter_clean_grid STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_clean_grid PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_connected_components
 add_library(vtkm_filter_connected_components STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_connected_components PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_contour
 add_library(vtkm_filter_contour STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_contour PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core;vtkm_filter_vector_analysis;vtkm_filter_mesh_info"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core;vtkm_filter_vector_analysis;vtkm_filter_mesh_info"
 )
 
 # Create imported target vtkm_filter_density_estimate
 add_library(vtkm_filter_density_estimate STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_density_estimate PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:vtkm_worklet>;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_entity_extraction
 add_library(vtkm_filter_entity_extraction STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_entity_extraction PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;\$<LINK_ONLY:vtkm_worklet>;\$<LINK_ONLY:vtkm_filter_clean_grid>;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:vtkm_worklet>;\$<LINK_ONLY:vtkm_filter_clean_grid>;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_flow
 add_library(vtkm_filter_flow STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_flow PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_image_processing
 add_library(vtkm_filter_image_processing STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_image_processing PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_field_conversion
 add_library(vtkm_filter_field_conversion STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_field_conversion PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_field_transform
 add_library(vtkm_filter_field_transform STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_field_transform PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_geometry_refinement
 add_library(vtkm_filter_geometry_refinement STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_geometry_refinement PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_mesh_info
 add_library(vtkm_filter_mesh_info STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_mesh_info PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_multi_block
 add_library(vtkm_filter_multi_block STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_multi_block PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_resampling
 add_library(vtkm_filter_resampling STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_resampling PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_scalar_topology
 add_library(vtkm_filter_scalar_topology STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_scalar_topology PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_vector_analysis
 add_library(vtkm_filter_vector_analysis STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_vector_analysis PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_filter_zfp
 add_library(vtkm_filter_zfp STATIC IMPORTED)
 
 set_target_properties(vtkm_filter_zfp PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_worklet;vtkm_filter_core"
+  INTERFACE_LINK_LIBRARIES "vtkm_worklet;vtkm_filter_core"
 )
 
 # Create imported target vtkm_rendering
 add_library(vtkm_rendering STATIC IMPORTED)
 
 set_target_properties(vtkm_rendering PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_filter_image_processing;vtkm_filter_entity_extraction;vtkm_io;vtkm_rendering_gl_context"
+  INTERFACE_LINK_LIBRARIES "vtkm_filter_image_processing;vtkm_filter_entity_extraction;vtkm_io;vtkm_rendering_gl_context"
 )
 
 # Create imported target vtkm_rendering_gl_context
@@ -297,14 +290,14 @@ add_library(vtkm_rendering_gl_context INTERFACE IMPORTED)
 add_library(vtkm_io STATIC IMPORTED)
 
 set_target_properties(vtkm_io PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_cont;\$<LINK_ONLY:vtkm_lodepng>"
+  INTERFACE_LINK_LIBRARIES "vtkm_cont;\$<LINK_ONLY:vtkm_lodepng>"
 )
 
 # Create imported target vtkm_source
 add_library(vtkm_source STATIC IMPORTED)
 
 set_target_properties(vtkm_source PROPERTIES
-  INTERFACE_LINK_LIBRARIES "\$<LINK_ONLY:>;vtkm_cont;vtkm_filter_field_conversion;vtkm_filter_multi_block"
+  INTERFACE_LINK_LIBRARIES "vtkm_cont;vtkm_filter_field_conversion;vtkm_filter_multi_block"
 )
 
 if(CMAKE_VERSION VERSION_LESS 3.0.0)

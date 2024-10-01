@@ -25,16 +25,6 @@ set_target_properties(vtkm_cont PROPERTIES
 list(APPEND _cmake_import_check_targets vtkm_cont )
 list(APPEND _cmake_import_check_files_for_vtkm_cont "${_IMPORT_PREFIX}/lib/vtkm_cont-1.9.lib" )
 
-# Import target "vtkm_cont_testing" for configuration "Release"
-set_property(TARGET vtkm_cont_testing APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(vtkm_cont_testing PROPERTIES
-  IMPORTED_LINK_INTERFACE_LANGUAGES_RELEASE "CXX"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/lib/vtkm_cont_testing-1.9.lib"
-  )
-
-list(APPEND _cmake_import_check_targets vtkm_cont_testing )
-list(APPEND _cmake_import_check_files_for_vtkm_cont_testing "${_IMPORT_PREFIX}/lib/vtkm_cont_testing-1.9.lib" )
-
 # Import target "vtkm_worklet" for configuration "Release"
 set_property(TARGET vtkm_worklet APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(vtkm_worklet PROPERTIES
