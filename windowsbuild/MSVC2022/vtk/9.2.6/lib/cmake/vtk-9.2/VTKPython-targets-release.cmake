@@ -555,14 +555,5 @@ set_target_properties(VTK::vtkIOXMLPython PROPERTIES
 list(APPEND _cmake_import_check_targets VTK::vtkIOXMLPython )
 list(APPEND _cmake_import_check_files_for_VTK::vtkIOXMLPython "${_IMPORT_PREFIX}/bin/Lib/site-packages/vtkmodules/vtkIOXML.cp39-win_amd64.pyd" )
 
-# Import target "VTK::vtkpython" for configuration "Release"
-set_property(TARGET VTK::vtkpython APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(VTK::vtkpython PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/vtkpython.exe"
-  )
-
-list(APPEND _cmake_import_check_targets VTK::vtkpython )
-list(APPEND _cmake_import_check_files_for_VTK::vtkpython "${_IMPORT_PREFIX}/bin/vtkpython.exe" )
-
 # Commands beyond this point should not need to know the version.
 set(CMAKE_IMPORT_FILE_VERSION)
