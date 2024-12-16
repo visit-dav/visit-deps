@@ -19,6 +19,6 @@
 /* #undef VTK_TARGET_SUPPORTS_SHARED_LIBS */
 
 /* C++ compiler used.  */
-#define VTK_CXX_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.37.32822/bin/Hostx64/x64/cl.exe"
+#define VTK_CXX_COMPILER "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.42.34433/bin/Hostx64/x64/cl.exe"
 
 #endif
