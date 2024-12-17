@@ -2249,7 +2249,7 @@ function (_vtk_module_export_properties)
   endforeach ()
 endfunction ()
 
-include("${CMAKE_CURRENT_LIST_DIR}/vtkModuleTesting.cmake")
+#include("${CMAKE_CURRENT_LIST_DIR}/vtkModuleTesting.cmake")
 
 #[==[
 @ingroup module
