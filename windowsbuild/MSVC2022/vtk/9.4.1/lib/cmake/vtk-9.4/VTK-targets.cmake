@@ -19,7 +19,7 @@ set(CMAKE_IMPORT_FILE_VERSION 1)
 set(_cmake_targets_defined "")
 set(_cmake_targets_not_defined "")
 set(_cmake_expected_targets "")
-foreach(_cmake_expected_target IN ITEMS VTK::vtkbuild VTK::WrappingTools VTK::WrapHierarchy VTK::WrapPython VTK::WrapPythonInit VTK::ParseJava VTK::WrapJava VTK::WrapSerDes VTK::kwiml VTK::vtksys VTK::nlohmannjson VTK::token VTK::fast_float VTK::doubleconversion VTK::loguru VTK::CommonCore VTK::CommonCore-private-kit-links VTK::Python VTK::PythonUsed VTK::kissfft VTK::CommonMath VTK::exprtk VTK::CommonMisc VTK::WrappingPythonCore VTK::PythonInterpreter VTK::CommonTransforms VTK::CommonSystem VTK::CommonSystem-private-kit-links VTK::pegtl VTK::pugixml VTK::CommonDataModel VTK::CommonExecutionModel VTK::lz4 VTK::lzma VTK::utf8 VTK::zlib VTK::IOCore VTK::FiltersReduction VTK::FiltersCore VTK::eigen VTK::FiltersCellGrid VTK::IOCellGrid VTK::IOLegacy VTK::expat VTK::IOXMLParser VTK::CommonColor VTK::CommonComputationalGeometry VTK::FiltersGeometry VTK::verdict VTK::FiltersVerdict VTK::fmt VTK::FiltersGeneral VTK::FiltersSources VTK::RenderingCore VTK::DomainsChemistry VTK::ImagingCore VTK::DICOMParser VTK::jpeg VTK::metaio VTK::png VTK::tiff VTK::IOImage VTK::ImagingSources VTK::FiltersHybrid VTK::FiltersHyperTree VTK::RenderingHyperTreeGrid VTK::glad VTK::RenderingUI VTK::vtkTestOpenGLVersion VTK::RenderingOpenGL2 VTK::RenderingOpenGL2-private-kit-links VTK::vtkProbeOpenGLVersion VTK::RenderingSceneGraph VTK::RenderingVolume VTK::IOXML VTK::ImagingMath VTK::RenderingVolumeOpenGL2 VTK::ParallelCore VTK::FiltersAMR VTK::RenderingVolumeAMR VTK::jsoncpp VTK::RenderingRayTracing VTK::IOPLY VTK::libxml2 VTK::FiltersTemporal VTK::IOEnSight VTK::IOGeometry VTK::freetype VTK::RenderingFreeType VTK::RenderingContext2D VTK::FiltersModeling VTK::FiltersTexture VTK::ImagingColor VTK::ImagingGeneral VTK::ImagingHybrid VTK::FiltersStatistics VTK::diy2 VTK::ParallelDIY VTK::FiltersExtraction VTK::InteractionStyle VTK::RenderingAnnotation VTK::InteractionWidgets VTK::GUISupportQt VTK::sqlite VTK::libproj VTK::GeovisCore VTK::FiltersFlowPaths)
+foreach(_cmake_expected_target IN ITEMS VTK::vtkbuild VTK::WrappingTools VTK::WrapHierarchy VTK::WrapPython VTK::WrapPythonInit VTK::ParseJava VTK::WrapJava VTK::WrapSerDes VTK::kwiml VTK::vtksys VTK::nlohmannjson VTK::token VTK::fast_float VTK::doubleconversion VTK::loguru VTK::CommonCore VTK::CommonCore-private-kit-links VTK::Python VTK::PythonUsed VTK::kissfft VTK::CommonMath VTK::exprtk VTK::CommonMisc VTK::WrappingPythonCore VTK::PythonInterpreter VTK::CommonTransforms VTK::CommonSystem VTK::CommonSystem-private-kit-links VTK::pegtl VTK::pugixml VTK::CommonDataModel VTK::CommonExecutionModel VTK::lz4 VTK::lzma VTK::utf8 VTK::zlib VTK::IOCore VTK::FiltersReduction VTK::FiltersCore VTK::eigen VTK::FiltersCellGrid VTK::IOCellGrid VTK::IOLegacy VTK::expat VTK::IOXMLParser VTK::CommonColor VTK::CommonComputationalGeometry VTK::FiltersGeometry VTK::verdict VTK::FiltersVerdict VTK::fmt VTK::FiltersGeneral VTK::FiltersSources VTK::RenderingCore VTK::DomainsChemistry VTK::ImagingCore VTK::DICOMParser VTK::jpeg VTK::metaio VTK::png VTK::tiff VTK::IOImage VTK::ImagingSources VTK::FiltersHybrid VTK::FiltersHyperTree VTK::RenderingHyperTreeGrid VTK::glad VTK::RenderingUI VTK::vtkTestOpenGLVersion VTK::RenderingOpenGL2 VTK::RenderingOpenGL2-private-kit-links VTK::vtkProbeOpenGLVersion VTK::RenderingSceneGraph VTK::RenderingVolume VTK::IOXML VTK::ImagingMath VTK::RenderingVolumeOpenGL2 VTK::ParallelCore VTK::FiltersAMR VTK::RenderingVolumeAMR VTK::jsoncpp VTK::RenderingRayTracing VTK::RenderingAnari VTK::IOPLY VTK::libxml2 VTK::FiltersTemporal VTK::IOEnSight VTK::IOGeometry VTK::freetype VTK::RenderingFreeType VTK::RenderingContext2D VTK::FiltersModeling VTK::FiltersTexture VTK::ImagingColor VTK::ImagingGeneral VTK::ImagingHybrid VTK::FiltersStatistics VTK::diy2 VTK::ParallelDIY VTK::FiltersExtraction VTK::InteractionStyle VTK::RenderingAnnotation VTK::InteractionWidgets VTK::GUISupportQt VTK::sqlite VTK::libproj VTK::GeovisCore VTK::FiltersFlowPaths)
   list(APPEND _cmake_expected_targets "${_cmake_expected_target}")
   if(TARGET "${_cmake_expected_target}")
     list(APPEND _cmake_targets_defined "${_cmake_expected_target}")
@@ -1852,6 +1852,33 @@ if(NOT CMAKE_VERSION VERSION_LESS "3.23.0")
       TYPE "HEADERS"
       BASE_DIRS "${_IMPORT_PREFIX}/include/vtk-9.4"
       FILES "${_IMPORT_PREFIX}/include/vtk-9.4/vtkOSPRayCache.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkRenderingRayTracingModule.h" "${_IMPORT_PREFIX}/include/vtk-9.4/RTWrapper/RTWrapper.h" "${_IMPORT_PREFIX}/include/vtk-9.4/RTWrapper/Types.h" "${_IMPORT_PREFIX}/include/vtk-9.4/RTWrapper/Backend.h" "${_IMPORT_PREFIX}/include/vtk-9.4/RTWrapper/RTWrapper.h"
+  )
+endif()
+
+# Create imported target VTK::RenderingAnari
+add_library(VTK::RenderingAnari SHARED IMPORTED)
+
+set_target_properties(VTK::RenderingAnari PROPERTIES
+  INTERFACE_LINK_LIBRARIES "VTK::RenderingOpenGL2;VTK::RenderingCore;VTK::RenderingSceneGraph;VTK::CommonDataModel;VTK::RenderingVolume;VTK::RenderingVolumeOpenGL2;anari::anari;VTK::FiltersGeometry"
+)
+
+if(NOT CMAKE_VERSION VERSION_LESS "3.23.0")
+  target_sources(VTK::RenderingAnari
+    INTERFACE
+      FILE_SET "vtk_module_templates"
+      TYPE "HEADERS"
+      BASE_DIRS "${_IMPORT_PREFIX}/include/vtk-9.4"
+      FILES 
+    INTERFACE
+      FILE_SET "vtk_module_headers"
+      TYPE "HEADERS"
+      BASE_DIRS "${_IMPORT_PREFIX}/include/vtk-9.4"
+      FILES "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariActorNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariCameraNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariCompositePolyDataMapperNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariLightNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariPass.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariPolyDataMapperNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariRendererNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariViewNodeFactory.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariWindowNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariFollowerNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariProfiling.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariVolumeNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariVolumeMapperNode.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariVolumeMapper.h"
+    INTERFACE
+      FILE_SET "vtk_module_nowrap_headers"
+      TYPE "HEADERS"
+      BASE_DIRS "${_IMPORT_PREFIX}/include/vtk-9.4"
+      FILES "${_IMPORT_PREFIX}/include/vtk-9.4/vtkAnariProfiling.h" "${_IMPORT_PREFIX}/include/vtk-9.4/vtkRenderingAnariModule.h"
   )
 endif()
 

@@ -6,12 +6,10 @@
 # to load XDMF's settings for an external project.
 
 # Top level for development or install
-get_filename_component(XDMF_INSTALL_DIR "${CMAKE_CURRENT_LIST_FILE}" DIRECTORY)
-get_filename_component(XDMF_INSTALL_DIR "${VTK_INSTALL_PREFIX}" DIRECTORY)
-get_filename_component(XDMF_INSTALL_DIR "${VTK_INSTALL_PREFIX}" DIRECTORY)
+SET(XDMF_INSTALL_DIR "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/xdmf-vtk9.4/2.1.1")
 
 # The XDMF include file directories.
-SET(XDMF_INCLUDE_DIRS "${XDMF_INSTALL_DIR}/include/;${HDF5_INCLUDE_DIR}")
+SET(XDMF_INCLUDE_DIRS "${XDMF_INSTALL_DIR}/include/;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/include")
 
 # The XDMF library directories.
 SET(XDMF_LIBRARY_DIRS "${XDMF_INSTALL_DIR}/lib")
@@ -29,19 +27,19 @@ SET(XDMF_KITS_DIR "${XDMF_INSTALL_DIR}/vtk")
 # To include a utility library in another project:
 # LINK_DIRECTORIES(${XDMF_***_LIBRARY_PATH})
 # TARGET_LINK_LIBRARIES(target ${XDMF_***_LIBRARIES})
-SET(XDMF_HDF5_INCLUDE "${HDF5_INCLUDE_DIR}")
-SET(XDMF_HDF5_LIBRARY_PATH "${HDF5_LIBRARY_DIR}")
-SET(XDMF_HDF5_LIBRARIES "${HDF5_LIBRARY_DIR}/hdf5.lib")
+SET(XDMF_HDF5_INCLUDE "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/include")
+SET(XDMF_HDF5_LIBRARY_PATH "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/lib")
+SET(XDMF_HDF5_LIBRARIES "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/lib/hdf5.lib")
 SET(XDMF_SYSTEM_HDF5 "ON")
 
-SET(XDMF_LIBXML2_INCLUDE "${VTK_INCLUDE_DIR}/vklibxml2")
-SET(XDMF_LIBXML2_LIBRARY_PATH "${VTK_LIBRARY_DIR}")
-SET(XDMF_LIBXML2_LIBRARIES "${VTK_LIBRARY_DIR}/vtklibxml2-9.2.lib")
+SET(XDMF_LIBXML2_INCLUDE "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/vtk/9.4.1/include/vtk-9.4/vtklibxml2/include")
+SET(XDMF_LIBXML2_LIBRARY_PATH "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/vtk/9.4.1/lib")
+SET(XDMF_LIBXML2_LIBRARIES "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/vtk/9.4.1/lib/vtklibxml2-9.4.lib")
 SET(XDMF_SYSTEM_LIBXML2 "ON")
 
-SET(XDMF_ZLIB_INCLUDE "${ZLIB_INCLUDE_DIR}")
-SET(XDMF_ZLIB_LIBRARY_PATH "${ZLIB_LIBRARY_DIR}")
-SET(XDMF_ZLIB_LIBRARIES "${ZLIB_LIBRARY_DIR}/zlib.lib")
+SET(XDMF_ZLIB_INCLUDE "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/include")
+SET(XDMF_ZLIB_LIBRARY_PATH "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/lib")
+SET(XDMF_ZLIB_LIBRARIES "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/lib/zlib.lib")
 SET(XDMF_SYSTEM_ZLIB "ON")
 
 # The XDMF library dependencies.

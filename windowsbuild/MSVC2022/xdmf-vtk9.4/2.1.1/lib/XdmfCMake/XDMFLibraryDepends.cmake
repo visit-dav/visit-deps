@@ -2,8 +2,8 @@
 
 if("${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" GREATER 2.4)
   # Information for CMake 2.6 and above.
-  set("Xdmf_LIB_DEPENDS" "general;hdf5.lib;general;vtklibxml2-9.4.lib;general;zlib.lib;")
+  set("Xdmf_LIB_DEPENDS" "general;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/lib/hdf5.lib;general;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/vtk/9.4.1/lib/vtklibxml2-9.4.lib;general;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/lib/zlib.lib;")
 else()
   # Information for CMake 2.4 and lower.
-  SET("Xdmf_LIB_DEPENDS" "hdf5.lib;vtklibxml2-9.4.lib;zlib.lib;")
+  set("Xdmf_LIB_DEPENDS" "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/lib/hdf5.lib;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/vtk/9.4.1/lib/vtklibxml2-9.4.lib;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/lib/zlib.lib;")
 endif()
