@@ -54,7 +54,7 @@ mkdir %VBldDirName%
 
 cd %VBldDirName%
 
-"%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
+"%PROGRAMFILES%\CMake\bin\cmake.exe" ^
 -G "Visual Studio 17 2022" ^
 -A "x64" ^
 -T "host=x64" ^
@@ -65,7 +65,7 @@ cd %VBldDirName%
 -DVISIT_WINDOWS_APPLICATION:BOOL=true ^
 %VSrcDir%
 
-"%PROGRAMFILES%\CMake\3.24.3\bin\cmake.exe" ^
+"%PROGRAMFILES%\CMake\bin\cmake.exe" ^
 -G "Visual Studio 17 2022" ^
 -A "x64" ^
 -T "host=x64" ^
@@ -92,13 +92,13 @@ Rem create the install dir that will be packaged
 msbuild INSTALL.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=package.warn /flp2:errorsonly;logfile=package.error
 
 Rem sign the executables that will be packaged
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.exe 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.exe "VisIt%VVERS%"\*.dll "VisIt%VVERS%"\databases\*.dll "VisIt%VVERS%"\operators\*.dll "VisIt%VVERS%"\plots\*.dll 
 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.dll 
+rem signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\*.dll 
 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\databases\*.dll 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\operators\*.dll 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\plots\*.dll
+rem signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\databases\*.dll 
+rem signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\operators\*.dll 
+rem signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "VisIt%VVERS%"\plots\*.dll
  
 Rem Create the installer 
 msbuild _Package.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=package.warn /flp2:errorsonly;logfile=package.error
