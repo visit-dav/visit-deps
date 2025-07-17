@@ -1,0 +1,48 @@
+{
+    "info" : {
+        "name" : "KHR_SPATIAL_FIELD_STRUCTURED_REGULAR",
+        "type" : "extension",
+        "dependencies" : []
+    },
+
+    "objects" : [
+        {
+            "type" : "ANARI_SPATIAL_FIELD",
+            "name" : "structuredRegular",
+            "description" : "structured regular spatial field object",
+            "parameters" : [
+                {
+                    "name" : "name",
+                    "types" : ["ANARI_STRING"],
+                    "tags" : [],
+                    "description" : "optional object name"
+                }, {
+                    "name" : "data",
+                    "types" : ["ANARI_ARRAY3D"],
+                    "elementType" : ["ANARI_UFIXED8", "ANARI_FIXED16", "ANARI_UFIXED16", "ANARI_FLOAT32", "ANARI_FLOAT64"],
+                    "tags" : ["required"],
+                    "description" : "array of vertex centered scalar values"
+                }, {
+                    "name" : "origin",
+                    "types" : ["ANARI_FLOAT32_VEC3"],
+                    "tags" : [],
+                    "default" : [0.0, 0.0, 0.0],
+                    "description" : "origin of the grid in object-space"
+                }, {
+                    "name" : "spacing",
+                    "types" : ["ANARI_FLOAT32_VEC3"],
+                    "tags" : [],
+                    "default" : [1.0, 1.0, 1.0],
+                    "description" : "size of the grid cells in object-space"
+                }, {
+                    "name" : "filter",
+                    "types" : ["ANARI_STRING"],
+                    "tags" : [],
+                    "default" : "linear",
+                    "values" : ["nearest", "linear"],
+                    "description" : "filter mode used to interpolate the grid"
+                }
+            ]
+        }
+    ]
+}

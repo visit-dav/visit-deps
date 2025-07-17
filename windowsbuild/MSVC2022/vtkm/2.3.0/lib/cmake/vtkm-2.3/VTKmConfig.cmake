@@ -104,7 +104,6 @@ set(VTKm_ENABLE_MPI "OFF")
 set(VTKm_ENABLE_TESTING_LIBRARY "OFF")
 set(VTKm_USE_DEFAULT_TYPES_FOR_ASCENT "")
 
-
 set_and_check(VTKm_CMAKE_MODULE_PATH "${PACKAGE_PREFIX_DIR}/share/vtkm-2.3/cmake")
 
 include(CMakeFindDependencyMacro)
@@ -141,19 +140,17 @@ set(PACKAGE_PREFIX_DIR ${PACKAGE_PREFIX_DIR_save_vtkm})
 
 # Load the library exports, but only if not compiling VTK-m itself
 set_and_check(VTKm_CONFIG_DIR "${PACKAGE_PREFIX_DIR}/lib/cmake/vtkm-2.3")
-set(VTKM_FROM_INSTALL_DIR FALSE)
-if(NOT "${CMAKE_BINARY_DIR}" STREQUAL "C:/A_VisIt/TPBuilds/Build7/VTKM/src/VTKM-build")
-  set(VTKM_FROM_INSTALL_DIR TRUE)
-  include(${VTKm_CONFIG_DIR}/VTKmTargets.cmake)
 
-  if(DEFINED PACKAGE_FIND_VERSION AND PACKAGE_FIND_VERSION VERSION_LESS 2.0)
-    add_library(vtkm_cont ALIAS vtkm::cont)
-    add_library(vtkm_filter ALIAS vtkm::filter)
-    add_library(vtkm_io ALIAS vtkm::io)
-    add_library(vtkm_rendering ALIAS vtkm::rendering)
-    add_library(vtkm_source ALIAS vtkm::source)
-    add_library(vtkm_worklet ALIAS vtkm::worklet)
-  endif()
+set(VTKM_FROM_INSTALL_DIR TRUE)
+include(${VTKm_CONFIG_DIR}/VTKmTargets.cmake)
+
+if(DEFINED PACKAGE_FIND_VERSION AND PACKAGE_FIND_VERSION VERSION_LESS 2.0)
+  add_library(vtkm_cont ALIAS vtkm::cont)
+  add_library(vtkm_filter ALIAS vtkm::filter)
+  add_library(vtkm_io ALIAS vtkm::io)
+  add_library(vtkm_rendering ALIAS vtkm::rendering)
+  add_library(vtkm_source ALIAS vtkm::source)
+  add_library(vtkm_worklet ALIAS vtkm::worklet)
 endif()
 
 # Once we can require CMake 3.15 for all cuda builds we can
