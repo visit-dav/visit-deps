@@ -43,7 +43,7 @@ endfunction()
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND
         NOT QT_BUILD_INTERNALS_NO_FORCE_SET_INSTALL_PREFIX
         AND NOT QT_SUPERBUILD)
-    set(qtbi_orig_prefix "C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/Qt/6.4.2")
+    set(qtbi_orig_prefix ""
     set(qtbi_orig_staging_prefix "")
     qt_internal_new_prefix(qtbi_new_prefix
         "${QT_BUILD_INTERNALS_RELOCATABLE_INSTALL_PREFIX}"
@@ -168,7 +168,7 @@ qt_internal_force_set_cmake_build_type_conditionally(
 set(BUILD_WITH_PCH "ON" CACHE STRING "")
 set(QT_QPA_DEFAULT_PLATFORM "windows" CACHE STRING "")
 set(CMAKE_INSTALL_RPATH "" CACHE STRING "")
-set(QT_EXTRA_INCLUDEPATHS "C:/A_Visit/ForRegression/visit-deps/windowsbuild/MSVC2022/openssl/1.1.1t/include" CACHE STRING "")
+set(QT_EXTRA_INCLUDEPATHS "${OPENSSL_INCLUDE_DIR}" CACHE STRING "")
 
 if(NOT QT_SKIP_BUILD_INTERNALS_PKG_CONFIG_FEATURE)
     set(FEATURE_pkg_config "OFF" CACHE STRING "Using pkg-config" FORCE)

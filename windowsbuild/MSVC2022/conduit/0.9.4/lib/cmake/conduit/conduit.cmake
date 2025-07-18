@@ -75,8 +75,8 @@ add_library(conduit_utils_python MODULE IMPORTED)
 add_library(conduit_relay SHARED IMPORTED)
 
 set_target_properties(conduit_relay PROPERTIES
-  INTERFACE_INCLUDE_DIRECTORIES "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/silo/4.10.3/include"
-  INTERFACE_LINK_LIBRARIES "conduit;conduit_blueprint;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/silo/4.10.3/lib/siloh5.lib;hdf5;hdf5"
+  INTERFACE_INCLUDE_DIRECTORIES "${SILO_INCLUDE_DIR}"
+  INTERFACE_LINK_LIBRARIES "conduit;conduit_blueprint;${SILO_LIBRARY};hdf5"
 )
 
 # Create imported target conduit_relay_python
@@ -114,8 +114,8 @@ add_library(conduit_relay_mpi_io SHARED IMPORTED)
 set_target_properties(conduit_relay_mpi_io PROPERTIES
   INTERFACE_COMPILE_DEFINITIONS "MPICH_SKIP_MPICXX;OMPI_SKIP_MPICXX;_MPICC_H"
   INTERFACE_COMPILE_OPTIONS "-DCONDUIT_RELAY_IO_MPI_ENABLED"
-  INTERFACE_INCLUDE_DIRECTORIES "C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/silo/4.10.3/include"
-  INTERFACE_LINK_LIBRARIES "conduit;MPI::MPI_C;conduit_relay_mpi;conduit_relay;conduit_blueprint;conduit_blueprint_mpi;C:/A_VisIt/3.4RC/visit-deps/windowsbuild/MSVC2022/silo/4.10.3/lib/siloh5.lib;hdf5;hdf5"
+  INTERFACE_INCLUDE_DIRECTORIES "${SILO_INCLUDE_DIR}"
+  INTERFACE_LINK_LIBRARIES "conduit;MPI::MPI_C;conduit_relay_mpi;conduit_relay;conduit_blueprint;conduit_blueprint_mpi;${SILO_LIBRARY};hdf5"
 )
 
 # Create imported target conduit_blueprint

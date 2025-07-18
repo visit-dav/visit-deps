@@ -24,7 +24,7 @@ unix {
 }
 
 win32 {
-    QWT_INSTALL_PREFIX    = C:/A_VisIt/ForRegression/visit-deps/windowsbuild/MSVC2022/Qwt/$$QWT_VERSION
+    QWT_INSTALL_PREFIX    = 
     # QWT_INSTALL_PREFIX = C:/Qwt-$$QWT_VERSION-dev-qt-$$QT_VERSION
 }
 

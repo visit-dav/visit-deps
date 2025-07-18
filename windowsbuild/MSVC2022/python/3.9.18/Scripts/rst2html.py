@@ -1,4 +1,4 @@
-#!C:\A_VisIt\Python39\visit-deps\windowsbuild\MSVC2022\python\3.9.18\python.exe
+#!python.exe
 
 # $Id: rst2html.py 4564 2006-05-21 20:44:42Z wiemann $
 # Author: David Goodger <goodger@python.org>

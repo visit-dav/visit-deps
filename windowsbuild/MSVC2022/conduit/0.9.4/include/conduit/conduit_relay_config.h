@@ -33,7 +33,7 @@
 /* #undef CONDUIT_RELAY_WEBSERVER_ENABLED */
 
 // this path points to the source dir
-#define CONDUIT_RELAY_SOURCE_DIR  "C:\\A_VisIt\\TPBuilds\\Build\\CONDUIT\\src\\CONDUIT\\src\\libs\\relay"
+/* #define CONDUIT_RELAY_SOURCE_DIR  */
 
 #endif
 
