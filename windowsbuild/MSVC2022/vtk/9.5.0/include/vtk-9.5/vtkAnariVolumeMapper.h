@@ -52,6 +52,11 @@ public:
    * Allow vtkAnariSceneGraph properties to be set on the internal vtkRenderer.
    */
   vtkRenderer* GetInternalRenderer() const { return this->InternalRenderer; }
+  
+  /**
+   * Get the internal ANARI render pass.
+   */
+  vtkAnariPass* GetAnariPass() const { return this->InternalAnariPass; }
 
   //@{
   /**
