@@ -1,4 +1,4 @@
-#!python.exe
+#!C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\python\3.9.18\python.exe
 
 # $Id: rst2latex.py 5905 2009-04-16 12:04:49Z milde $
 # Author: David Goodger <goodger@python.org>

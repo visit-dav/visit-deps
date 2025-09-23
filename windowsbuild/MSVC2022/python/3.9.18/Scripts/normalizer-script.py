@@ -1,4 +1,4 @@
-#!
+#!C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\python\3.9.18\python.exe
 # EASY-INSTALL-ENTRY-SCRIPT: 'charset-normalizer==3.2.0','console_scripts','normalizer'
 import re
 import sys
