@@ -31,10 +31,10 @@
 #define MFEM_VERSION_PATCH ((MFEM_VERSION)%100)
 
 // MFEM source directory.
-/* #undef MFEM_SOURCE_DIR  */
+#define MFEM_SOURCE_DIR "C:/A_VisIt/TPBuilds/Build/MFEM/src/MFEM"
 
 // MFEM install directory.
-/* #undef MFEM_INSTALL_DIR */
+#define MFEM_INSTALL_DIR "C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/mfem/4.8"
 
 // Description of the git commit used to build MFEM.
 #define MFEM_GIT_STRING "(unknown)"

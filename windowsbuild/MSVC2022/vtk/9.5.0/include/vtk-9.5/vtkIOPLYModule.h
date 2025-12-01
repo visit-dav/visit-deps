@@ -33,6 +33,7 @@
 #  define VTKIOPLY_DEPRECATED_NO_EXPORT VTKIOPLY_NO_EXPORT VTKIOPLY_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef VTKIOPLY_NO_DEPRECATED
 #    define VTKIOPLY_NO_DEPRECATED

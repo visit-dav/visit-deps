@@ -33,6 +33,7 @@
 #  define TOKEN_DEPRECATED_NO_EXPORT TOKEN_NO_EXPORT TOKEN_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef TOKEN_NO_DEPRECATED
 #    define TOKEN_NO_DEPRECATED

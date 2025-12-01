@@ -33,6 +33,7 @@
 #  define VTKIOCORE_DEPRECATED_NO_EXPORT VTKIOCORE_NO_EXPORT VTKIOCORE_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef VTKIOCORE_NO_DEPRECATED
 #    define VTKIOCORE_NO_DEPRECATED

@@ -154,12 +154,12 @@ list(APPEND _cmake_import_check_files_for_VTK::CommonMisc "${_IMPORT_PREFIX}/lib
 # Import target "VTK::WrappingPythonCore" for configuration "Release"
 set_property(TARGET VTK::WrappingPythonCore APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(VTK::WrappingPythonCore PROPERTIES
-  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/vtkWrappingPythonCore3.9-9.5.lib"
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/vtkWrappingPythonCore3.9-9.5.dll"
+  IMPORTED_IMPLIB_RELEASE "${_IMPORT_PREFIX}/lib/vtkWrappingPythonCore3.13-9.5.lib"
+  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/vtkWrappingPythonCore3.13-9.5.dll"
   )
 
 list(APPEND _cmake_import_check_targets VTK::WrappingPythonCore )
-list(APPEND _cmake_import_check_files_for_VTK::WrappingPythonCore "${_IMPORT_PREFIX}/lib/vtkWrappingPythonCore3.9-9.5.lib" "${_IMPORT_PREFIX}/bin/vtkWrappingPythonCore3.9-9.5.dll" )
+list(APPEND _cmake_import_check_files_for_VTK::WrappingPythonCore "${_IMPORT_PREFIX}/lib/vtkWrappingPythonCore3.13-9.5.lib" "${_IMPORT_PREFIX}/bin/vtkWrappingPythonCore3.13-9.5.dll" )
 
 # Import target "VTK::PythonInterpreter" for configuration "Release"
 set_property(TARGET VTK::PythonInterpreter APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)

@@ -33,6 +33,7 @@
 #  define LIBPROJ_DEPRECATED_NO_EXPORT LIBPROJ_NO_EXPORT LIBPROJ_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef LIBPROJ_NO_DEPRECATED
 #    define LIBPROJ_NO_DEPRECATED

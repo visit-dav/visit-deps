@@ -24,7 +24,7 @@ PCBUILD_DIR = os.path.join(PYTHON_DIR, "PCbuild")
 PCBUILD_DIR = os.path.join(PCBUILD_DIR, "amd64")
 
 #Modify DST_DIR appropriately
-DST_DIR = r"C:\A_VisIt\2.13RC\windowsbuild\MSVC2017\python\2.7.14"
+DST_DIR = r"C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\python\3.13.9"
 
 def make_directory(d):
     if not os.path.exists(d):
@@ -62,10 +62,9 @@ def copy_directory(src_dir, dst_dir):
 
 if __name__ == "__main__":
 
-    print "OSSL_DIR =", OSSL_DIR
     print "PYTHON_DIR =", PYTHON_DIR
 
-    for p in [OSSL_DIR, PYTHON_DIR ]:
+    for p in [PYTHON_DIR ]:
 
         if not os.path.isdir(p):
             raise RuntimeError("Oops, could not find path: %s" % repr(p))
@@ -92,7 +91,8 @@ if __name__ == "__main__":
     filelist = """
         {py_prefix}/python.exe
         {py_prefix}/pythonw.exe
-        {py_prefix}/python27.dll
+        {py_prefix}/python313.dll
+        {py_prefix}/python3.dll
     """.format(py_prefix = PCBUILD_DIR).split()
 
     copy_files(filelist, DST_DIR)
@@ -107,7 +107,11 @@ if __name__ == "__main__":
     make_directory(dst_dir)
     copy_files(src_list, dst_dir)
 
-    src_list = glob.glob(OSSL_DIR + r"\*eay32.dll")
+    dst_dir = os.path.join(DST_DIR, "DLLs")
+    make_directory(dst_dir)
+    copy_files(src_list, dst_dir)
+
+    src_list = glob.glob(OSSL_DIR + r"\*.dll")
     copy_files(src_list, dst_dir)
 
 
@@ -142,8 +146,8 @@ if __name__ == "__main__":
 
     copy_files(src_list, dst_dir)
 
-    src_list = glob.glob(OSSL_DIR + r"\*eay32.lib")
-    copy_files(src_list, dst_dir)
+    #src_list = glob.glob(OSSL_DIR + r"\*eay32.lib")
+    #copy_files(src_list, dst_dir)
 
 
     #--------------------------------------------------------------------------

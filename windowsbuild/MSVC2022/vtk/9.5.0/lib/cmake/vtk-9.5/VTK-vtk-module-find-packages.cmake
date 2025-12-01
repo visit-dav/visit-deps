@@ -119,7 +119,7 @@ if (_vtk_module_find_package_enabled)
   endif ()
 
   find_package(Python3
-    3.9
+    3.13
     
     
     ${_vtk_module_find_package_quiet}

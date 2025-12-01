@@ -98,7 +98,7 @@ endmacro()
 
 ####################################################################################
 
-set(MFEM_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include;${CONDUIT_INCLUDE_DIR};${HDF5_INCLUDE_DIR};${ZLIB_INCLUDE_DIR}")
+set(MFEM_INCLUDE_DIRS "${PACKAGE_PREFIX_DIR}/include;C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/conduit/0.9.4/include/conduit;C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/hdf5/1.8.19/include;C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/zlib/1.2.13/include")
 foreach (dir ${MFEM_INCLUDE_DIRS})
   set_and_check(MFEM_INCLUDE_DIR "${dir}")
 endforeach (dir "${MFEM_INCLUDE_DIRS}")

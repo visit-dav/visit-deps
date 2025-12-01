@@ -33,6 +33,7 @@
 #  define LOGURU_DEPRECATED_NO_EXPORT LOGURU_NO_EXPORT LOGURU_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef LOGURU_NO_DEPRECATED
 #    define LOGURU_NO_DEPRECATED

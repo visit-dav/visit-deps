@@ -33,6 +33,7 @@
 #  define VTKSQLITE_DEPRECATED_NO_EXPORT SQLITE_NO_EXPORT VTKSQLITE_DEPRECATED
 #endif
 
+/* NOLINTNEXTLINE(readability-avoid-unconditional-preprocessor-if) */
 #if 0 /* DEFINE_NO_DEPRECATED */
 #  ifndef SQLITE_NO_DEPRECATED
 #    define SQLITE_NO_DEPRECATED

@@ -363,11 +363,10 @@ Name "${PRODUCT_NAME}${PRODUCT_VERSION}_x64"
   Section /o "Plugin development" SEC_DEV
     ${If} $InstallUsers == "all"
       WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITARCHHOME "%VISITLOC%"
-      WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
       WriteRegExpandStr HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPUB "%VISITLOC%"
     ${Else}
       WriteRegStr HKCU "Environment" VISITARCHHOME "%VISITLOC%"
-      WriteRegStr HKCU "Environment" VISITPLUGININSTPRI "%APPDATA%\LLNL\VisIt"
+      WriteRegStr HKCU "Environment" VISITPLUGININSTPRI "%USERPROFILE%\LLNL\VisIt"
       WriteRegStr HKCU "Environment" VISITPLUGININSTPUB "%VISITLOC%"
     ${EndIf}
     ; propagate the changes so a reboot won't be necessary
@@ -1226,20 +1225,8 @@ FunctionEnd
           ""  \
           "XMLEdit allows you to edit the XML files that describe VisIt's plugins."
       CreateDirectory "$R0\Plugin development\Documentation"
-      CreateShortCut "$R0\Plugin development\Documentation\Plot plugins.lnk" \
-           "http://www.visitusers.org/index.php?title=Adding_a_new_plot"
-      CreateShortCut "$R0\Plugin development\Documentation\Operator plugins.lnk" \
-           "http://www.visitusers.org/index.php?title=Adding_a_new_operator"
-      CreateShortCut "$R0\Plugin development\Documentation\Building plugins.lnk" \
-           "http://www.visitusers.org/index.php?title=Building_plugins_using_CMake"
-      CreateShortCut "$R0\Plugin development\Documentation\VTK classes.lnk" \
-          "http://www.vtk.org/doc/release/5.0/html/classes.html"
-      CreateShortCut "$R0\Plugin development\Documentation\Qt classes.lnk" \
-          "http://doc.trolltech.com/4.6/classes.html"
-      CreateShortCut "$R0\Plugin development\Documentation\Python library.lnk" \
-          "http://docs.python.org/lib/lib.html"
-      CreateShortCut "$R0\Plugin development\Documentation\VisIt and HDF5.lnk" \
-           "http://www.visitusers.org/index.php?title=VisIt_and_HDF5"
+      CreateShortCut "$R0\Plugin development\Documentation\Database plugins.lnk" \
+           "https://visit-sphinx-github-user-manual.readthedocs.io/en/develop/data_into_visit/CreatingDatabasePlugin.html"
     ${EndIf}
   SectionEnd
 
@@ -1438,13 +1425,7 @@ FunctionEnd
     Delete "$R9\VisIt Home Page.lnk"
     Delete "$R9\Uninstall VisIt${PRODUCT_VERSION}.lnk"
     Delete "$R9\Plugin development\XML Edit.lnk"
-    Delete "$R9\Plugin development\Documentation\Plot plugins.lnk"
-    Delete "$R9\Plugin development\Documentation\Operator plugins.lnk"
-    Delete "$R9\Plugin development\Documentation\Building plugins.lnk"
-    Delete "$R9\Plugin development\Documentation\VTK classes.lnk"
-    Delete "$R9\Plugin development\Documentation\Qt classes.lnk"
-    Delete "$R9\Plugin development\Documentation\Python library.lnk"
-    Delete "$R9\Plugin development\Documentation\VisIt and HDF5.lnk"
+    Delete "$R9\Plugin development\Documentation\Database plugins.lnk"
     RmDir "$R9\Plugin development\Documentation"
     RmDir "$R9\Plugin development"
     RMDir "$R9"
@@ -1484,7 +1465,6 @@ FunctionEnd
     ${If} $0 == "all"
         DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITLOC
         DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITARCHHOME
-        DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPRI
         DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISITPLUGININSTPUB
         DeleteRegValue HKLM "SYSTEM\CurrentControlSet\Control\Session Manager\Environment" VISIT_MPIEXEC
     ${Else}
