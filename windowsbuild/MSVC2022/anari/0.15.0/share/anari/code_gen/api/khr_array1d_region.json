@@ -1,0 +1,21 @@
+{
+    "info" : {
+        "name" : "KHR_ARRAY1D_REGION",
+        "type" : "extension",
+        "dependencies" : []
+    },
+
+    "objects" : [
+        {
+            "type" : "ANARI_ARRAY1D",
+            "parameters" : [
+                {
+                    "name" : "region",
+                    "types" : ["ANARI_UINT64_REGION1"],
+                    "tags" : [],
+                    "description" : "active region of the array"
+                }
+            ]
+        }
+    ]
+}

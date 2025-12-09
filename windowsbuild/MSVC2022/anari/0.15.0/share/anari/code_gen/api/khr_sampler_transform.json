@@ -1,0 +1,41 @@
+{
+    "info" : {
+        "name" : "KHR_SAMPLER_TRANSFORM",
+        "type" : "extension",
+        "dependencies" : []
+    },
+
+    "objects" : [
+        {
+            "type" : "ANARI_SAMPLER",
+            "name" : "transform",
+            "description" : "transform sampler object",
+            "parameters" : [
+                {
+                    "name" : "name",
+                    "types" : ["ANARI_STRING"],
+                    "tags" : [],
+                    "description" : "optional object name"
+                }, {
+                    "name" : "inAttribute",
+                    "types" : ["ANARI_STRING"],
+                    "tags" : ["attribute"],
+                    "default" : "attribute0",
+                    "description" : "input surface attribute (texture coordinate)"
+                }, {
+                    "name" : "outTransform",
+                    "types" : ["ANARI_FLOAT32_MAT4"],
+                    "tags" : [],
+                    "default" : [1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1],
+                    "description" : "transform applied to the input attribute"
+                }, {
+                    "name" : "outOffset",
+                    "types" : ["ANARI_FLOAT32_VEC4"],
+                    "tags" : [],
+                    "default" : [0,0,0,0],
+                    "description" : "offset added to output outTransform result"
+                }
+            ]
+        }
+    ]
+}

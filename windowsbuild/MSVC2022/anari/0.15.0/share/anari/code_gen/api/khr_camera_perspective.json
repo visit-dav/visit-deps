@@ -1,0 +1,69 @@
+{
+    "info" : {
+        "name" : "KHR_CAMERA_PERSPECTIVE",
+        "type" : "extension",
+        "dependencies" : []
+    },
+
+    "objects" : [
+        {
+            "type" : "ANARI_CAMERA",
+            "name" : "perspective",
+            "description" : "perspective camera object",
+            "parameters" : [
+                {
+                    "name" : "name",
+                    "types" : ["ANARI_STRING"],
+                    "tags" : [],
+                    "description" : "optional object name"
+                }, {
+                    "name" : "position",
+                    "types" : ["ANARI_FLOAT32_VEC3"],
+                    "tags" : ["point"],
+                    "default" : [0.0, 0.0, 0.0],
+                    "description" : "camera position"
+                }, {
+                    "name" : "direction",
+                    "types" : ["ANARI_FLOAT32_VEC3"],
+                    "tags" : ["direction"],
+                    "default" : [0.0, 0.0, -1.0],
+                    "description" : "main viewing direction"
+                }, {
+                    "name" : "up",
+                    "types" : ["ANARI_FLOAT32_VEC3"],
+                    "tags" : ["direction"],
+                    "default" : [0.0, 1.0, 0.0],
+                    "description" : "camera up direction"
+                }, {
+                    "name" : "imageRegion",
+                    "types" : ["ANARI_FLOAT32_BOX2"],
+                    "tags" : [],
+                    "default" : [0.0, 0.0, 1.0, 1.0],
+                    "description" : "region mapped to the frame"
+                }, {
+                    "name" : "fovy",
+                    "types" : ["ANARI_FLOAT32"],
+                    "tags" : [],
+                    "default" : 1.0471975512,
+                    "description" : "vertical field of view in radians"
+                }, {
+                    "name" : "aspect",
+                    "types" : ["ANARI_FLOAT32"],
+                    "tags" : [],
+                    "default" : 1.0,
+                    "description" : "aspect ratio"
+                }, {
+                    "name" : "near",
+                    "types" : ["ANARI_FLOAT32"],
+                    "tags" : [],
+                    "description" : "near plane clip distance"
+                }, {
+                    "name" : "far",
+                    "types" : ["ANARI_FLOAT32"],
+                    "tags" : [],
+                    "description" : "far plane clip distance"
+                }
+            ]
+        }
+    ]
+}

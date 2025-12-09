@@ -213,7 +213,7 @@ if (_vtk_module_find_package_enabled)
   endif ()
 
   find_package(anari
-    0.14
+    0.15
     
     CONFIG
     ${_vtk_module_find_package_quiet}

@@ -288,9 +288,9 @@ Pick with material 2 turned off:
 U:  multi_rect3d.silo
 mesh1 domain 1 
 Point: <0.2, 0.0666667, 0.0888889>
-Zone:  226
-Incident Nodes:  270  271  281  282  391  392  402  403  
-d:  <zonal> = 0.667304
+Zone:  225
+Incident Nodes:  269  270  280  281  390  391  401  402  
+d:  <zonal> = 0.682125
 
 
 V:  multi_rect3d.silo
@@ -304,9 +304,9 @@ d:  <zonal> = 0.667304
 W:  multi_rect3d.silo
 mesh1 domain 19 
 Point: <0.2, 0.511111, 0.555556>
-Zone:  606
-Incident Nodes:  732  733  743  744  853  854  864  865  
-d:  <zonal> = 0.287983
+Zone:  605
+Incident Nodes:  731  732  742  743  852  853  863  864  
+d:  <zonal> = 0.320833
 
 
 X:  multi_rect3d.silo
