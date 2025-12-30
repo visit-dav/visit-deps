@@ -1,2 +1,0 @@
-wg_WavefrontOBJ.1.obj
-wg_WavefrontOBJ.2.obj
