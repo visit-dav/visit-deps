@@ -25,8 +25,8 @@ endif()
 
 
 
-    set(__qt_initial_c_compiler "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/cl.exe")
-    set(__qt_initial_cxx_compiler "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.35.32215/bin/Hostx64/x64/cl.exe")
+    set(__qt_initial_c_compiler "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe")
+    set(__qt_initial_cxx_compiler "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe")
     if(NOT DEFINED CMAKE_C_COMPILER AND EXISTS "${__qt_initial_c_compiler}")
         set(CMAKE_C_COMPILER "${__qt_initial_c_compiler}" CACHE STRING "")
     endif()

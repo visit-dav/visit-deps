@@ -2,4 +2,4 @@
 # bypassing the Qt6 Config file, aka find_package(Qt6SpecificFoo) repated x times. But it's not
 # critical.
 find_package(Qt6 6.4.2
-             REQUIRED COMPONENTS UiPlugin UiTools Tools Linguist Designer DesignerComponentsPrivate Help)
+             REQUIRED COMPONENTS UiPlugin UiTools Tools Linguist Designer DesignerComponentsPrivate)

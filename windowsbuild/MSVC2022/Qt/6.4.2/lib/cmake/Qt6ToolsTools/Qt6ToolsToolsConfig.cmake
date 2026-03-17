@@ -47,10 +47,6 @@ endforeach()
 
 
 if (NOT QT_NO_CREATE_TARGETS)
-    __qt_internal_promote_target_to_global(Qt6::qhelpgenerator)
-endif()
-
-if (NOT QT_NO_CREATE_TARGETS)
     __qt_internal_promote_target_to_global(Qt6::qtattributionsscanner)
 endif()
-set(Qt6ToolsTools_TARGETS "Qt6::qhelpgenerator;Qt6::qtattributionsscanner")
+set(Qt6ToolsTools_TARGETS "Qt6::qtattributionsscanner")

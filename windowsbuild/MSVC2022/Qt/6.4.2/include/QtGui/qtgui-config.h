@@ -14,7 +14,7 @@
 
 #define QT_FEATURE_opengles32 -1
 
-#define QT_FEATURE_dynamicgl -1
+#define QT_FEATURE_dynamicgl 1
 
 #define QT_FEATURE_opengl 1
 
@@ -108,5 +108,5 @@
 
 #define QT_NO_ACCESSIBILITY_ATSPI_BRIDGE 1
 #define QT_NO_FONTCONFIG 1
+#define QT_OPENGL_DYNAMIC
 #define QT_NO_EGL 1
-#define QT_NO_IMAGEFORMAT_JPEG

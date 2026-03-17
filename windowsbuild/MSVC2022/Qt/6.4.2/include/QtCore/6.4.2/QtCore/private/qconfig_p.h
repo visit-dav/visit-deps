@@ -102,9 +102,9 @@
 
 #define QT_FEATURE_printsupport 1
 
-#define QT_FEATURE_sql 1
+#define QT_FEATURE_sql -1
 
-#define QT_FEATURE_testlib 1
+#define QT_FEATURE_testlib -1
 
 #define QT_FEATURE_widgets 1
 

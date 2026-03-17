@@ -1,4 +1,4 @@
-foreach(__qt_tool qhelpgenerator;qtattributionsscanner)
+foreach(__qt_tool qtattributionsscanner)
     if(NOT TARGET Qt::${__qt_tool} AND TARGET Qt6::${__qt_tool})
         add_executable(Qt::${__qt_tool} IMPORTED GLOBAL)
 

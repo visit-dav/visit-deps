@@ -43,7 +43,7 @@ endfunction()
 if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT AND
         NOT QT_BUILD_INTERNALS_NO_FORCE_SET_INSTALL_PREFIX
         AND NOT QT_SUPERBUILD)
-    set(qtbi_orig_prefix ""
+    set(qtbi_orig_prefix "C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/qt/6.4.2")
     set(qtbi_orig_staging_prefix "")
     qt_internal_new_prefix(qtbi_new_prefix
         "${QT_BUILD_INTERNALS_RELOCATABLE_INSTALL_PREFIX}"
@@ -75,20 +75,20 @@ endif()
 set(QT_WILL_INSTALL ON CACHE BOOL
     "Boolean indicating if doing a Qt prefix build (vs non-prefix build)." FORCE)
 
-set(QT_SOURCE_TREE "C:/A_Visit/ThirdParty/qtbase-everywhere-src-6.4.2" CACHE PATH
+set(QT_SOURCE_TREE "C:/A_VisIt/TPBuilds/BuildVTK/QT/src/QT" CACHE PATH
 "A path to the source tree of the previously configured QtBase project." FORCE)
 
 # Propagate decision of building tests and examples to other repositories.
-set(QT_BUILD_TESTS FALSE CACHE BOOL "Build the testing tree.")
-set(QT_BUILD_EXAMPLES FALSE CACHE BOOL "Build Qt examples")
+set(QT_BUILD_TESTS OFF CACHE BOOL "Build the testing tree.")
+set(QT_BUILD_EXAMPLES OFF CACHE BOOL "Build Qt examples")
 set(QT_BUILD_BENCHMARKS OFF CACHE BOOL "Build Qt Benchmarks")
 set(QT_BUILD_MANUAL_TESTS OFF CACHE BOOL "Build Qt manual tests")
 set(QT_BUILD_MINIMAL_STATIC_TESTS OFF CACHE BOOL
     "Build minimal subset of tests for static Qt builds")
 
-set(QT_BUILD_TESTS_BY_DEFAULT ON CACHE BOOL
+set(QT_BUILD_TESTS_BY_DEFAULT OFF CACHE BOOL
     "Should tests be built as part of the default 'all' target.")
-set(QT_BUILD_EXAMPLES_BY_DEFAULT ON CACHE BOOL
+set(QT_BUILD_EXAMPLES_BY_DEFAULT OFF CACHE BOOL
     "Should examples be built as part of the default 'all' target.")
 set(QT_BUILD_TOOLS_BY_DEFAULT ON CACHE BOOL
     "Should tools be built as part of the default 'all' target.")
@@ -168,11 +168,11 @@ qt_internal_force_set_cmake_build_type_conditionally(
 set(BUILD_WITH_PCH "ON" CACHE STRING "")
 set(QT_QPA_DEFAULT_PLATFORM "windows" CACHE STRING "")
 set(CMAKE_INSTALL_RPATH "" CACHE STRING "")
-set(QT_EXTRA_INCLUDEPATHS "${OPENSSL_INCLUDE_DIR}" CACHE STRING "")
 
 if(NOT QT_SKIP_BUILD_INTERNALS_PKG_CONFIG_FEATURE)
     set(FEATURE_pkg_config "OFF" CACHE STRING "Using pkg-config" FORCE)
 endif()
+set(OPENSSL_ROOT_DIR "C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/openssl/3.5.5" CACHE STRING "")
 
 set(INSTALL_BINDIR "bin" CACHE STRING "Executables [PREFIX/bin]" FORCE)
 set(INSTALL_INCLUDEDIR "include" CACHE STRING "Header files [PREFIX/include]" FORCE)

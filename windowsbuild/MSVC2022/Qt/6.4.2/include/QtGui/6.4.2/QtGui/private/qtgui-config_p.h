@@ -78,7 +78,7 @@
 
 #define QT_FEATURE_ico 1
 
-#define QT_FEATURE_jpeg -1
+#define QT_FEATURE_jpeg 1
 
 #define QT_FEATURE_system_jpeg -1
 

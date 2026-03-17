@@ -1,4 +1,4 @@
-QMAKE_PRL_BUILD_DIR = C:/A_Visit/ThirdParty/qtbase-everywhere-src-6.4.2-build/src/platformsupport/fbconvenience
+QMAKE_PRL_BUILD_DIR = C:/A_VisIt/TPBuilds/BuildVTK/QT/src/QT-build/src/platformsupport/fbconvenience
 QMAKE_PRL_TARGET = Qt6FbSupport.lib
 QMAKE_PRL_CONFIG = static
 QMAKE_PRL_VERSION = 6.4.2

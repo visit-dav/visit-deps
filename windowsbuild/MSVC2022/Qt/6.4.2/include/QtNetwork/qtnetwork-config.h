@@ -42,7 +42,6 @@
 
 #define QT_NO_GETIFADDRS 1
 #define QT_NO_IPV6IFNAME 1
-#define QT_LINKED_OPENSSL
 #define QT_SCHANNEL
 #define QT_NO_SCTP 1
 #define QT_NO_BROTLI 1

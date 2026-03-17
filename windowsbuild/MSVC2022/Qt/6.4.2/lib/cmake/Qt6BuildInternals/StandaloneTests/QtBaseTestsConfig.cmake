@@ -2,4 +2,4 @@
 # bypassing the Qt6 Config file, aka find_package(Qt6SpecificFoo) repated x times. But it's not
 # critical.
 find_package(Qt6 6.4.2
-             REQUIRED COMPONENTS EntryPointPrivate ZlibPrivate Core PngPrivate FreetypePrivate HarfbuzzPrivate Concurrent Sql Network Xml Gui OpenGL Widgets OpenGLWidgets DeviceDiscoverySupportPrivate FbSupportPrivate Test PrintSupport)
+             REQUIRED COMPONENTS EntryPointPrivate ZlibPrivate Core PngPrivate JpegPrivate FreetypePrivate HarfbuzzPrivate Concurrent Network Xml Gui OpenGL Widgets OpenGLWidgets DeviceDiscoverySupportPrivate FbSupportPrivate PrintSupport)

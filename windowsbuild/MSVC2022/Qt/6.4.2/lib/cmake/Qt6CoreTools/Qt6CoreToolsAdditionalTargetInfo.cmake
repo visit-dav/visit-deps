@@ -128,48 +128,6 @@ endif()
 if(_qt_imported_location_default)
     set_property(TARGET Qt6::qtpaths PROPERTY IMPORTED_LOCATION "${_qt_imported_location_default}")
 endif()
-get_target_property(_qt_imported_location Qt6::androiddeployqt IMPORTED_LOCATION_RELEASE)
-get_target_property(_qt_imported_location_default Qt6::androiddeployqt IMPORTED_LOCATION_${QT_DEFAULT_IMPORT_CONFIGURATION})
-
-# Import target "Qt6::androiddeployqt" for configuration "RelWithDebInfo"
-set_property(TARGET Qt6::androiddeployqt APPEND PROPERTY IMPORTED_CONFIGURATIONS RELWITHDEBINFO)
-
-if(_qt_imported_location)
-    set_property(TARGET Qt6::androiddeployqt PROPERTY IMPORTED_LOCATION_RELWITHDEBINFO "${_qt_imported_location}")
-endif()
-
-# Import target "Qt6::androiddeployqt" for configuration "MinSizeRel"
-set_property(TARGET Qt6::androiddeployqt APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
-
-if(_qt_imported_location)
-    set_property(TARGET Qt6::androiddeployqt PROPERTY IMPORTED_LOCATION_MINSIZEREL "${_qt_imported_location}")
-endif()
-
-# Default configuration
-if(_qt_imported_location_default)
-    set_property(TARGET Qt6::androiddeployqt PROPERTY IMPORTED_LOCATION "${_qt_imported_location_default}")
-endif()
-get_target_property(_qt_imported_location Qt6::androidtestrunner IMPORTED_LOCATION_RELEASE)
-get_target_property(_qt_imported_location_default Qt6::androidtestrunner IMPORTED_LOCATION_${QT_DEFAULT_IMPORT_CONFIGURATION})
-
-# Import target "Qt6::androidtestrunner" for configuration "RelWithDebInfo"
-set_property(TARGET Qt6::androidtestrunner APPEND PROPERTY IMPORTED_CONFIGURATIONS RELWITHDEBINFO)
-
-if(_qt_imported_location)
-    set_property(TARGET Qt6::androidtestrunner PROPERTY IMPORTED_LOCATION_RELWITHDEBINFO "${_qt_imported_location}")
-endif()
-
-# Import target "Qt6::androidtestrunner" for configuration "MinSizeRel"
-set_property(TARGET Qt6::androidtestrunner APPEND PROPERTY IMPORTED_CONFIGURATIONS MINSIZEREL)
-
-if(_qt_imported_location)
-    set_property(TARGET Qt6::androidtestrunner PROPERTY IMPORTED_LOCATION_MINSIZEREL "${_qt_imported_location}")
-endif()
-
-# Default configuration
-if(_qt_imported_location_default)
-    set_property(TARGET Qt6::androidtestrunner PROPERTY IMPORTED_LOCATION "${_qt_imported_location_default}")
-endif()
 get_target_property(_qt_imported_location Qt6::windeployqt IMPORTED_LOCATION_RELEASE)
 get_target_property(_qt_imported_location_default Qt6::windeployqt IMPORTED_LOCATION_${QT_DEFAULT_IMPORT_CONFIGURATION})
 

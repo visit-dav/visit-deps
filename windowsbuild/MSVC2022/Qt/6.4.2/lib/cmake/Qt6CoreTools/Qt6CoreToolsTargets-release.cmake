@@ -59,24 +59,6 @@ set_target_properties(Qt6::qtpaths PROPERTIES
 list(APPEND _cmake_import_check_targets Qt6::qtpaths )
 list(APPEND _cmake_import_check_files_for_Qt6::qtpaths "${_IMPORT_PREFIX}/bin/qtpaths.exe" )
 
-# Import target "Qt6::androiddeployqt" for configuration "Release"
-set_property(TARGET Qt6::androiddeployqt APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(Qt6::androiddeployqt PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/androiddeployqt.exe"
-  )
-
-list(APPEND _cmake_import_check_targets Qt6::androiddeployqt )
-list(APPEND _cmake_import_check_files_for_Qt6::androiddeployqt "${_IMPORT_PREFIX}/bin/androiddeployqt.exe" )
-
-# Import target "Qt6::androidtestrunner" for configuration "Release"
-set_property(TARGET Qt6::androidtestrunner APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
-set_target_properties(Qt6::androidtestrunner PROPERTIES
-  IMPORTED_LOCATION_RELEASE "${_IMPORT_PREFIX}/bin/androidtestrunner.exe"
-  )
-
-list(APPEND _cmake_import_check_targets Qt6::androidtestrunner )
-list(APPEND _cmake_import_check_files_for_Qt6::androidtestrunner "${_IMPORT_PREFIX}/bin/androidtestrunner.exe" )
-
 # Import target "Qt6::windeployqt" for configuration "Release"
 set_property(TARGET Qt6::windeployqt APPEND PROPERTY IMPORTED_CONFIGURATIONS RELEASE)
 set_target_properties(Qt6::windeployqt PROPERTIES
