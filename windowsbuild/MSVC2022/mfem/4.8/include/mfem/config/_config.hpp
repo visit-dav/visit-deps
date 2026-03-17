@@ -31,7 +31,7 @@
 #define MFEM_VERSION_PATCH ((MFEM_VERSION)%100)
 
 // MFEM source directory.
-#define MFEM_SOURCE_DIR "C:/A_VisIt/TPBuilds/Build/MFEM/src/MFEM"
+#define MFEM_SOURCE_DIR "C:/A_VisIt/TPBuilds/BuildVTK/MFEM/src/MFEM"
 
 // MFEM install directory.
 #define MFEM_INSTALL_DIR "C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/mfem/4.8"

@@ -3,7 +3,7 @@ set(_DILL_CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH})
 
 list(INSERT CMAKE_MODULE_PATH 0 "${CMAKE_CURRENT_LIST_DIR}")
 if(NOT ON AND OFF)
-  list(INSERT CMAKE_PREFIX_PATH 0 "C:/A_Visit/ThirdParty/ExternalProject_Or_Superbuild/thirdparty2/adios2/2.10.0-rc1")
+  list(INSERT CMAKE_PREFIX_PATH 0 "C:/A_VisIt/Develop/visit-deps/windowsbuild/MSVC2022/adios2/2.10.0-rc1")
 endif()
 
 set(${CMAKE_FIND_PACKAGE_NAME}_CONFIG "${CMAKE_CURRENT_LIST_FILE}")

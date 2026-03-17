@@ -39,17 +39,17 @@
 #define CG_BUILD_FORTRAN   0
 #define CG_BUILD_BASESCOPE 0
 
-#define HDF5_INCLUDE_PATH ""
-#define HDF5_LIBRARY      "hdf5.lib"
+#define HDF5_INCLUDE_PATH "C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\hdf5\2.0.0\include"
+#define HDF5_LIBRARY      "C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\hdf5\2.0.0\lib\hdf5.lib"
 
 #define HDF5_NEED_MPI     0
-#define HDF5_NEED_SZIP    1
+#define HDF5_NEED_SZIP    0
 #define HDF5_NEED_ZLIB    1
 
 #define MPI_INCLUDE_PATH ""
 #define MPI_LIBRARY      ""
-#define SZIP_LIBRARY     "szip.lib"
-#define ZLIB_LIBRARY     "zlib.lib"
+#define SZIP_LIBRARY     ""
+#define ZLIB_LIBRARY     "C:\A_VisIt\Develop\visit-deps\windowsbuild\MSVC2022\zlib\1.3.1\lib\zlib.lib"
 
 #define MPI_INC          ""
 #define MPI_LIBS         ""

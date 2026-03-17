@@ -14,12 +14,12 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/Modules")
 # this section stores which configuration options were set
 set(HAVE_THREADS ON)
 set(HAVE_IPP )
-set(HAVE_ZLIB_NG )
+set(HAVE_ZLIB_NG TRUE)
 set(DEACTIVATE_IPP ON)
 set(DEACTIVATE_ZLIB OFF)
 set(DEACTIVATE_ZSTD OFF)
 set(PREFER_EXTERNAL_LZ4 OFF)
-set(PREFER_EXTERNAL_ZLIB TRUE)
+set(PREFER_EXTERNAL_ZLIB OFF)
 set(PREFER_EXTERNAL_ZSTD OFF)
 
 # find dependencies and their targets, which are used in our Blosc2Targets.cmake

@@ -39,11 +39,6 @@
 #define CG_MAX_INT32 0x7FFFFFFF
 #ifdef _WIN32
 # define CG_LONG_T __int64
-#ifdef _MSC_VER
-# ifdef CG_BUILD_64BIT
-#  define cgnsstat _stat32i64
-# endif
-#endif
 #else
 # define CG_LONG_T long long
 #endif
@@ -67,7 +62,7 @@
 
 /* Determine if hdf5 H5Pset_file_space_strategy */
 
-#define HDF5_HAVE_FILE_SPACE_STRATEGY 0
+#define HDF5_HAVE_FILE_SPACE_STRATEGY 1
 
 #endif
 
