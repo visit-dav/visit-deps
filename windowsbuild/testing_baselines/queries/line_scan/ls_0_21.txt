@@ -1,1 +1,1 @@
-The expected value is 0.0079717.
+The expected value is 0.00797192.
