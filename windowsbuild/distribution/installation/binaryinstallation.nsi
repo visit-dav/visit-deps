@@ -167,8 +167,9 @@
 !define PRODUCT_NAME "VisIt"
 !define PRODUCT_VERSION ${VisItVersion}
 !define PRODUCT_PUBLISHER "LLNL"
+!define PRODUCT_INST_NAME "${InstallerName}"
 !define PRODUCT_WEB_SITE "http://www.llnl.gov/visit"
-!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\visit${PRODUCT_VERSION}_x64.exe"
+!define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\${PRODUCT_INST_NAME}"
 
 !define PRODUCT_UNINST_KEY "Software\Microsoft\Windows\CurrentVersion\Uninstall\${PRODUCT_NAME}${PRODUCT_VERSION}"
 !define PRODUCT_UNINST_ROOT_KEY "SHCTX"
@@ -181,7 +182,7 @@
 !define V_UNINSTALLER "${VISITINSTDIR}\uninstall_visit.exe"
 
 RequestExecutionLevel user
-Name "${PRODUCT_NAME}${PRODUCT_VERSION}_x64"
+Name "${PRODUCT_NAME}${PRODUCT_VERSION}"
 
 !ifdef CREATING_UNINSTALLER
   OutFile "$%TEMP%\tempinstaller.exe"
@@ -206,7 +207,7 @@ Name "${PRODUCT_NAME}${PRODUCT_VERSION}_x64"
   !ifdef CODESIGN_HASH
     !system "signtool sign /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 ${CODESIGN_HASH} $%TEMP%\uninstall_visit.exe" = 0
   !endif
-  OutFile "${BIN_DIR}\visit${PRODUCT_VERSION}_x64.exe"
+  OutFile "${BIN_DIR}\${PRODUCT_INST_NAME}"
 
   !include "LogicLib.nsh"
   !include "MUI2.nsh"
