@@ -33,6 +33,8 @@ set VBldDir=%VRootDir%\%VBldDirName%
 
 Rem Get the version being built
 <%VsrcDir%\VERSION set /p VVERS=
+Rem Replace '.' with '_' in version, used for the name of the installer exe
+set VInstVers=%VVERS:.=_%
 
 cd %VRootDir%
 
@@ -104,7 +106,7 @@ Rem Create the installer
 msbuild _Package.vcxproj /p:Configuration=Release /m:4 /flp1:warningsonly;logfile=package.warn /flp2:errorsonly;logfile=package.error
 
 Rem Sign the installer 
-signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "visit%VVERS%_x64.exe 
+signtool sign /q /tr http://timestamp.digicert.com /td sha256 /fd sha256 /a /sha1 %CSHash% "visit%VInstVers%.win11.exe 
 
 
 cd %VRootDir%
