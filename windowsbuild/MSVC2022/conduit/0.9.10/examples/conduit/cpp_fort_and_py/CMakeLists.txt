@@ -1,0 +1,101 @@
+# Copyright (c) Lawrence Livermore National Security, LLC and other Conduit
+# Project developers. See top-level LICENSE AND COPYRIGHT files for dates and
+# other details. No copyright assignment is required to contribute to Conduit.
+###############################################################################
+#
+# Example that shows how to use Conduit across C++, Fortran, and an
+# embedded Python interpreter.
+#
+#
+# Building:
+#
+# Note: The python instance must have the conduit python module installed
+# or it must be in your PYTHONPATH.
+#
+# CMake projects that find conduit can use CONDUIT_PYTHONPATH, which holds
+# the directory containing the conduit python module of the conduit that
+# was found.
+#
+# > mkdir build
+# > cd build
+# 
+# # if conduit python module is not installed in your python instance
+# # > export PYTHONPATH=${CONDUIT_PYTHONPATH}
+#
+# > cmake  \
+#    -DCONDUIT_DIR=/path/to/conduit/install
+#    -DPYTHON_EXECUTABLE=/path/to/python/bin/python
+#    ../
+# > make
+#
+#
+# Running:
+# > ./conduit_cpp_and_py_ex
+# > ./conduit_fort_and_py_ex
+#
+# # if conduit python module is not installed in your python instance
+# # (the path reported as CONDUIT_PYTHONPATH when conduit was found)
+# > env PYTHONPATH=/path/to/conduit-install/python-modules  ./conduit_cpp_and_py_ex
+# > env PYTHONPATH=/path/to/conduit-install/python-modules  ./conduit_fort_and_py_ex
+###############################################################################
+
+cmake_minimum_required(VERSION 3.21)
+
+project(conduit_cpp_fort_and_py C CXX Fortran)
+
+
+######
+# Setup Conduit
+######
+find_package(Conduit REQUIRED
+             COMPONENTS Python
+             NO_DEFAULT_PATH 
+             PATHS ${CONDUIT_DIR}/lib/cmake/conduit)
+
+######
+# Setup Python
+######
+# allow PYTHON_EXECUTABLE to init Python3_EXECUTABLE
+if(PYTHON_EXECUTABLE AND NOT Python3_EXECUTABLE)
+    set(Python3_EXECUTABLE ${PYTHON_EXECUTABLE})
+endif()
+
+find_package(Python3
+             REQUIRED
+             COMPONENTS Interpreter Development NumPy)
+######
+# Conduit requires c++17 support
+######
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+##############################################################################
+# cpp to and from fortran example
+##############################################################################
+add_executable(conduit_cpp_and_py_ex
+               conduit_cpp_and_py_ex.cpp
+               python_interpreter.hpp
+               python_interpreter.cpp)
+
+target_link_libraries(conduit_cpp_and_py_ex
+                      conduit::conduit
+                      conduit::conduit_python
+                      Python3::Python)
+
+##############################################################################
+# fortran to and from python example
+##############################################################################
+
+add_executable(conduit_fort_and_py_ex
+               conduit_fort_and_py_ex.F90
+               conduit_fort_and_py_mod.cpp
+               conduit_fort_and_py_mod.F90
+               python_interpreter.hpp
+               python_interpreter.cpp)
+
+
+target_link_libraries(conduit_fort_and_py_ex
+                      conduit::conduit
+                      conduit::conduit_python
+                      Python3::Python)
+
